@@ -46,13 +46,18 @@ $('body').keyup(function(event) {
             name = $('#mon-name-input').val();
         }
         saveFirstMon();
-        $('#choose-mon-div').fadeOut(() => {
+        $('#chooseMon-div').fadeOut(() => {
             removeComponent('event');
+            eventVar = "max-prune-2";
+            reloadSection('dialogue', dialogueComp);
         });
     }
 });
 
 function saveFirstMon() {
-    mon = createMon(choice, 3);
+    mon = {
+        "mons": [createMon(choice, 3)]
+    }
+    mon["mons"][0]['name'] = name;
     fs.writeFileSync("data/player/" + player.id + "-mons.json", JSON.stringify(mon), "utf8");
 }

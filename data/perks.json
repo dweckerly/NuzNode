@@ -1,7 +1,7 @@
 {
     "1": {
-        "name": "Starter Mon",
-        "description": "",
+        "name": "First Mon",
+        "description": "Receives a stat boost when it's the only NuzMon in your party.",
         "effect": ""
     }
 }

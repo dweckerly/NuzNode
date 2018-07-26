@@ -1,0 +1,12 @@
+{
+    "name": "Maxwell Prune",
+    "img": "img/people/maxwell-prune.png",
+    "font": "Federo",
+    "0": {
+        "text": [
+            "Well, looks like we're all set here.",
+            "If you ever need any legal representation come by my office sometime. Seeya!"
+        ],
+        "response": "end"
+    }
+}

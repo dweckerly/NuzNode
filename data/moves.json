@@ -150,7 +150,7 @@
         "category": "status",
         "range": "ranged",
         "dmg": 0,
-        "acc": 100,
+        "acc": 90,
         "crit": 0,
         "effects": ["poison-target-25", "sleep-target-25", "sick-target-25"],
         "anim": ""
@@ -166,5 +166,32 @@
         "crit": 0,
         "effects": ["sleep-self-100", "recover-self-50"],
         "anim": ""
+    },
+    "15": {
+        "name": "Quick Quill",
+        "description": "Shoots a stiff spine at the opponentbefore it has a chance to act.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "ranged",
+        "dmg": 20,
+        "acc": 100,
+        "crit": 1,
+        "effects": ["priority-1"],
+        "anim": ""
+    },
+    "16": {
+        "name": "Wiggle Worm",
+        "description": "Wiggles randomly to make itself hard for opponents to hit. Raises EVA",
+        "type": "Bug",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-eva-self-1"],
+        "anim": ""
+    },
+    "17": {
+        
     }
 }

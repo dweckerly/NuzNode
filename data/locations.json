@@ -6,6 +6,16 @@
         "firstVisit": ["dialogue", "max-prune-1"],
         "events": {
 
-        }
+        },
+        "buttons": [
+            {
+                "text": "Go to ", 
+                "function": ""
+            },
+            {
+                "text": "",
+                "function": ""
+            }
+        ]
     }
 }

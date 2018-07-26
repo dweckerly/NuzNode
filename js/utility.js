@@ -35,6 +35,14 @@ function changeSection(id, component) {
     }
 }
 
+function reloadSection(id, component) {
+    let child = $('#' + id).find(':first-child');
+    let cid = child.attr('id');
+    $('#' + cid).remove();
+    let data = fs.readFileSync(component);
+    $('#' + id).html(data.toString());
+}
+
 function removeComponent(id) {
     var child = $('#' + id).find(':first-child');
     if (child == null) {

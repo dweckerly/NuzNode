@@ -29,11 +29,16 @@ function next() {
     if (j < dialogue[i]['text'].length) {
         displayText();
     } else {
+        $('#speech').html("");
         switch (dialogue[i]['response']) {
             case ('chooseMon'):
                 state = 'choosing';
                 giveFirstMon();
                 break;
+            case('end'):
+                state = 'location';
+                removeComponent('dialogue');
+                reloadSection('main', locationComp);
             default:
                 break;
         }

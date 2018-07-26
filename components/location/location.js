@@ -25,7 +25,7 @@ function setImgDimensions() {
 
 function checkEvents(data) {
     if (hasVisited()) {
-
+        populateButtons();
     } else {
         if (data["firstVisit"][0] == 'dialogue') {
             eventVar = data['firstVisit'][1];
@@ -42,6 +42,10 @@ function hasVisited() {
         return false;
     }
     return true;
+}
+
+function populateButtons() {
+    console.log("populating buttons");
 }
 
 populateLocation();
