@@ -2,17 +2,17 @@
     "1": {
         "name": "Macho Bravo",
         "description": "NuzMon gain more happiness from a win.",
-        "effect": "win-increase-happiness-5"
+        "effect": "win-inc-happiness-5"
     },
     "2": {
         "name": "Feminie Touch",
         "description": "NuzMon are more likely to join you.",
-        "effect": "catch-increase-5"
+        "effect": "catch-inc-5"
     },
     "3": {
         "name": "Easy Target",
         "description": "More likely to encounter trainers while traveling.",
-        "effect": ""
+        "effect": "wander-inc-trainer-10"
     },
     "4": {
         "name": "Senior Discount",
@@ -22,7 +22,7 @@
     "5": {
         "name": "Coveted Demographic",
         "description": "More likely to encounter merchants while traveling.",
-        "effect": ""
+        "effect": "wander-inc-merchant-10"
     },
     "6": {
         "name": "Established",
@@ -41,22 +41,42 @@
     },
     "9": {
         "name": "Green Thumb",
-        "description": "Increased effectiveness of Plant type NuzMon.",
+        "description": "Increases the effectiveness of Plant type NuzMon.",
         "effect": ""
     },
     "10": {
         "name": "Pyromaniac",
-        "description": "Increased effectiveness of Fire type NuzMon.",
+        "description": "Increases the effectiveness of Fire type NuzMon.",
         "effect": ""
     },
     "11": {
-        "name": "",
-        "desciption": "Increased effectiveness of Water type NuzMon.",
+        "name": "Of the Sea",
+        "desciption": "Increases the effectiveness of Water type NuzMon.",
         "effect": ""
     },
     "12": {
         "name": "Normie",
-        "desciption": "Increased effectiveness of Basic type NuzMon.",
+        "desciption": "Increases the effectiveness of Basic type NuzMon.",
+        "effect": ""
+    },
+    "13": {
+        "name": "Entomologist",
+        "description": "Increases the effectiveness of Bug type NuzMon.",
+        "effect": ""
+    },
+    "14": {
+        "name": "",
+        "description": "Increases the effectiveness of Electric type NuzMon.",
+        "effect": ""
+    },
+    "15": {
+        "name": "",
+        "description": "Increases the effectiveness of Stone type NuzMon.",
+        "effect": ""
+    },
+    "16": {
+        "name": "Size Up",
+        "description": "You can detect the skills of other trainers.",
         "effect": ""
     }
 }

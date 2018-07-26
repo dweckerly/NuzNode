@@ -17,7 +17,7 @@
         "type": "Basic",
         "category": "physical",
         "range": "contact",
-        "dmg": 20,
+        "dmg": 25,
         "acc": 90,
         "crit": 1,
         "effects": ["wound-target-10"],
@@ -72,6 +72,99 @@
         "anim": ""
     },
     "7": {
-
+        "name": "Singe",
+        "description": "Shoots flames near the opponent. May cause a burn.",
+        "type": "Fire",
+        "category": "special",
+        "range": "ranged",
+        "dmg": 20,
+        "acc": 100,
+        "crit": 1,
+        "effects": ["burn-target-20"],
+        "anim": ""
+    },
+    "8": {
+        "name": "Squirt",
+        "description": "Spits a small stream of water at the opponent. May wet target.",
+        "type": "Water",
+        "category": "special",
+        "range": "ranged",
+        "dmg": 20,
+        "acc": 100,
+        "crit": 1,
+        "effects": ["wet-target-20"],
+        "anim": ""
+    },
+    "9": {
+        "name": "Bulb Bash",
+        "description": "Hits opponent with the bulk of its vegetation.",
+        "type": "Plant",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 100,
+        "crit": 1,
+        "effects": [],
+        "anim": ""
+    },
+    "10": {
+        "name": "Stink Weed",
+        "description": "Releases a noxious odor that may sicken the opponent.",
+        "type": "Plant",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 50,
+        "crit": 0,
+        "effects": ["sick-target-100"],
+        "anim": ""
+    },
+    "11": {
+        "name": "Smoke Cloak",
+        "description": "Viels opponent in a cloud of thick smoke. Lowers opponent ACC.",
+        "type": "Fire",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 70,
+        "crit": 0,
+        "effects": ["dec-acc-target-1"],
+        "anim": ""
+    },
+    "12" : {
+        "name": "Amp Up",
+        "description": "Concentrates electrical energy. Raises ATK and SATK.",
+        "type": "Electric",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-atk-self-1", "inc-satk-self-1"],
+        "anim": ""
+    },
+    "13": {
+        "name": "Scatter Spore",
+        "description": "Shoots a variety of spores at the opponent. May cause sleep, poison, and/or sickness.",
+        "type": "Plant",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["poison-target-25", "sleep-target-25", "sick-target-25"],
+        "anim": ""
+    },
+    "14": {
+        "name": "Snooze",
+        "description": "Takes a quick nap to regain some health.",
+        "type": "Basic",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["sleep-self-100", "recover-self-50"],
+        "anim": ""
     }
 }

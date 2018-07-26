@@ -117,8 +117,28 @@ function geneticPotential(gf) {
     return pot;
 }
 
-function getMoves(id, lvl) {
+function getMoves(mon, lvl) {
+    let mpid = mon['movePool'];
+    let movePoolData = JSON.parse(fs.readFileSync('data/movePools.json', 'utf8'));
+    let pool = movePoolData[mpid];
+    var indices = [];
+    for(let i = 0; i < pool['level'].length; i++){
+        if(pool['level'][i] <= lvl) {
+            indices.push(i);
+        } else {
+            break;
+        }
+    }
+    if(indices.length > 4) {
+        indices = indices.slice(-4);
+    }
+    var moveData = JSON.parse(fs.readFileSync('data/moves.json', 'utf8'));
+    var moves = {};
+    for(let i = 1; i <= indices.length; i++) {
+        moves[i] = moveData[pool["id"][indices[i - 1]]];
+    }
 
+    return moves;
 }
 
 function createMon(id, lvl) {
@@ -183,8 +203,7 @@ function createMon(id, lvl) {
             "run": 0,
         },
         "happiness": 50,
-        "moves": getMoves(id, lvl),
-
+        "moves": getMoves(monBase, lvl),
     }
 
     return mon;

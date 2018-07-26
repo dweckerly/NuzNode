@@ -54,4 +54,5 @@ $('body').keyup(function(event) {
 
 function saveFirstMon() {
     mon = createMon(choice, 3);
+    fs.writeFileSync("data/player/" + player.id + "-mons.json", JSON.stringify(mon), "utf8");
 }
