@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Amatic';
+    src: url('../fonts/AmaticSC-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'CabinSketch';
+    src: url('../fonts/CabinSketch-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Federo';
+    src: url('../fonts/Federo-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'ShadowsIntoLight';
+    src: url('../fonts/ShadowsIntoLight.ttf');
+}
+
+@font-face {
+    font-family: 'WalterTurncoat';
+    src: url('../fonts/WalterTurncoat-Regular.ttf');
+}

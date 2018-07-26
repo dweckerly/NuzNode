@@ -1,0 +1,36 @@
+<div id="chooseMon-div">
+    <div class="choose-panel" id="choices" align="center">
+        <div data='1' id="choose-1" class="choose-btn" align="center">
+            <h5 id="mon-name-1">Carnipula</h5>
+            <img width="200" height="200" id="mon-img-1" src="">
+        </div>
+        <div data='4' id="choose-2" class="choose-btn" align="center">
+            <h5 id="mon-name-2">Embah</h5>
+            <img width="200" height="200" id="mon-img-2" src="">
+        </div>
+        <div data='7' id="choose-3" class="choose-btn" align="center">
+            <h5 id="mon-name-3">Derple</h5>
+            <img width="200" height="200" id="mon-img-3" src="">
+        </div>
+    </div>
+    <div class="choose-panel" id="choice" style="display:none;" align="center">
+        <div style="float:left;">
+            <img width="320" height="320" id="choice-img" src="">
+        </div>
+        <div style="float:right; top:0;padding-right:60px;">
+            <div id="select-panel">
+                <h5 id="question"></h5>
+                <button class="dialogue-btn" id="yes-btn" data="">Yes!</button>
+                <button class="dialogue-btn" id="no-btn">No</button>
+            </div>
+            <div id="name-panel" style="display:none;">
+                <h5>Great choice!</h5>
+                <form id="mon-name-form">
+                    <label style="font-size:24px">Name?</label><br>
+                    <input id="mon-name-input" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" type="text" name="name">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="components/chooseMon/chooseMon.js"></script>
+</div>

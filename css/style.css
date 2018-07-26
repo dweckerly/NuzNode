@@ -1,0 +1,334 @@
+body {
+    font-family: 'ShadowsIntoLight';
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 72px;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 60px;
+    font-weight: normal;
+}
+
+h3 {
+    font-size: 48px;
+    font-weight: normal;
+}
+
+h4 {
+    font-size: 36px;
+    font-weight: normal;
+}
+
+h5 {
+    font-size: 24px;
+    font-weight: normal;
+}
+
+button {
+    background-color: #ffffff;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'ShadowsIntoLight';
+    outline: none;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.no-style-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    display: inline-block;
+}
+
+.valign {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.col-3 {
+    float: left;
+    width: 33.33%;
+}
+
+.col-4 {
+    float: left;
+    width: 25%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/***********************
+ * Choose Mon
+ ***********************/
+
+#chooseMon-div {
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.choose-btn {
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.4s;
+}
+
+.choose-panel {
+    background-color: white;
+    margin: 15% auto;
+    border-radius: 20px;
+    box-shadow: 5px 5px 18px #888888;
+    width: 80%;
+    min-height: 50%;
+}
+
+.choose-description {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+#mon-img-1:hover {
+    animation-duration: 2s;
+    animation-name: swing;
+    animation-iteration-count: infinite;
+}
+
+#mon-img-2:hover {
+    animation-duration: 2s;
+    animation-name: hop;
+    animation-iteration-count: infinite;
+}
+
+#mon-img-3:hover {
+    animation-duration: 2s;
+    animation-name: wiggle;
+    animation-iteration-count: infinite;
+}
+
+#mon-name-input:focus {
+    outline: none !important;
+    border: 1px solid rgb(92, 92, 92);
+}
+
+
+/***********************
+ * Dialogue
+ ***********************/
+
+#dialogue-div {
+    z-index: 1;
+}
+
+#person-img {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.text-box {
+    box-shadow: 5px 5px 18px #888888;
+    background-color: white;
+    position: fixed;
+    width: 97%;
+    height: 20%;
+    left: 0;
+    bottom: 0;
+    border: 1px solid black;
+    z-index: 2;
+    margin: 10px;
+}
+
+#speech {
+    padding: 10px;
+    font-size: 20px;
+}
+
+#dialogue-btn-div {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    z-index: 3;
+}
+
+.dialogue-btn {
+    font-size: 20px;
+    box-shadow: 5px 5px 18px #888888;
+    padding: 6px 12px;
+}
+
+.dialogue-btn:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+#name-label {
+    background-color: white;
+    border: 1px solid black;
+    position: absolute;
+    left: 30px;
+    bottom: 120px;
+    z-index: 3;
+    font-size: 20px;
+    padding: 10px;
+}
+
+
+/***********************
+ * Intro
+ ***********************/
+
+#name-input {
+    height: 36px;
+    font-family: 'ShadowsIntoLight';
+    font-size: 36px;
+}
+
+#name-input:focus {
+    outline: none !important;
+    border: 1px solid rgb(92, 92, 92);
+}
+
+input[type=range] {
+    border: 1px solid white;
+    outline: 2px solid white;
+    outline-offset: -1px;
+}
+
+.intro-label {
+    color: white;
+    font-size: 36px;
+}
+
+.cross-title {
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-name: cross-title;
+    animation-timing-function: linear;
+    position: absolute;
+    z-index: -1;
+}
+
+.spin {
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-name: spin;
+    animation-timing-function: linear;
+}
+
+
+/****************************
+* Location
+*****************************/
+
+#location-img {
+    border: 1px solid black;
+}
+
+
+/*************************
+* Note 
+*************************/
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.note {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.note-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    min-height: 50%;
+}
+
+.note-action-bottom {
+    padding-top: 60px;
+}
+
+.note-body {
+    padding-top: 20px;
+}
+
+.note-footer {
+    float: right;
+    padding-top: 20px;
+}
+
+
+/***************************
+* Title
+****************************/
+
+.title-btn {
+    box-shadow: 5px 5px 18px #888888;
+    padding: 14px 32px;
+    font-size: 32px;
+    width: 160px;
+    margin-top: 20px;
+}
+
+.title-btn:hover {
+    background-color: rgb(236, 236, 236);
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: grow-n-shrink;
+    animation-timing-function: linear;
+}
+
+#title-btn-div {
+    position: absolute;
+    bottom: 60px;
+    right: 50px;
+    width: 160px;
+}

@@ -1,0 +1,9 @@
+{
+    "1": {
+        "header": "Dear",
+        "body": "I am the estate manager of your recently deceased Uncle. I write to inform you that his will entitles you to some of his previous holdings. Please come to 'The Ranch' as soon as possible to claim your inheritance.",
+        "footer": "Regards, Maxwell Prune Esq.",
+        "action": "goToRanch()",
+        "font": "Courier New"
+    }
+}

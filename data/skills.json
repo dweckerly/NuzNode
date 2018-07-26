@@ -1,0 +1,62 @@
+{
+    "1": {
+        "name": "Macho Bravo",
+        "description": "NuzMon gain more happiness from a win.",
+        "effect": "win-increase-happiness-5"
+    },
+    "2": {
+        "name": "Feminie Touch",
+        "description": "NuzMon are more likely to join you.",
+        "effect": "catch-increase-5"
+    },
+    "3": {
+        "name": "Easy Target",
+        "description": "More likely to encounter trainers while traveling.",
+        "effect": ""
+    },
+    "4": {
+        "name": "Senior Discount",
+        "description": "Items are sold to you at a discounted rate.",
+        "effect": ""
+    },
+    "5": {
+        "name": "Coveted Demographic",
+        "description": "More likely to encounter merchants while traveling.",
+        "effect": ""
+    },
+    "6": {
+        "name": "Established",
+        "description": "Start the game with more money.",
+        "effect": ""
+    },
+    "7": {
+        "name": "Trainer's Restraint",
+        "description": "You're able to make your NuzMon deal non-lethal damage during a trainer battle.",
+        "effect": ""
+    },
+    "8": {
+        "name": "Blood Lust",
+        "description": "All trainer battles are to the death.",
+        "effect": ""
+    },
+    "9": {
+        "name": "Green Thumb",
+        "description": "Increased effectiveness of Plant type NuzMon.",
+        "effect": ""
+    },
+    "10": {
+        "name": "Pyromaniac",
+        "description": "Increased effectiveness of Fire type NuzMon.",
+        "effect": ""
+    },
+    "11": {
+        "name": "",
+        "desciption": "Increased effectiveness of Water type NuzMon.",
+        "effect": ""
+    },
+    "12": {
+        "name": "Normie",
+        "desciption": "Increased effectiveness of Basic type NuzMon.",
+        "effect": ""
+    }
+}

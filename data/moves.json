@@ -1,0 +1,77 @@
+{
+    "1": {
+        "name": "Flop",
+        "description": "Ineptly throws itself at its opponent.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 10,
+        "acc": 90,
+        "crit": 0,
+        "effects": [],
+        "anim": ""
+    },
+    "2": {
+        "name": "Chomp",
+        "description": "Bites opponent. May cause wounds.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 90,
+        "crit": 1,
+        "effects": ["wound-target-10"],
+        "anim": ""
+    },
+    "3": {
+        "name": "Headbutt",
+        "description": "Runs head-first into its opponent. User takes recoil",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 30,
+        "acc": 90,
+        "crit": 1,
+        "effects": ["recoil-10"],
+        "anim": ""
+    },
+    "4": {
+        "name": "Claw",
+        "description": "Scratches at opponent.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 100,
+        "crit": 3,
+        "effects": [],
+        "anim": ""
+    },
+    "5": {
+        "name": "Shell Cover",
+        "description": "Retreats into its shell for protection. Increases DEF.",
+        "type": "Basic",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-def-self-1"],
+        "anim": ""
+    },
+    "6": {
+        "name": "Bleat",
+        "description": "An unsettling cry that startles the opponent. Decreases opponent's ATK.",
+        "type": "Sound",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["dec-atk-target-2"],
+        "anim": ""
+    },
+    "7": {
+
+    }
+}

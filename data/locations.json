@@ -1,0 +1,11 @@
+{
+    "1": {
+        "name": "The Ranch",
+        "img": "ranch.png",
+        "connections": [2, 3, 4],
+        "firstVisit": ["dialogue", "max-prune-1"],
+        "events": {
+
+        }
+    }
+}
