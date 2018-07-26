@@ -181,7 +181,7 @@
     },
     "16": {
         "name": "Wiggle Worm",
-        "description": "Wiggles randomly to make itself hard for opponents to hit. Raises EVA",
+        "description": "Wiggles randomly to make itself hard for opponents to hit. Raises EVA.",
         "type": "Bug",
         "category": "status",
         "range": "self",
@@ -192,6 +192,39 @@
         "anim": ""
     },
     "17": {
-        
+        "name": "Static Wave",
+        "description": "Creates a wave of static that may stun the opponent.",
+        "type": "Electric",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 50,
+        "crit": 0,
+        "effects": ["stun-target-100"],
+        "anim": ""
+    },
+    "18": {
+        "name": "Fluff",
+        "description": "Puffs itself out in a protective manner. Raises DEF and SDEF.",
+        "type": "Basic",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-def-self-1", "inc-sdef-self-1"],
+        "anim": ""
+    },
+    "19": {
+        "name": "Ignition",
+        "description": "Foregoes its defenses to increase its SATK and SPEED.",
+        "type": "Fire",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["dec-def-self-3", "dec-sdef-self-3", "inc-satk-self-2", "inc-speed-self-1"],
+        "anim": ""
     }
 }
