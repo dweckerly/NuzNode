@@ -17,7 +17,7 @@
         "type": "Basic",
         "category": "physical",
         "range": "contact",
-        "dmg": 25,
+        "dmg": 30,
         "acc": 90,
         "crit": 1,
         "effects": ["wound-target-10"],
@@ -192,7 +192,7 @@
         "anim": ""
     },
     "17": {
-        "name": "Static Wave",
+        "name": "Stun Wave",
         "description": "Creates a wave of static that may stun the opponent.",
         "type": "Electric",
         "category": "status",
@@ -226,5 +226,152 @@
         "crit": 0,
         "effects": ["dec-def-self-3", "dec-sdef-self-3", "inc-satk-self-2", "inc-speed-self-1"],
         "anim": ""
+    },
+    "20": {
+        "name": "Zoom Zap",
+        "description": "Rushes opponent with an electrically charged attack. Also increases its SPEED.",
+        "type": "Electric",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 35,
+        "acc": 95,
+        "crit": 1,
+        "effects": ["inc-speed-self-1"],
+        "anim": ""
+    },
+    "21": {
+        "name": "Flare Flash",
+        "description": "Emits a blinding flame that decreases opponent's ACC and may cause a burn.",
+        "type": "Fire",
+        "category": "special",
+        "range": "range",
+        "dmg": 25,
+        "acc": 95,
+        "crit": 1,
+        "effects": ["dec-acc-target-1", "burn-target-20"],
+        "anim": ""
+    },
+    "22": {
+        "name": "Wallop",
+        "description": "A strong attack that may daze the opponent.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 40,
+        "acc": 95,
+        "crit": 1,
+        "effects": ["daze-target-50"],
+        "anim": ""
+    },
+    "23": {
+        "name": "Drench",
+        "description": "covers the battlefield in water, wetting both itself and opponent.",
+        "type": "Water",
+        "category": "status",
+        "range": "all",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["wet-target-100", "wet-self-100"],
+        "anim": ""
+    },
+    "24": {
+        "name": "Wave Crash",
+        "description": "Slams opponent under a wave's crest. May daze and/or wet opponent.",
+        "type": "Water",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 40,
+        "acc": 95,
+        "crit": 1,
+        "effects": ["daze-target-20", "wet-target-20"],
+        "anim": ""
+    },
+    "25": {
+        "name": "Sticky Silk",
+        "description": "Sprays target with a sticky spray. Decreases SPEED.",
+        "type": "Bug",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 90,
+        "crit": 0,
+        "effects": ["dec-speed-target-1"],
+        "anim": ""
+    },
+    "26": {
+        "name": "Shed Husk",
+        "description": "Sheds its outer layer to recover from all status conditions.",
+        "type": "Bug",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["heal-all"],
+        "anim": ""
+    },
+    "27": {
+        "name": "Pod Barrage",
+        "description": "Assaults opponent with a barrage of exploding seeds. May hit up to 5 times.",
+        "type": "Plant",
+        "category": "physical",
+        "range": "ranged",
+        "dmg": 10,
+        "acc": 85,
+        "crit": 1,
+        "effects": ["multi-5"],
+        "anim": ""
+    },
+    "28": {
+        "name": "Shine Dust",
+        "description": "Covers the field in a powdery veil. Removes all stat modifications.",
+        "type": "Bug",
+        "category": "status",
+        "range": "all",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["remove-mod-all"],
+        "anim": ""
+    },
+    "29": {
+        "name": "Pump Up",
+        "description": "Gets worked up for a fight. Increases ATK and DEF.",
+        "type": "Buff",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-atk-self-1", "inc-def-self-1"],
+        "anim": ""
+    },
+    "30": {
+        "name": "Get Wrecked",
+        "description": "A devastating physical attack.",
+        "type": "Buff",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 60,
+        "acc": 90,
+        "crit": 2,
+        "effects": [],
+        "anim": ""
+    },
+    "31": {
+        "name": "Overexert",
+        "description": "Pushes itself beyond its capabilities. Raises ATK and dazes itself.",
+        "type": "Buff",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-atk-self-3", "daze-self-100"],
+        "anim": ""
+    },
+    "32": {
+        
     }
 }

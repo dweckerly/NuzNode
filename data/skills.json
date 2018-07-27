@@ -75,6 +75,11 @@
         "effect": ""
     },
     "16": {
+        "name": "Body Builder",
+        "description": "Increases the effectiveness of Buff type NuzMon.",
+        "effect": ""
+    },
+    "17": {
         "name": "Size Up",
         "description": "You can detect the skills of other trainers.",
         "effect": ""

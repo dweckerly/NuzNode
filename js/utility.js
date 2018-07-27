@@ -15,6 +15,18 @@ function isHidden(el) {
     return (el.offsetParent === null)
 }
 
+function disableMenu() {
+    if($('#nav-div').length) {
+        $('#nav-main-btn').prop('disabled', true);
+    }
+}
+
+function enableMenu() {
+    if($('#nav-div').length) {
+        $('#nav-main-btn').prop('disabled', false);
+    }
+}
+
 // component functions
 
 function addComponent(id, component) {

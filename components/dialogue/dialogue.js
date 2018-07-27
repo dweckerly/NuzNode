@@ -7,6 +7,7 @@ var tw;
 instantiate();
 
 function instantiate() {
+    disableMenu();
     var d = fs.readFileSync("data/dialogues/" + eventVar + ".json");
     dialogue = JSON.parse(d);
     $('#person-img').attr('src', dialogue['img']);
@@ -32,7 +33,7 @@ function next() {
         $('#speech').html("");
         switch (dialogue[i]['response']) {
             case ('chooseMon'):
-                state = 'choosing';
+                state = 'event';
                 giveFirstMon();
                 break;
             case('end'):

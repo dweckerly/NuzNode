@@ -45,6 +45,7 @@ function hasVisited() {
 }
 
 function populateButtons() {
+    enableMenu();
     console.log("populating buttons");
 }
 

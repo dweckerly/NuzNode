@@ -1,9 +1,9 @@
-if (!checkSaves()) {
-    $('#load-btn').hide();
-} else {
+if (checkSaves()) {
     $('#load-btn').click(() => {
         changeSection('main', loadComp);
     });
+} else {
+    $('#load-btn').hide();
 }
 
 $("#new-btn").click(() => {
