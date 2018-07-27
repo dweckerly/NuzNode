@@ -1,0 +1,14 @@
+canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 0 auto;
+}
+
+img {
+    border: 1px solid black;
+}
+
+@font-face {
+    font-family: 'ShadowsIntoLight';
+    src: url('fonts/ShadowsIntoLight.ttf');
+}
