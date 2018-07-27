@@ -10,6 +10,7 @@ function readSave() {
 
 function checkSaves() {
     var files = glob.readdirSync('data/player/*.json');
+
     if (files.length > 0) {
         return true;
     }
@@ -54,6 +55,7 @@ function newSave(name, gender, age, callback) {
         location: 1,
         exp: 0,
         level: 1,
+        partySize: 3,
         skills: skills,
         visit: {
             1: false,

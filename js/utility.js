@@ -161,6 +161,25 @@ function getMoves(mon, lvl) {
     return moves;
 }
 
+function partyPosition() {
+    if(fs.existsSync('data/player/' + player.id + '-mon.json')){
+        let monData = JSON.parse(fs.readFileSync('data/player/' + player.id + '-mon.json', 'utf8'));
+        var pos = 1;
+        for(let i = 0; i < monData['mons'].length; i++) {
+            if(monData['mons'][i]['partyPosition'] > pos) {
+                pos = monData['mons'][i]['partyPosition'];
+            }
+        }
+        if(pos < player.partySize) {
+            return pos + 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return 1;
+    }
+}
+
 function createMon(id, lvl) {
     let monData = JSON.parse(fs.readFileSync('data/mons.json', 'utf8'));
     let monBase = monData[id];
@@ -224,6 +243,7 @@ function createMon(id, lvl) {
         },
         "happiness": 50,
         "moves": getMoves(monBase, lvl),
+        "partyPosition": partyPosition()
     }
 
     return mon;
