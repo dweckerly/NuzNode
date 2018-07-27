@@ -1,6 +1,7 @@
 var showingNav = false;
 
-$('#nav-main-btn').click(() => {
+$('#nav-main-btn').click((event) => {
+    event.stopImmediatePropagation()
     if(state != 'speaking' && state != 'event' && state != 'choosing') {
        if(showingNav) {
            hideNav();
@@ -13,9 +14,11 @@ $('#nav-main-btn').click(() => {
 });
 
 function showNav() {
-    console.log("show nav");
+    showingNav = true;
+    $('#nav-side').css("width", "120px")
 }
 
 function hideNav() {
-    console.log("hide nav");
+    showingNav = false;
+    $('#nav-side').css("width", "0px")
 }
