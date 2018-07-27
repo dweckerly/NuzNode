@@ -37,6 +37,7 @@ $('#yes-btn').click(function() {
     $('#select-panel').fadeOut(() => {
         state = 'naming';
         $('#name-panel').fadeIn();
+        $('#mon-name-input').focus();
     });
 });
 

@@ -4,7 +4,7 @@ let win
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 850,
+        width: 800,
         height: 600,
         //frame: false,
         icon: 'img/icon.png'
@@ -12,7 +12,7 @@ function createWindow() {
     win.setMenu(null);
     //win.setResizable(false);
     win.loadFile('index.html');
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     win.on('closed', () => {
         win = null;
     });

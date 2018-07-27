@@ -43,6 +43,12 @@ button:hover {
     cursor: pointer;
 }
 
+canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 0 auto;
+}
+
 .hover-gns:hover:enabled {
     background-color: rgb(236, 236, 236);
     animation-duration: 1s;
@@ -268,7 +274,7 @@ input[type=range] {
     position: fixed;
     top: 5px;
     left: 5px;
-    border-radius: 50%;
+    border-radius: 10px;
     border: 1px solid black;
     padding: 16px;
 }
@@ -285,7 +291,8 @@ input[type=range] {
     z-index: 4;
     overflow: hidden;
     padding-top: 80px;
-    box-shadow: 5px 5px 18px #888888;
+    box-shadow: -15px 0px 60px 25px #ffffff, 
+    5px 0px 10px -5px #000000;
     transition: 0.5s;
 }
 
