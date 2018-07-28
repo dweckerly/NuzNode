@@ -2,23 +2,23 @@ var showingNav = false;
 
 $('#nav-main-btn').click((event) => {
     event.stopImmediatePropagation();
-    if(state != 'speaking' && state != 'event' && state != 'choosing') {
-       if(showingNav) {
-           hideNav();
-       } else {
-           showNav();
-       }
+    if (state != 'speaking' && state != 'event' && state != 'choosing') {
+        if (showingNav) {
+            hideNav();
+        } else {
+            showNav();
+        }
     } else {
         console.log("can't click");
     }
 });
 
-$('#player-nav').html(player.name);
+//$('#player-nav').html(player.name);
 
-$('.nav-btn').click(function (event) {
+$('.nav-btn').click(function(event) {
     event.stopImmediatePropagation();
     let comp = $(this).attr('data');
-    switch (comp){
+    switch (comp) {
         case 'map':
             changeSection('main', mapComp);
             break;
