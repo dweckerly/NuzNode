@@ -22,11 +22,17 @@ $('.nav-btn').click(function(event) {
         case 'inventory':
             changeSection('main', inventoryComp);
             break;
+        case 'journal':
+            changeSection('main', journalComp);
+            break;
         case 'map':
             changeSection('main', mapComp);
             break;
         case 'party':
             changeSection('main', partyComp);
+            break;
+        case 'player':
+            changeSection('main', playerComp);
             break;
         default:
             break;
