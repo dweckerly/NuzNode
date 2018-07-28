@@ -19,8 +19,14 @@ $('.nav-btn').click(function(event) {
     event.stopImmediatePropagation();
     let comp = $(this).attr('data');
     switch (comp) {
+        case 'inventory':
+            changeSection('main', inventoryComp);
+            break;
         case 'map':
             changeSection('main', mapComp);
+            break;
+        case 'party':
+            changeSection('main', partyComp);
             break;
         default:
             break;
