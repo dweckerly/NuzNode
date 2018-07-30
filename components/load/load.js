@@ -9,6 +9,9 @@ function createList() {
         }
     }
     sortList();
+    $('#load-list').append(
+        "<script>$('.load-item').click(function () {let data = $(this).attr('data');player = load(data);state = 'location';goToLocation();});</script>"
+    );
 }
 
 function sortList() {
@@ -38,6 +41,7 @@ $('.load-item').click(function () {
     let data = $(this).attr('data');
     player = load(data);
     state = 'location';
+    goToLocation();
 });
 
 createList();

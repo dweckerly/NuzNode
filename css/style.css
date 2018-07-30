@@ -261,6 +261,29 @@ input[type=range] {
     animation-timing-function: linear;
 }
 
+/****************************
+* Load
+*****************************/
+
+#load-title {
+    padding-left: 60px;
+}
+
+#load-list {
+    list-style-type: none;
+}
+
+.load-item {
+    font-size: 24px;
+    padding: 10px;
+    box-shadow: 5px 5px 18px #888888;
+}
+
+.load-item:hover {
+    background-color: rgb(236, 236, 236);
+    cursor: pointer;
+}
+
 
 /****************************
 * Location
