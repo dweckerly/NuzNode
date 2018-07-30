@@ -27,6 +27,23 @@ function enableMenu() {
     }
 }
 
+function goToLocation() {
+    if(!$('#nav-div').length) {
+        addComponent('header', navComp);
+    }
+    if(player.location == 0) {
+        changeSection('main', mapComp);
+    } else {
+        changeSection('main', locationComp);
+    }
+}
+
+function clearIntervals() {
+    clearInterval(main);
+    clearInterval(sinAnim);
+}
+
+
 // component functions
 
 function addComponent(id, component) {

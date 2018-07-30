@@ -1,7 +1,12 @@
 {
     "1": {
         "name": "First Mon",
-        "description": "Receives a stat boost when it's the only NuzMon in your party.",
+        "description": "Receives a stat boost when it's the only NuzMon alive in your party.",
         "effect": ""
+    },
+    "2": {
+        "name": "Fleet Foot",
+        "description": "This NuzMon is especially adept at running. Increases SPEED when battling.",
+        "effect": "inc-speed-self-1"
     }
 }

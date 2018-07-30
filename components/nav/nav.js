@@ -8,15 +8,12 @@ $('#nav-main-btn').click((event) => {
         } else {
             showNav();
         }
-    } else {
-        console.log("can't click");
     }
 });
 
-//$('#player-nav').html(player.name);
-
 $('.nav-btn').click(function(event) {
     event.stopImmediatePropagation();
+    clearIntervals();
     let comp = $(this).attr('data');
     switch (comp) {
         case 'inventory':
@@ -26,6 +23,8 @@ $('.nav-btn').click(function(event) {
             changeSection('main', journalComp);
             break;
         case 'map':
+            player.location = 0;
+            saveSync();
             changeSection('main', mapComp);
             break;
         case 'party':

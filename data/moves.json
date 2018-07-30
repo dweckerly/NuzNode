@@ -169,7 +169,7 @@
     },
     "15": {
         "name": "Quick Quill",
-        "description": "Shoots a stiff spine at the opponentbefore it has a chance to act.",
+        "description": "Shoots a stiff spine at the opponent before it has a chance to act.",
         "type": "Basic",
         "category": "physical",
         "range": "ranged",
@@ -257,7 +257,7 @@
         "type": "Basic",
         "category": "physical",
         "range": "contact",
-        "dmg": 40,
+        "dmg": 50,
         "acc": 95,
         "crit": 1,
         "effects": ["daze-target-50"],
@@ -348,12 +348,12 @@
         "anim": ""
     },
     "30": {
-        "name": "Get Wrecked",
+        "name": "Get Rekt",
         "description": "A devastating physical attack.",
         "type": "Buff",
         "category": "physical",
         "range": "contact",
-        "dmg": 60,
+        "dmg": 80,
         "acc": 90,
         "crit": 2,
         "effects": [],
@@ -372,6 +372,54 @@
         "anim": ""
     },
     "32": {
-        
+        "name": "Wild Fire",
+        "description": "A burst of flames that varies in damage and may cause a burn.",
+        "type": "Fire",
+        "category": "special",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 90,
+        "crit": 1,
+        "effects": ["vary-dmg-50", "burn-target-20"],
+        "anim": ""
+    },
+    "33": {
+        "name": "Rockslide",
+        "description": "Causes rocks to fall onto its opponent. May hit up to 5 times.",
+        "type": "Stone",
+        "category": "special",
+        "range": "ranged",
+        "dmg": 20,
+        "acc": 90,
+        "crit": 1,
+        "effects": ["multi-5"],
+        "anim": ""
+    },
+    "34": {
+        "name": "Torrent",
+        "description": "Traps opponent in a current that hits for five turns. Wets target.",
+        "type": "Water",
+        "category": "special",
+        "range": "contact",
+        "dmg": 10,
+        "acc": 90,
+        "crit": 1,
+        "effects": ["persist-5", "wet-target-100"],
+        "anim": ""
+    },
+    "35": {
+        "name": "One-Two Punch",
+        "description": "A combo attack where the second hit has a high chance to do critical damage.",
+        "type": "Buff",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 25,
+        "acc": 85,
+        "crit": 1,
+        "effects": ["combo-crit-33"],
+        "anim": ""
+    },
+    "36": {
+
     }
 }

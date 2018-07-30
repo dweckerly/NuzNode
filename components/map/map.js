@@ -16,21 +16,16 @@ var dragging = false;
 
 var startingPos = 1;
 
-const ranch = { x: 1197, y: 562, w: 91, h: 80, name: 'Ranch', hover: false, id: 1 };
-const forest = { x: 1374, y: 690, w: 110, h: 100, name: 'Forest', hover: false, id: 2 };
-const lake = { x: 1000, y: 736, w: 176, h: 96, name: 'Lake', hover: false, id: 3 };
-const cave = { x: 958, y: 506, w: 100, h: 70, name: 'Cave', hover: false, id: 4 };
-const hills = { x: 1160, y: 910, w: 100, h: 100, name: 'Hills', hover: false, id: 5 };
-const hotel = { x: 530, y: 1150, w: 100, h: 100, name: 'Hotel', hover: false, id: 6 };
-const lightHouse = { x: 820, y: 1450, w: 100, h: 120, name: 'Light House', hover: false, id: 7 };
-const marsh = { x: 1340, y: 1176, w: 120, h: 140, name: 'Marsh', hover: false, id: 8 };
-
-const locations = [cave, ranch, lake, forest, hills, hotel, lightHouse, marsh];
-
 var labelText = { txt: "", x: 0, y: 0 };
 
 var pointerAnimY = 0;
 var i = 0;
+
+var padding = 6;
+var moveAnim;
+
+clearIntervals();
+
 // instantiate
 
 $(document).ready(function() {
@@ -63,8 +58,10 @@ function drawLocationLabels() {
     var hovering = false;
     locations.forEach((loc) => {
         if (loc.hover) {
-            ctx.fillStyle = "red";
-            ctx.fillRect(labelText.x, labelText.y - 26, ctx.measureText(labelText.txt).width, 30);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(labelText.x - 1 - padding, labelText.y - 27 - padding, ctx.measureText(labelText.txt).width + 2 + (2 * padding), 32 + (2 * padding));
+            ctx.fillStyle = "#FFF";
+            ctx.fillRect(labelText.x - padding, labelText.y - 26 - padding, ctx.measureText(labelText.txt).width + (2 * padding), 30 + (2 * padding));
             ctx.fillStyle = "black";
             ctx.font = "30px Amatic";
             ctx.fillText(labelText.txt, labelText.x, labelText.y);
@@ -120,6 +117,32 @@ function hoverOverLocation() {
     });
 }
 
+function showLocationDetails() {
+
+}
+
+function moveCenterToLocation(loc) {
+    clearInterval(moveAnim);
+    var interval = 30;
+    var dest = centerOnLocation(loc);
+    var slope = (dest.y - cOffset.y) / (dest.x - cOffset.x);
+    var intercept = dest.y - (slope * dest.x);
+    var dist;
+    var xMove;
+    moveAnim = setInterval(function() {
+        dist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2));
+        xMove = -1 * Math.sin(dist);
+        cOffset.x += xMove;
+        cOffset.y = (slope * cOffset.x) + intercept;
+        if(cOffset.x >= (dest.x - 1) && cOffset.x <= (dest.x + 1)) {
+            if(cOffset.y <= (dest.y + 1) && cOffset.y >= (dest.y - 1)) {
+                cOffset.x = dest.x;
+                cOffset.y = dest.y;
+                clearInterval(moveAnim);
+            }
+        }
+    }, interval);
+}
 
 // mouse functions
 
@@ -167,12 +190,13 @@ c.addEventListener('click', function(event) {
     locations.forEach((loc) => {
         if (loc.hover) {
             console.log(loc.name);
+            moveCenterToLocation(loc);
             startingPos = loc.id;
         }
     });
 });
 
-var sinAnim = setInterval(function() {
+sinAnim = setInterval(function() {
     if (i >= 6.2) {
         i = 0;
     }
@@ -180,6 +204,8 @@ var sinAnim = setInterval(function() {
     i += 0.1;
 }, 30);
 
-var main = setInterval(function() {
+
+
+main = setInterval(function() {
     draw();
-}, 15);
+}, 20);

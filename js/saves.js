@@ -1,4 +1,4 @@
-const glob = require('glob-fs')({ gitignore: true });
+const glob = require('glob');
 const uuidv4 = require('uuid/v4');
 
 
@@ -8,9 +8,18 @@ function readSave() {
     return json;
 }
 
-function checkSaves() {
-    var files = glob.readdirSync('data/player/*.json');
+function loadSaves() {
+    return glob.sync('data/player/*.json');
+}
 
+function load(id) {
+    let data = fs.readFileSync('data/player/' + id + '.json');
+    let json = JSON.parse(data);
+    return json;
+}
+
+function checkSaves() {
+    var files = glob.sync('data/player/*.json');
     if (files.length > 0) {
         return true;
     }
@@ -25,7 +34,7 @@ function saveAsync(callback) {
     fs.writeFile("data/player/" + player.id + ".json", JSON.stringify(player), "utf8", callback);
 }
 
-function newSave(name, gender, age, callback) {
+function newPlayer(name, gender, age) {
     var skills = []
     var uid = uuidv4();
 
@@ -49,6 +58,7 @@ function newSave(name, gender, age, callback) {
 
     player = {
         id: uid,
+        created: Date.now(),
         name: name,
         gender: gender,
         age: age,
@@ -72,5 +82,4 @@ function newSave(name, gender, age, callback) {
             12: false
         }
     };
-    saveAsync(callback);
 }

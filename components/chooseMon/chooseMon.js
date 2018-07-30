@@ -61,4 +61,5 @@ function saveFirstMon() {
     }
     mon["mons"][0]['name'] = name;
     fs.writeFileSync("data/player/" + player.id + "-mons.json", JSON.stringify(mon), "utf8");
+    saveSync();
 }
