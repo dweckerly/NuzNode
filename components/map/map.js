@@ -31,6 +31,8 @@ var labelText = { txt: "", x: 0, y: 0 };
 
 var pointerAnimY = 0;
 var i = 0;
+
+var padding = 6;
 // instantiate
 
 $(document).ready(function() {
@@ -63,8 +65,10 @@ function drawLocationLabels() {
     var hovering = false;
     locations.forEach((loc) => {
         if (loc.hover) {
-            ctx.fillStyle = "red";
-            ctx.fillRect(labelText.x, labelText.y - 26, ctx.measureText(labelText.txt).width, 30);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(labelText.x - 1 - padding, labelText.y - 27 - padding, ctx.measureText(labelText.txt).width + 2 + (2 * padding), 32 + (2 * padding));
+            ctx.fillStyle = "#FFF";
+            ctx.fillRect(labelText.x - padding, labelText.y - 26 - padding, ctx.measureText(labelText.txt).width + (2 * padding), 30 + (2 * padding));
             ctx.fillStyle = "black";
             ctx.font = "30px Amatic";
             ctx.fillText(labelText.txt, labelText.x, labelText.y);
