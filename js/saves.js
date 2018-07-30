@@ -1,4 +1,4 @@
-const glob = require('glob-fs')({ gitignore: true });
+const glob = require('glob');
 const uuidv4 = require('uuid/v4');
 
 
@@ -8,9 +8,16 @@ function readSave() {
     return json;
 }
 
-function checkSaves() {
-    var files = glob.readdirSync('data/player/*.json');
+function loadSaves() {
+    return glob.sync('data/player/*.json');
+}
 
+function load(id) {
+
+}
+
+function checkSaves() {
+    var files = glob.sync('data/player/*.json');
     if (files.length > 0) {
         return true;
     }

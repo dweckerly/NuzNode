@@ -12,7 +12,7 @@ function createWindow() {
     win.setMenu(null);
     //win.setResizable(false);
     win.loadFile('index.html');
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     win.on('closed', () => {
         win = null;
     });

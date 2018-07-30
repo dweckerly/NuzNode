@@ -8,12 +8,8 @@ $('#nav-main-btn').click((event) => {
         } else {
             showNav();
         }
-    } else {
-        console.log("can't click");
     }
 });
-
-//$('#player-nav').html(player.name);
 
 $('.nav-btn').click(function(event) {
     event.stopImmediatePropagation();
