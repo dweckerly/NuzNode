@@ -8,4 +8,5 @@ const mapComp = "components/map/map.html";
 const navComp = "components/nav/nav.html";
 const noteComp = "components/note/note.html";
 const partyComp = "components/party/party.html";
+const playerComp = "components/player/player.html";
 const titleComp = "components/title/title.html";

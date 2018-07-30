@@ -383,6 +383,23 @@ input[type=range] {
     padding-top: 20px;
 }
 
+/*************************
+* Player
+*************************/
+#name-div {
+    padding-left: 60px;
+    display: inline-block;
+}
+
+#demographic-div {
+    margin-left: 60px;
+    margin-right: 60px;
+    display: inline-block;
+}
+
+#exp-div {
+    padding-left: 60px;
+}
 
 /***************************
 * Title

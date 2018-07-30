@@ -26,6 +26,9 @@ $('.nav-btn').click(function(event) {
         case 'party':
             changeSection('main', partyComp);
             break;
+        case 'player':
+            changeSection('main', playerComp);
+            break;
         default:
             break;
     }
