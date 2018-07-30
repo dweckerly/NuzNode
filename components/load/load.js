@@ -1,12 +1,35 @@
 function createList() {
     var files = loadSaves();
-    console.log(files);
     for(let i = 0; i < files.length; i++) {
         let data = JSON.parse(fs.readFileSync(files[i]));
         if(data['name']) {
             $('#load-list').append(
-                "<li class='load-item' data='" + data['id'] + "'>" + data['name'] + " " + data['gender'] + " " + data['age'] + "</li>"
+                "<li class='load-item' data='" + data['id'] + "' data-time='" + data['created'] + "'>" + data['name'] + " " + data['gender'] + " " + data['age'] + "</li>"
             )
+        }
+    }
+    sortList();
+}
+
+function sortList() {
+    var i;
+    var shouldSwitch, switching = true;
+    var list = $('#load-list');
+    while(switching) {
+        switching = false;
+        var items = list.children();
+        for(i = 0; i < (items.length - 1); i++) {
+            shouldSwitch = false;
+            let times = [items[i].getAttribute('data-time'), items[i + 1].getAttribute('data-time')];
+            console.log(times);
+            if(times[0] > times[1]) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if(shouldSwitch) {
+            items[i].parentNode.insertBefore(items[i + 1], items[i]);
+            switching = true;
         }
     }
 }

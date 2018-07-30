@@ -56,6 +56,7 @@ function newSave(name, gender, age, callback) {
 
     player = {
         id: uid,
+        created: Date.now(),
         name: name,
         gender: gender,
         age: age,
