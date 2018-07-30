@@ -19,6 +19,8 @@ $('.nav-btn').click(function(event) {
             changeSection('main', inventoryComp);
             break;
         case 'map':
+            player.location = 0;
+            saveSync();
             changeSection('main', mapComp);
             break;
         case 'party':

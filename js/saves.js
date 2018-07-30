@@ -13,7 +13,9 @@ function loadSaves() {
 }
 
 function load(id) {
-
+    let data = fs.readFileSync('data/player/' + id + '.json');
+    let json = JSON.parse(data);
+    return json;
 }
 
 function checkSaves() {
@@ -32,7 +34,7 @@ function saveAsync(callback) {
     fs.writeFile("data/player/" + player.id + ".json", JSON.stringify(player), "utf8", callback);
 }
 
-function newSave(name, gender, age, callback) {
+function newPlayer(name, gender, age) {
     var skills = []
     var uid = uuidv4();
 
@@ -80,5 +82,4 @@ function newSave(name, gender, age, callback) {
             12: false
         }
     };
-    saveAsync(callback);
 }

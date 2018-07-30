@@ -39,10 +39,9 @@ $('#name-input').keypress((e) => {
         if ($('#name-input').val() != "" && !save) {
             save = true;
             var name = $('#name-input').val();
-            newSave(name, gender, age, () => {
-                $('#name-form').fadeOut();
-                note(1)
-            });
+            newPlayer(name, gender, age)
+            $('#name-form').fadeOut();
+            note(1)
         }
     }
 });
