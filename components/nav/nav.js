@@ -13,6 +13,7 @@ $('#nav-main-btn').click((event) => {
 
 $('.nav-btn').click(function(event) {
     event.stopImmediatePropagation();
+    clearIntervals();
     let comp = $(this).attr('data');
     switch (comp) {
         case 'inventory':

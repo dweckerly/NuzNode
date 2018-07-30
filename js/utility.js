@@ -38,6 +38,12 @@ function goToLocation() {
     }
 }
 
+function clearIntervals() {
+    clearInterval(main);
+    clearInterval(sinAnim);
+}
+
+
 // component functions
 
 function addComponent(id, component) {

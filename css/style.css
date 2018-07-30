@@ -271,9 +271,11 @@ input[type=range] {
 
 #load-list {
     list-style-type: none;
+    padding: 40px;
 }
 
 .load-item {
+    margin-bottom: 20px;
     font-size: 24px;
     padding: 10px;
     box-shadow: 5px 5px 18px #888888;
