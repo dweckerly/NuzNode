@@ -22,6 +22,7 @@ var pointerAnimY = 0;
 var i = 0;
 
 var padding = 6;
+var moveAnim;
 
 clearIntervals();
 
@@ -116,6 +117,32 @@ function hoverOverLocation() {
     });
 }
 
+function showLocationDetails() {
+
+}
+
+function moveCenterToLocation(loc) {
+    clearInterval(moveAnim);
+    var interval = 30;
+    var dest = centerOnLocation(loc);
+    var slope = (dest.y - cOffset.y) / (dest.x - cOffset.x);
+    var intercept = dest.y - (slope * dest.x);
+    var dist;
+    var xMove;
+    moveAnim = setInterval(function() {
+        dist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2));
+        xMove = -1 * Math.sin(dist);
+        cOffset.x += xMove;
+        cOffset.y = (slope * cOffset.x) + intercept;
+        if(cOffset.x >= (dest.x - 1) && cOffset.x <= (dest.x + 1)) {
+            if(cOffset.y <= (dest.y + 1) && cOffset.y >= (dest.y - 1)) {
+                cOffset.x = dest.x;
+                cOffset.y = dest.y;
+                clearInterval(moveAnim);
+            }
+        }
+    }, interval);
+}
 
 // mouse functions
 
@@ -163,6 +190,7 @@ c.addEventListener('click', function(event) {
     locations.forEach((loc) => {
         if (loc.hover) {
             console.log(loc.name);
+            moveCenterToLocation(loc);
             startingPos = loc.id;
         }
     });
@@ -175,6 +203,8 @@ sinAnim = setInterval(function() {
     pointerAnimY = (Math.sin(i)) * 20;
     i += 0.1;
 }, 30);
+
+
 
 main = setInterval(function() {
     draw();
