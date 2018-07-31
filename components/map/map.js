@@ -125,14 +125,24 @@ function moveCenterToLocation(loc) {
     clearInterval(moveAnim);
     var interval = 30;
     var dest = centerOnLocation(loc);
-    var slope = (dest.y - cOffset.y) / (dest.x - cOffset.x);
+    var midDist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2)) / 2;
+    if(dest.x < cOffset.x) {
+        var slope = (dest.y - cOffset.y) / (dest.x - cOffset.x);
+        var xMove = -1;
+    } else {
+        var slope = (cOffset.y - dest.y) / (cOffset.x - dest.x);
+        var xMove = 1;
+    }
     var intercept = dest.y - (slope * dest.x);
+    var accelX;
     var dist;
-    var xMove;
     moveAnim = setInterval(function() {
         dist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2));
-        xMove = -1 * Math.sin(dist);
-        cOffset.x += xMove;
+        accelX = (dist / midDist) * 6;
+        if(accelX < 1) {
+            accelX = 1;
+        }
+        cOffset.x += xMove * accelX;
         cOffset.y = (slope * cOffset.x) + intercept;
         if(cOffset.x >= (dest.x - 1) && cOffset.x <= (dest.x + 1)) {
             if(cOffset.y <= (dest.y + 1) && cOffset.y >= (dest.y - 1)) {
