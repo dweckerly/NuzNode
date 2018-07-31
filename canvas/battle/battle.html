@@ -1,0 +1,27 @@
+<div id="battle-main" align="center">
+    <div class="row justify-content-center" id="opponent-row">
+        <div class="col-5">
+            <p id="opponent-name"></p>
+            <div class="progress">
+                <div id="opponent-health" class="progress-bar bg-secondary" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax=""></div>
+            </div>
+            <p id="opponent-status"></p>
+        </div>
+        <div class="col-7">
+            <img class="battle-anim-slidein-right battle-img" id="opponent-img" src="">
+        </div>
+    </div>
+    <div class="row justify-content-center" id="player-row">
+        <div class="col-7" id="player-img-div">
+            <img class="flip-img battle-anim-slidein-left battle-img" id="player-img" src="">
+        </div>
+        <div class="col-5" id="player-info-div">
+            <p id="player-name"></p>
+            <div class="progress">
+                <div id="player-health" class="progress-bar bg-secondary" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax=""></div>
+            </div>
+            <p id="player-status"></p>
+        </div>
+    </div>
+    <script src="components/battle/battleLoader.js"></script>
+</div>
