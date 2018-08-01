@@ -14,6 +14,16 @@
 }
 
 @font-face {
+    font-family: 'GochiHand';
+    src: url('../fonts/GochiHand-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Sedgwick';
+    src: url('../fonts/SedgwickAveDisplay-Regular.ttf');
+}
+
+@font-face {
     font-family: 'ShadowsIntoLight';
     src: url('../fonts/ShadowsIntoLight.ttf');
 }
