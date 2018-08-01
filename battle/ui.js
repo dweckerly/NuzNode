@@ -6,6 +6,18 @@ function lerp(min, max, fraction) {
     return (max - min) * fraction + min;
 }
 
+function tag(x, y) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + 25, y + 25);
+    ctx.lineTo(x + 100, y + 25);
+    ctx.lineTo(x + 100, y - 25);
+    ctx.lineTo(x + 25, y - 25);
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+    ctx.stroke();
+}
+
 function roundRect(x, y, width, height, radius, fill, stroke) {
     if (typeof stroke == 'undefined') {
         stroke = true;
@@ -14,9 +26,9 @@ function roundRect(x, y, width, height, radius, fill, stroke) {
         radius = 5;
     }
     if (typeof radius === 'number') {
-        radius = {tl: radius, tr: radius, br: radius, bl: radius};
+        radius = { tl: radius, tr: radius, br: radius, bl: radius };
     } else {
-        var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+        var defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 };
         for (var side in defaultRadius) {
             radius[side] = radius[side] || defaultRadius[side];
         }
@@ -44,10 +56,10 @@ function drawImages() {
     ctx.drawImage(playerImg.img, playerImg.x, playerImg.y, playerImg.w, playerImg.h);
     ctx.drawImage(opponentImg.img, opponentImg.x, opponentImg.y, opponentImg.w, opponentImg.h);
     opponentImg.x = lerp(opponentImg.x, endPositions.opponentImg, 0.1);
-    if(!animTracker.imagesDone) {
-        if(opponentImg.x <= endPositions.opponentImg + 0.1) {
+    if (!animTracker.imagesDone) {
+        if (opponentImg.x <= endPositions.opponentImg + 0.1) {
             playerImg.x = lerp(playerImg.x, endPositions.playerImg, 0.1);
-            if(playerImg.x >= endPositions.playerImg - 0.1) {
+            if (playerImg.x >= endPositions.playerImg - 0.1) {
                 animTracker.imagesDone = true;
                 showBattleText();
             }
@@ -57,64 +69,86 @@ function drawImages() {
 
 function drawDetailsRect() {
     ctx.strokeStyle = "#000";
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#f7f7f7";
     roundRect(playerDetailsRect.x, playerDetailsRect.y, playerDetailsRect.w, playerDetailsRect.h, playerDetailsRect.radius, true, true);
     roundRect(opponentDetailsRect.x, opponentDetailsRect.y, opponentDetailsRect.w, opponentDetailsRect.h, opponentDetailsRect.radius, true, true);
-    
-    if(!animTracker.detailsDone) {
+
+    if (!animTracker.detailsDone) {
         playerDetailsRect.y = lerp(playerDetailsRect.y, endPositions.playerDetail, 0.05);
         opponentDetailsRect.y = lerp(opponentDetailsRect.y, endPositions.opponentDetail, 0.05);
-        
+
         playerNameTxt = {
-            x: playerDetailsRect.x + (playerDetailsRect.w / 2) - ctx.measureText(playerMonName).width, 
-            y: playerDetailsRect.y - 14, 
+            x: playerDetailsRect.x + 20,
+            y: playerDetailsRect.y + 36,
             txt: playerMonName
         };
         playerLvlTxt = {
-            x: playerDetailsRect.x + playerDetailsRect.w - ctx.measureText(pLvlTxt).width,
+            x: playerNameTxt.x + ctx.measureText(playerNameTxt.txt).width + 14,
             y: playerNameTxt.y,
             txt: pLvlTxt
         }
+        playerHealthBg = {
+            x: playerDetailsRect.x + 20,
+            y: playerDetailsRect.y + 60,
+            w: 40,
+            h: 16
+        }
+        pHpLabel = {
+            x: playerHealthBg.x + 10,
+            y: playerHealthBg.y + 13,
+            txt: "HP"
+        }
         playerHealthRect = {
-            x: playerDetailsRect.x + 20, 
-            y: playerDetailsRect.y + 20, 
-            w: playerDetailsRect.w - 40, 
-            h: 20
+            x: playerDetailsRect.x + 60,
+            y: playerDetailsRect.y + 60,
+            w: playerDetailsRect.w - 80,
+            h: 16
         };
         playerHealthOverlay = {
-            x: playerHealthRect.x, 
-            y: playerHealthRect.y, 
-            w: playerHealthRect.w, 
+            x: playerHealthRect.x,
+            y: playerHealthRect.y,
+            w: playerHealthRect.w,
             h: playerHealthRect.h
         };
         opponentNameTxt = {
-            x: opponentDetailsRect.x + (opponentDetailsRect.w / 2) - ctx.measureText(opponentMonName).width, 
-            y: opponentDetailsRect.y + opponentDetailsRect.h + 28, 
+            x: opponentDetailsRect.x + 20,
+            y: opponentDetailsRect.y + 36,
             txt: opponentMonName
         };
         opponentLvlTxt = {
-            x: opponentDetailsRect.x + opponentDetailsRect.w - ctx.measureText(oLvlTxt).width,
+            x: opponentNameTxt.x + ctx.measureText(opponentNameTxt.txt).width + 14,
             y: opponentNameTxt.y,
             txt: oLvlTxt
         }
+        opponentHealthBg = {
+            x: opponentDetailsRect.x + 20,
+            y: opponentDetailsRect.y + 60,
+            w: 40,
+            h: 16
+        }
+        oHpLabel = {
+            x: opponentHealthBg.x + 10,
+            y: opponentHealthBg.y + 13,
+            txt: "HP"
+        }
         opponentHealthRect = {
-            x: opponentDetailsRect.x + 20, 
-            y: opponentDetailsRect.y + 20, 
-            w: opponentDetailsRect.w - 40, 
-            h: 20
+            x: opponentDetailsRect.x + 60,
+            y: opponentDetailsRect.y + 60,
+            w: opponentDetailsRect.w - 80,
+            h: 16
         };
         opponentHealthOverlay = {
-            x: opponentHealthRect.x, 
-            y: opponentHealthRect.y, 
-            w: opponentHealthRect.w, 
+            x: opponentHealthRect.x,
+            y: opponentHealthRect.y,
+            w: opponentHealthRect.w,
             h: opponentHealthRect.h
         };
 
-        if(playerDetailsRect.y <= endPositions.playerDetail + 0.1) {
+        if (playerDetailsRect.y <= endPositions.playerDetail + 0.1) {
             animTracker.detailsDone = true;
         }
     }
-    
+
 
 }
 
@@ -131,21 +165,35 @@ function drawNames() {
 
 function drawHealth() {
     ctx.strokeStyle = "#000";
+    ctx.fillStyle = "#000";
+    roundRect(playerHealthBg.x, playerHealthBg.y, playerHealthBg.w, playerHealthBg.h, { tl: 5, bl: 5 }, true, true);
+    roundRect(opponentHealthBg.x, opponentHealthBg.y, opponentHealthBg.w, opponentHealthBg.h, { tl: 5, bl: 5 }, true, true);
     ctx.fillStyle = "#888";
-    roundRect(playerHealthOverlay.x, playerHealthOverlay.y, playerHealthOverlay.w, playerHealthOverlay.h, 5, true, false);
-    roundRect(opponentHealthOverlay.x, opponentHealthOverlay.y, opponentHealthOverlay.w, opponentHealthOverlay.h, 5, true, false);
-    roundRect(playerHealthRect.x, playerHealthRect.y, playerHealthRect.w, playerHealthRect.h, 5, false, true);
-    roundRect(opponentHealthRect.x, opponentHealthRect.y, opponentHealthRect.w, opponentHealthRect.h, 5, false, true);
-    
+    roundRect(playerHealthOverlay.x, playerHealthOverlay.y, playerHealthOverlay.w, playerHealthOverlay.h, { tr: 5, br: 5 }, true, false);
+    roundRect(opponentHealthOverlay.x, opponentHealthOverlay.y, opponentHealthOverlay.w, opponentHealthOverlay.h, { tr: 5, br: 5 }, true, false);
+    roundRect(playerHealthRect.x, playerHealthRect.y, playerHealthRect.w, playerHealthRect.h, { tr: 5, br: 5 }, false, true);
+    roundRect(opponentHealthRect.x, opponentHealthRect.y, opponentHealthRect.w, opponentHealthRect.h, { tr: 5, br: 5 }, false, true);
+
+    ctx.font = "18px Courier New";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(pHpLabel.txt, pHpLabel.x, pHpLabel.y);
+    ctx.fillText(oHpLabel.txt, oHpLabel.x, oHpLabel.y);
+
+}
+
+function drawLevelTag() {
+    tag(opponentDetailsRect.x + opponentDetailsRect.w - 60, opponentDetailsRect.y + 30);
+    tag(playerDetailsRect.x + playerDetailsRect.w - 60, playerDetailsRect.y + 30);
 }
 
 function draw() {
     drawImages();
-    if(animTracker.imagesDone) {
+    if (animTracker.imagesDone) {
         drawDetailsRect();
         drawNames();
         drawHealth();
     }
+    drawLevelTag();
 }
 
 function update() {
