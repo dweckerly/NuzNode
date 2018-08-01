@@ -13,6 +13,7 @@ function tag(x, y) {
     ctx.lineTo(x + 100, y + 25);
     ctx.lineTo(x + 100, y - 25);
     ctx.lineTo(x + 25, y - 25);
+    ctx.lineTo(x, y);
     ctx.fillStyle = "#fff";
     ctx.fill();
     ctx.stroke();
@@ -56,11 +57,12 @@ function drawImages() {
     ctx.drawImage(playerImg.img, playerImg.x, playerImg.y, playerImg.w, playerImg.h);
     ctx.drawImage(opponentImg.img, opponentImg.x, opponentImg.y, opponentImg.w, opponentImg.h);
     opponentImg.x = lerp(opponentImg.x, endPositions.opponentImg, 0.1);
-    if (!animTracker.imagesDone) {
+    if (animTracker.imagesAnim) {
         if (opponentImg.x <= endPositions.opponentImg + 0.1) {
             playerImg.x = lerp(playerImg.x, endPositions.playerImg, 0.1);
             if (playerImg.x >= endPositions.playerImg - 0.1) {
-                animTracker.imagesDone = true;
+                animTracker.imagesAnim = false;
+                animTracker.detailsAnim = true;
                 showBattleText();
             }
         }
@@ -73,7 +75,7 @@ function drawDetailsRect() {
     roundRect(playerDetailsRect.x, playerDetailsRect.y, playerDetailsRect.w, playerDetailsRect.h, playerDetailsRect.radius, true, true);
     roundRect(opponentDetailsRect.x, opponentDetailsRect.y, opponentDetailsRect.w, opponentDetailsRect.h, opponentDetailsRect.radius, true, true);
 
-    if (!animTracker.detailsDone) {
+    if (animTracker.detailsAnim) {
         playerDetailsRect.y = lerp(playerDetailsRect.y, endPositions.playerDetail, 0.05);
         opponentDetailsRect.y = lerp(opponentDetailsRect.y, endPositions.opponentDetail, 0.05);
 
@@ -82,11 +84,7 @@ function drawDetailsRect() {
             y: playerDetailsRect.y + 36,
             txt: playerMonName
         };
-        playerLvlTxt = {
-            x: playerNameTxt.x + ctx.measureText(playerNameTxt.txt).width + 14,
-            y: playerNameTxt.y,
-            txt: pLvlTxt
-        }
+        
         playerHealthBg = {
             x: playerDetailsRect.x + 20,
             y: playerDetailsRect.y + 60,
@@ -115,11 +113,7 @@ function drawDetailsRect() {
             y: opponentDetailsRect.y + 36,
             txt: opponentMonName
         };
-        opponentLvlTxt = {
-            x: opponentNameTxt.x + ctx.measureText(opponentNameTxt.txt).width + 14,
-            y: opponentNameTxt.y,
-            txt: oLvlTxt
-        }
+        
         opponentHealthBg = {
             x: opponentDetailsRect.x + 20,
             y: opponentDetailsRect.y + 60,
@@ -145,7 +139,7 @@ function drawDetailsRect() {
         };
 
         if (playerDetailsRect.y <= endPositions.playerDetail + 0.1) {
-            animTracker.detailsDone = true;
+            animTracker.detailsAnim = false;
         }
     }
 
@@ -184,21 +178,38 @@ function drawHealth() {
 function drawLevelTag() {
     tag(opponentDetailsRect.x + opponentDetailsRect.w - 60, opponentDetailsRect.y + 30);
     tag(playerDetailsRect.x + playerDetailsRect.w - 60, playerDetailsRect.y + 30);
+    playerLvlTxt = {
+        x: playerDetailsRect.x + playerDetailsRect.w - 40,
+        y: playerDetailsRect.y + 36,
+        txt: pLvlTxt
+    }
+    opponentLvlTxt = {
+        x: opponentDetailsRect.x + opponentDetailsRect.w - 40,
+        y: opponentDetailsRect.y + 36,
+        txt: oLvlTxt
+    }
 }
 
 function draw() {
     drawImages();
-    if (animTracker.imagesDone) {
+    if (!animTracker.imagesAnim) {
         drawDetailsRect();
+        drawLevelTag();
         drawNames();
         drawHealth();
     }
-    drawLevelTag();
+    
 }
 
 function update() {
     clearCanvas();
     draw();
+    if(!animTracker.imagesAnim && !animTracker.detailsAnim) {
+        if(!showingUtil) {
+            $('#battle-util-div').fadeIn();
+            showingUtil = true;
+        }
+    }
     requestAnimationFrame(update);
 }
 

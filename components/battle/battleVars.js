@@ -3,15 +3,17 @@ var ctx = c.getContext('2d');
 
 var playerMonName = "Derple";
 var playerMonLvl = 3;
-var pLvlTxt = "lvl " + playerMonLvl
+var pLvlTxt = "lvl. " + playerMonLvl
 var opponentMonName = "Embah";
 var opponentMonLvl = 3;
-var oLvlTxt = "lvl " + opponentMonLvl
+var oLvlTxt = "lvl. " + opponentMonLvl
 
 var animTracker = {
-    imagesDone: false,
-    detailsDone: false
+    imagesAnim: true,
+    detailsAnim: false
 }
+
+var showingUtil = false;
 
 var endPositions = {
     playerImg: 44,

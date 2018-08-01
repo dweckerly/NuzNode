@@ -1,3 +1,4 @@
+const battleComp = "components/battle/battle.html";
 const chooseMonComp = "components/chooseMon/chooseMon.html";
 const dialogueComp = "components/dialogue/dialogue.html";
 const introComp = "components/intro/intro.html";

@@ -34,7 +34,6 @@ button {
     border-radius: 5px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: 'ShadowsIntoLight';
     outline: none;
 }
@@ -75,27 +74,43 @@ canvas {
     transform: translate(-50%, -50%);
 }
 
-.col-3 {
-    float: left;
-    width: 33.33%;
+.row {
+    display: flex;
 }
 
-.col-3-2 {
-    float: left;
-    width: 66.66%;
+.col-50 {
+    flex: 50%;
 }
 
-.col-4 {
-    float: left;
-    width: 25%;
+/***********************
+ * Battle
+ ***********************/
+#battle-util-div {
+    width: 750px;
+    height: 180px;
 }
 
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
+#battle-text-div {
+    margin-left: -1px;
+    border-left: 1px solid black;
 }
 
+#battle-btns-div {
+    margin-right: -1px;
+    border-right: 1px solid black;
+}
+
+#battle-text {
+    font-family: 'ShadowsIntoLight';
+    font-size: 24px;
+}
+
+.battle-btn {
+    margin: 6px;
+    height: 64px;
+    font-size: 30px;
+    box-shadow: 3px 3px 15px #888888;
+}
 
 /***********************
  * Choose Mon

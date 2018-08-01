@@ -9,3 +9,7 @@ if (checkSaves()) {
 $("#new-btn").click(() => {
     changeSection('main', introComp);
 });
+
+$('#battle-test').click(() => {
+    changeSection('main', battleComp);
+});

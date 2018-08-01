@@ -1,0 +1,28 @@
+<div id="battle-ui-div" align="center">
+    <canvas id="battle-canvas" width="750" height="400" style="border: 1px solid black;"></canvas>
+    <div id="battle-util-div" class="row" style="display: none;">
+        <div id="battle-text-div" class="col-50">
+            <p id="battle-text"></p>
+        </div>
+            
+        <div id="battle-btns-div" class="col-50">
+            <div class="row">
+                <button class="col-50 battle-btn hover-gns">Fight</button>
+                <button class="col-50 battle-btn hover-gns">NuzMon</button>
+            </div>
+            <div class="row">
+                <button class="col-50 battle-btn hover-gns">Items</button>
+                <button class="col-50 battle-btn hover-gns">Run</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="mon-img-div" style="display:none;">
+        <img id="player-img" src="img/mons/derple.png">
+        <img id="opponent-img" src="img/mons/embah.png">
+    </div>
+
+    <script src="components/battle/battleVars.js"></script>
+    <script src="components/battle/battleText.js"></script>
+    <script src="components/battle/ui.js"></script>
+</div>
