@@ -16,3 +16,6 @@ const marsh = { x: 1340, y: 1176, w: 120, h: 140, name: 'Marsh', hover: false, i
 const locations = [cave, ranch, lake, forest, hills, hotel, lightHouse, marsh];
 
 var main, sinAnim;
+
+var playerMons = [];
+var wildMon;

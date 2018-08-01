@@ -79,9 +79,14 @@
         "description": "Increases the effectiveness of Buff type NuzMon.",
         "effect": ""
     },
-    "17": {
+    "22": {
         "name": "Size Up",
         "description": "You can detect the skills of other trainers.",
+        "effect": ""
+    },
+    "23": {
+        "name": "Size Up",
+        "description": "You can detect the innate potential of wild NuzMon.",
         "effect": ""
     }
 }

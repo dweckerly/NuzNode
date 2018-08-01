@@ -179,8 +179,8 @@ function getMoves(mon, lvl) {
 }
 
 function partyPosition() {
-    if(fs.existsSync('data/player/' + player.id + '-mon.json')){
-        let monData = JSON.parse(fs.readFileSync('data/player/' + player.id + '-mon.json', 'utf8'));
+    if(fs.existsSync('data/player/' + player.id + '-mons.json')){
+        let monData = JSON.parse(fs.readFileSync('data/player/' + player.id + '-mons.json', 'utf8'));
         var pos = 1;
         for(let i = 0; i < monData['mons'].length; i++) {
             if(monData['mons'][i]['partyPosition'] > pos) {

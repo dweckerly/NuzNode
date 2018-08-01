@@ -420,6 +420,42 @@
         "anim": ""
     },
     "36": {
-
+        "name": "Hiss",
+        "description": "Startles opponent with a mean hiss. Lowers opponent's DEF.",
+        "type": "Basic",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["dec-def-target-1"],
+        "anim": ""
+    },
+    "37": {
+        "name": "Scuttle",
+        "description": "Moves with quick and anxious steps. Raises EVA and SPEED, lowers SDEF.",
+        "type": "Bug",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-eva-self-1", "inc-speed-self-1", "dec-sdef-self-1"],
+        "anim": ""
+    },
+    "38": {
+        "name": "Stat Snatch",
+        "description": "Gains the same stat modifications as the opponent.",
+        "type": "Shady",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["steal-mod-all"],
+        "anim": ""
+    },
+    "39": {
+        
     }
 }
