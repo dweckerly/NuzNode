@@ -1,4 +1,11 @@
+const electron = require('electron');
+const fs = require('fs');
+const glob = require('glob');
+const uuidv4 = require('uuid/v4');
+
 var player = {};
+var partyMons = [];
+var reserveMons = [];
 var eventVar;
 var state = 'intro';
 

@@ -30,8 +30,10 @@ function populateWildMons() {
 }
 
 function selectWild(id) {
+    player = load('test-player');
     wildMon = createMon(id, $('#lvl-input').val());
     battleType = 'wild';
+    setPartyMons(player.id);
     changeSection('main', battleComp);
     removeComponent('util');
 }

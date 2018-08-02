@@ -1,9 +1,17 @@
 var c = document.getElementById('battle-canvas');
 var ctx = c.getContext('2d');
 
-var playerMonName = "Derple";
-var playerMonLvl = 3;
+var currentPlayerMon;
+for(let i = 0; i < partyMons.length; i++) {
+    if(partyMons[i]['partyPosition'] == 1) {
+        currentPlayerMon = partyMons[i];
+    }
+}
+
+var playerMonName = currentPlayerMon['name'];
+var playerMonLvl = currentPlayerMon['level'];
 var pLvlTxt = "lvl. " + playerMonLvl
+$('#player-img').attr('src', currentPlayerMon.img);
 
 if(battleType === 'wild') {
     var opponentMonName = wildMon.name;

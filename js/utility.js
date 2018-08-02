@@ -1,6 +1,3 @@
-const electron = require('electron');
-const fs = require('fs');
-
 function verticalAlign(id) {
     var h = electron.remote.getCurrentWindow().webContents.getOwnerBrowserWindow().getBounds().height;
     var elH = $('#' + id).height();
@@ -264,4 +261,17 @@ function createMon(id, lvl) {
     }
 
     return mon;
+}
+
+function setPartyMons() {
+    partyMons = [];
+    reserveMons = [];
+    let monData = load(player.id + "-mons");
+    for(let i = 0; i < monData['mons'].length; i++) {
+        if(monData['mons'][i]['partyPosition'] != 0) {
+            partyMons.push(monData['mons'][i]);
+        } else {
+
+        }
+    }
 }

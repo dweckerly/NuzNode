@@ -16,7 +16,7 @@
 
         <form id="name-form" class="valign" style="color:white; display:none;">
             <label style="font-size:36px">What's your name?</label><br>
-            <input id="name-input" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" type="text" name="name">
+            <input id="name-input" maxlength="12" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" type="text" name="name">
         </form>
         <div id="note" style="display:none;">
 

@@ -40,6 +40,7 @@ function sortList() {
 $('.load-item').click(function () {
     let data = $(this).attr('data');
     player = load(data);
+    setPartyMons();
     state = 'location';
     goToLocation();
 });

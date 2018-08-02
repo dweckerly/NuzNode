@@ -468,6 +468,39 @@
         "anim": ""
     },
     "40": {
-        
+        "name": "Peck",
+        "description": "Strikes opponent with its beak.",
+        "type": "Basic",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 95,
+        "crit": 3,
+        "effects": [],
+        "anim": ""
+    },
+    "41": {
+        "name": "Mope",
+        "description": "Sulks about making opponent feel sorry for it. Lowers opponent's ATK.",
+        "type": "Basic",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 95,
+        "crit": 0,
+        "effects": ["dec-atk-target-1"],
+        "anim": ""
+    },
+    "42": {
+        "name": "Skulk Strike",
+        "description": "A sinister strike with a high chance to do critical damage.",
+        "type": "Shady",
+        "category": "special",
+        "range": "contact",
+        "dmg": 40,
+        "acc": 100,
+        "crit": 33,
+        "effects": [],
+        "anim": ""
     }
 }
