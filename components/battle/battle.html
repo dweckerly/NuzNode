@@ -7,13 +7,29 @@
             
         <div id="battle-btns-div" class="col-50">
             <div class="row">
-                <button class="col-50 battle-btn hover-gns">Fight</button>
-                <button class="col-50 battle-btn hover-gns">NuzMon</button>
+                <button class="col-50 battle-btn hover-gns" id="fight-btn">Fight</button>
+                <button class="col-50 battle-btn hover-gns" id="mon-btn">NuzMon</button>
             </div>
             <div class="row">
-                <button class="col-50 battle-btn hover-gns">Items</button>
-                <button class="col-50 battle-btn hover-gns">Run</button>
+                <button class="col-50 battle-btn hover-gns" id="item-btn">Items</button>
+                <button class="col-50 battle-btn hover-gns" id="run-btn">Run</button>
             </div>
+        </div>
+    </div>
+
+    <div id="fight-btns-div" class="row">
+        <div class="col-80">
+            <div class="row">
+                <button id="atk-1" class="col-50 battle-btn hover-gns atk-btn">-</button>
+                <button id="atk-2" class="col-50 battle-btn hover-gns atk-btn">-</button>
+            </div>
+            <div class="row">
+                <button id="atk-3" class="col-50 battle-btn hover-gns atk-btn">-</button>
+                <button id="atk-4" class="col-50 battle-btn hover-gns atk-btn">-</button>
+            </div>
+        </div>
+        <div class="col-20">
+            <button id="back-btn" class="battle-back-btn hover-gns-dark">Back</button>
         </div>
     </div>
     
@@ -25,4 +41,6 @@
     <script src="components/battle/battleVars.js"></script>
     <script src="components/battle/battleText.js"></script>
     <script src="components/battle/ui.js"></script>
+    <script src="components/battle/battleMain.js"></script>
+    <script src="components/battle/battleBtns.js"></script>
 </div>

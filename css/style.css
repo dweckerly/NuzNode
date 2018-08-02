@@ -56,6 +56,15 @@ canvas {
     animation-timing-function: linear;
 }
 
+.hover-gns-dark:hover:enabled {
+    background-color: rgb(100, 100, 100);
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: grow-n-shrink;
+    animation-timing-function: linear;
+}
+
+
 .no-style-btn {
     background: none;
     color: inherit;
@@ -78,14 +87,39 @@ canvas {
     display: flex;
 }
 
+.col-80 {
+    flex: 80%;
+}
+
+.col-70 {
+    flex: 70%;
+}
+
+.col-60 {
+    flex: 60%;
+}
+
 .col-50 {
     flex: 50%;
+}
+
+.col-40 {
+    flex: 40%;
+}
+
+.col-30 {
+    flex:30%;
+}
+
+.col-20 {
+    flex: 20%;
 }
 
 /***********************
  * Battle
  ***********************/
-#battle-util-div {
+ 
+#battle-util-div, #fight-btns-div {
     width: 750px;
     height: 180px;
 }
@@ -109,6 +143,16 @@ canvas {
     margin: 6px;
     height: 64px;
     font-size: 30px;
+    box-shadow: 3px 3px 15px #888888;
+}
+
+.battle-back-btn {
+    color: #fff;
+    margin: 6px;
+    height: 48px;
+    width: 64px;
+    font-size: 24px;
+    background-color: #888;
     box-shadow: 3px 3px 15px #888888;
 }
 

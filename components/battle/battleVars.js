@@ -111,3 +111,9 @@ var oHpLabel = {
     txt: "HP"
 }
 var opponentStatus = { x: 0, y: 0, txt: "" };
+
+var playerAction, pAtkId;
+var opponentAction;
+
+var phases = ['select', 'pre', 'main', 'post'];
+var phase = phases[0];

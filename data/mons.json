@@ -325,7 +325,7 @@
         "sAtk": 15,
         "sDef": 25,
         "speed": 65,
-        "movePool": "",
+        "movePool": 7,
         "anim": "swing",
         "evo": ""
     },
@@ -340,7 +340,7 @@
         "sAtk": 20,
         "sDef": 40,
         "speed": 75,
-        "movePool": "",
+        "movePool": 7,
         "anim": "rotate",
         "evo": ""
     },
@@ -355,7 +355,7 @@
         "sAtk": 30,
         "sDef": 55,
         "speed": 85,
-        "movePool": "",
+        "movePool": 7,
         "anim": "rotate",
         "evo": ""
     },
@@ -370,7 +370,7 @@
         "sAtk": 30,
         "sDef": 60,
         "speed": 105,
-        "movePool": "",
+        "movePool": 7,
         "anim": "",
         "evo": ""
     },
