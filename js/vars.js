@@ -17,5 +17,4 @@ const locations = [cave, ranch, lake, forest, hills, hotel, lightHouse, marsh];
 
 var main, sinAnim;
 
-var playerMons = [];
-var wildMon;
+var wildMon, battleType;

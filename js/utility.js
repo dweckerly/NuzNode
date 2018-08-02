@@ -234,7 +234,7 @@ function createMon(id, lvl) {
         "level": lvl,
         "exp": {
             "current": Math.floor(0.8 * Math.pow(lvl, 3)),
-            "next": Math.floor(0.8 * Math.pow((lvl + 1), 3))
+            "next": Math.floor(0.8 * Math.pow((parseInt(lvl) + 1), 3))
         },
         "efforts": {
             "attack": {

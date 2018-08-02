@@ -300,7 +300,7 @@
         "anim": ""
     },
     "26": {
-        "name": "Shed Husk",
+        "name": "Molt",
         "description": "Sheds its outer layer to recover from all status conditions.",
         "type": "Bug",
         "category": "status",
@@ -456,6 +456,18 @@
         "anim": ""
     },
     "39": {
+        "name": "Mite Bite",
+        "description": "Opponent is covered in many tiny bites.",
+        "type": "Bug",
+        "category": "physical",
+        "range": "contact",
+        "dmg": 20,
+        "acc": 95,
+        "crit": 1,
+        "effects": [],
+        "anim": ""
+    },
+    "40": {
         
     }
 }

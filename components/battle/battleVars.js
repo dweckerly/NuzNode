@@ -1,14 +1,17 @@
-wildMon = createMon(4, 5);
-
 var c = document.getElementById('battle-canvas');
 var ctx = c.getContext('2d');
 
 var playerMonName = "Derple";
 var playerMonLvl = 3;
 var pLvlTxt = "lvl. " + playerMonLvl
-var opponentMonName = wildMon.name;
-var opponentMonLvl = 3;
-var oLvlTxt = "lvl. " + wildMon.level;
+
+if(battleType === 'wild') {
+    var opponentMonName = wildMon.name;
+    var opponentMonLvl = wildMon.level;
+    var oLvlTxt = "lvl. " + wildMon.level;
+    $('#opponent-img').attr('src', wildMon.img);
+    console.log(wildMon);
+}
 
 var animTracker = {
     imagesAnim: true,

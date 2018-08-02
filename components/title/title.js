@@ -11,5 +11,5 @@ $("#new-btn").click(() => {
 });
 
 $('#battle-test').click(() => {
-    changeSection('main', battleComp);
+    addComponent('util', battleTestComp);
 });
