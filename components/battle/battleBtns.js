@@ -47,11 +47,12 @@ $('#back-btn').click(() => {
 });
 
 $('.atk-btn').click(function () {
-    playerAction = "attack";
-    pAtkId = $(this).attr('data');
+    phaseCounter++;
+    playerAction.action = "attack";
+    playerAction.id = $(this).attr('data');
     $('#fight-btns-div').fadeOut(() => {
         $('#battle-util-div').fadeIn();
         $('#battle-btns-div').hide();
-        startRound();
+        round();
     });
 });

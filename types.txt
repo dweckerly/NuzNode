@@ -1,0 +1,14 @@
+basic
+buff
+bug
+electric
+fire
+metal
+mind
+plant
+shady
+spooky
+stone
+water
+
+(sky, sound, earth, wind, weird)?

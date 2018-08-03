@@ -1,7 +1,7 @@
 var c = document.getElementById('battle-canvas');
 var ctx = c.getContext('2d');
 
-var currentPlayerMon;
+var currentPlayerMon, currentOpponentMon;
 for(let i = 0; i < partyMons.length; i++) {
     if(partyMons[i]['partyPosition'] == 1) {
         currentPlayerMon = partyMons[i];
@@ -14,12 +14,13 @@ var pLvlTxt = "lvl. " + playerMonLvl
 $('#player-img').attr('src', currentPlayerMon.img);
 
 if(battleType === 'wild') {
-    var opponentMonName = wildMon.name;
-    var opponentMonLvl = wildMon.level;
-    var oLvlTxt = "lvl. " + wildMon.level;
-    $('#opponent-img').attr('src', wildMon.img);
-    console.log(wildMon);
+    currentOpponentMon = wildMon;
 }
+
+var opponentMonName = currentOpponentMon.name;
+var opponentMonLvl = currentOpponentMon.level;
+var oLvlTxt = "lvl. " + currentOpponentMon.level;
+$('#opponent-img').attr('src', currentOpponentMon.img);
 
 var animTracker = {
     imagesAnim: true,
@@ -112,8 +113,43 @@ var oHpLabel = {
 }
 var opponentStatus = { x: 0, y: 0, txt: "" };
 
-var playerAction, pAtkId;
-var opponentAction;
+var actions = {
+    player: {
+        action: "",
+        id: 0
+    },
+    opponent: {
+        action: "",
+        id: 0
+    }  
+};
 
 var phases = ['select', 'pre', 'main', 'post'];
-var phase = phases[0];
+var phaseCounter = 0;
+
+var playerMods = {
+    atk: 0,
+    def: 0,
+    sAtk: 0,
+    sDef: 0,
+    speed: 0,
+    acc: 0,
+    eva: 0,
+    crit: 0
+}
+
+var opponentMods = {
+    atk: 0,
+    def: 0,
+    sAtk: 0,
+    sDef: 0,
+    speed: 0,
+    acc: 0,
+    eva: 0,
+    crit: 0
+}
+
+var textInterval, damageInterval;
+
+var actionQueue = [];
+var turn = [];
