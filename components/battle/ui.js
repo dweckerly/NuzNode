@@ -63,7 +63,7 @@ function drawImages() {
             if (playerImg.x >= endPositions.playerImg - 0.1) {
                 animTracker.imagesAnim = false;
                 animTracker.detailsAnim = true;
-                showBattleText();
+                //showBattleText();
             }
         }
     }
