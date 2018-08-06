@@ -48,11 +48,11 @@ $('#back-btn').click(() => {
 
 $('.atk-btn').click(function () {
     phaseCounter++;
-    playerAction.action = "attack";
-    playerAction.id = $(this).attr('data');
+    actions.player.action = "attack";
+    actions.player.id = $(this).attr('data');
     $('#fight-btns-div').fadeOut(() => {
         $('#battle-util-div').fadeIn();
         $('#battle-btns-div').hide();
-        round();
+        startFight();
     });
 });

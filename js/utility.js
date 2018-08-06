@@ -128,9 +128,8 @@ function typeWriter(id, text) {
         } else {
             clearTimeout(typeEffect);
         }
-    }, 20);
+    }, 50);
 }
-
 
 // mon functions
 

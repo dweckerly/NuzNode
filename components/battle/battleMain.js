@@ -1,5 +1,14 @@
+function startFight() {
+    if(currentOpponentMon.ai == "random") {
+        randomMoveSelect();
+    }
+    round();
+}
+
 function round() {
     actionQueue = [];
+    console.log(phases[phaseCounter]);
+    console.log(phaseCounter);
     if(phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
@@ -7,25 +16,54 @@ function round() {
     } else if (phases[phaseCounter] == 'post') {
         postBattlePhase();
     }
-    phaseCounter++;
     if(phaseCounter >= 4) {
         phaseCounter = 0;
+        endRound();
+    }
+}
+
+function endRound() {
+    console.log("end");
+    $('#battle-util-div').fadeOut(() => {
+        $('#battle-btns-div').show();
+        $('#battle-util-div').fadeIn();
+    });
+}
+
+function runActionQueue() {
+    console.log(actionQueue);
+    if(actionQueue.length > 0) {
+        if(actionQueue[0].method == "text") {
+            let str = actionQueue.shift();
+            showBattleText(str.txt);
+        } else if (actionQueue[0].method == "damage") {
+            let damage = actionQueue.shift();
+            showDamage(damage.dmg, damage.target);
+        } else if (actionQueue[0].method == "status") {
+            let status = actionQueue.shift();
+            console.log(status.id);
+            nextAction();
+        }
+    } else {
+        round();
     }
 }
 
 function preBattlePhase() {
+    phaseCounter++;
     checkSpeed();
-    for(let i = 0 ; i < turn.length; i++) {
+    for(let i = 0; i < turn.length; i++) {
         if (actions[turn[i]].action == "switch") {
             switchMon(turn[i]);
         } else if (actions[turn[i]].action == "item") {
             useItem(turn[i]);
         }
     }
-    round();
+    runActionQueue();
 }
 
 function mainBattlePhase() {
+    phaseCounter++;
     checkSpeed();
     if(actions.player.action == "attack" && actions.opponent.action == "attack") {
         checkPriority();
@@ -35,24 +73,30 @@ function mainBattlePhase() {
             parseAttack(turn[i]);
         }
     }
-    round();
+    runActionQueue();
 }
 
 function postBattlePhase() {
-
+    phaseCounter++;
+    round();
 }
 
 function showBattleText(txt) {
     typeWriter('battle-text', txt);
-    var time = (txt.length * 20) + 500;
+    var time = (txt.length * 50) + 1000;
     textInterval = setInterval(() => {
         clearInterval(textInterval);
+        $('#battle-text').html("");
         nextAction();
     }, time);
 }
 
 function nextAction() {
-
+    if(actionQueue.length > 0) {
+        runActionQueue();
+    } else {
+        round();
+    }
 }
 
 function checkSpeed() {
@@ -75,7 +119,7 @@ function checkSpeed() {
 
 function checkPriority() {
     var oEff = currentOpponentMon.moves[actions.opponent.id].effects;
-    var pEff = currentPlayertMon.moves[actions.player.id].effects;
+    var pEff = currentPlayerMon.moves[actions.player.id].effects;
     var oP = 0;
     var pP = 0;
 
@@ -114,32 +158,33 @@ function parseAttack(id) {
             txt: currentPlayerMon.name + " uses " + currentPlayerMon.moves[actions[id]['id']].name + "!"
         });
         if (currentPlayerMon.moves[actions[id]['id']].range == 'self') {
-            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc)) {
+            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
                 if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                 } else {
-                    if(currentPlayerMon.moves[actions[id]['id']].effects.length > 0) {
-                        applyDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, currentPlayertMon);
-                        parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
-                    } else {
-                        applyDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, currentOpponentMon);
-                    }
+                    calculateDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+                    parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                 }
             }
         } else if (currentPlayerMon.moves[actions[id]['id']].range == 'all') {
-            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc)) {
-                if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc, opponentMods.eva)) {
+            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
+                if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
                     if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
                         parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                     } else {
-                    
+                        calculateDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+                        parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                     }
                 }
             }
         } else {
-            if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc, opponentMods.eva)) {
-                applyDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, currentOpponentMon);
-                parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+            if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
+                if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
+                    parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+                } else {
+                    calculateDamage(currentPlayerMon.moves[actions[id]['id']], currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+                    parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
+                }
             }
         }
     } else if (id == 'opponent') {
@@ -148,33 +193,32 @@ function parseAttack(id) {
             txt: currentOpponentMon.name + " uses " + currentOpponentMon.moves[actions[id]['id']].name + "!"
         });
         if(currentOpponentMon.moves[actions[id]['id']].range == 'self') {
-            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc)) {
+            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
                 if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 } else {
-                    if(currentOpponentMon.moves[actions[id]['id']].effects.length > 0) {
-
-                    } else {
-
-                    }
+                    calculateDamage(currentOpponentMon.moves[actions[id]['id']], currentOpponentMon, opponentMods, currentPlayerMon, playerMods)
+                    parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 } 
             }
         } else if (currentOpponentMon.moves[actions[id]['id']].range == 'all') {
-            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc)) {
-                if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc, playerMods.eva)) {
-
+            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
+                if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
+                    if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
+                        parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
+                    } else {
+                        calculateDamage(currentOpponentMon.moves[actions[id]['id']], currentOpponentMon, opponentMods, currentPlayerMon, playerMods)
+                        parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
+                    }
                 }
             }
         } else {
-            if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc, playerMods.eva)) {
+            if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
                 if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 } else {
-                    if(currentOpponentMon.moves[actions[id]['id']].effects.length > 0) {
-
-                    } else {
-
-                    }
+                    calculateDamage(currentOpponentMon.moves[actions[id]['id']], currentOpponentMon, opponentMods, currentPlayerMon, playerMods)
+                    parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 }
             }
         }
@@ -183,7 +227,7 @@ function parseAttack(id) {
 
 function selfHit(acc, accMod) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) + parseInt(accMod)) / 100;
+    let accuracy = (parseInt(acc) * parseInt(accMod)) / 100;
     if(chance <= accuracy) {
         return true;
     } else {
@@ -197,7 +241,8 @@ function selfHit(acc, accMod) {
 
 function targetHit(acc, accMod, eva) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) + parseInt(accMod) - parseInt(eva)) / 100;
+    let accuracy = (parseInt(acc) * parseInt(accMod)) / 100;
+    accuracy *= (2 - parseInt(eva)); 
     if(chance <= accuracy) {
         return true;
     } else {
@@ -236,10 +281,20 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "dec":
+                if(e[2] == 'target') {
+                    decreaseMod(defMon, defMods, e[1], e[3])
+                } else if(e[2] == 'self') {
+                    decreaseMod(atkMon, atkMods, e[1], e[3])
+                }
                 break;
             case "heal":
                 break;
             case "inc": 
+                if(e[2] == 'target') {
+                    increaseMod(defMon, defMods, e[1], e[3])
+                } else if(e[2] == 'self') {
+                    increaseMod(atkMon, atkMods, e[1], e[3])
+                }
                 break;
             case "persist":
                 break;
@@ -300,6 +355,7 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
 }
 
 function statusEffect(status, target, prob) {
+    // will need to check if mon already has status...
     let chance = Math.random();
     let decProb = parseInt(prob) / 100;
     if(chance <= decProb) {
@@ -327,14 +383,111 @@ function statusEffect(status, target, prob) {
     }
 }
 
-function applyDamage(move, atkMon, defMon) {
-    if(move.category == 'physical') {
-
-    } else if (move.category == 'special') {
-
+function decreaseMod(target, mods, stat, amount) {
+    if(mods[stat].count > -5) {
+        if(parseInt(mods[stat].count) - parseInt(amount) < -5) {
+            amount = parseInt(mods[stat].count) - (-5);
+        } 
+        mods[stat].count -= parseInt(amount);
+        mods[stat].value -= 0.2 * parseInt(amount);
+        if(amount == 1) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " decreased!",
+            });
+        } else if (amount == 2) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " decreased greatly!",
+            });
+        } else if (amount == 3) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " drastically decreased!",
+            });
+        }
+    } else {
+        actionQueue.push({
+            method: "text",
+            txt: target.name + "'s " + stat.toUpperCase() + " can't go any lower!",
+        });
     }
 }
 
-function setPreBattleActionQueue() {
 
+function increaseMod(target, mods, stat, amount) {
+    if(mods[stat].count < 5) {
+        if(parseInt(mods[stat].count) + parseInt(amount) > 5) {
+            amount = 5 - parseInt(mods[stat].count);
+        } 
+        mods[stat].count += parseInt(amount);
+        mods[stat].value += 0.2 * parseInt(amount);
+        if(amount == 1) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " increased!",
+            });
+        } else if (amount == 2) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " increased greatly!",
+            });
+        } else if (amount == 3) {
+            actionQueue.push({
+                method: "text",
+                txt: target.name + "'s " + stat.toUpperCase() + " drastically increased!",
+            });
+        }
+    } else {
+        actionQueue.push({
+            method: "text",
+            txt: target.name + "'s " + stat.toUpperCase() + " can't go any higher!",
+        });
+    }
+}
+
+function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
+    var lvl = parseInt(atkMon.level);
+    var base = parseInt(move.dmg);
+    if(move.category == 'physical') {
+        var a = parseInt(atkMon.stats.atk) * parseInt(atkMods.atk.value);
+        var d = parseInt(defMon.stats.def) * parseInt(defMods.def.value);
+    } else if (move.category == 'special') {
+        var a = parseInt(atkMon.stats.sAtk) * parseInt(atkMods.sAtk.value);
+        var d = parseInt(defMon.stats.sDef) * parseInt(defMods.sDef.value);
+    }
+    var dmgMod = damageMod(move, atkMon, defMon);
+    var dmg = Math.round(((((((2 * lvl) / 5) + 2) * base * (a / d)) / 50) + 2) * dmgMod);
+    if(dmg < 1) {
+        dmg = 1;
+    }
+    console.log(dmg);
+    actionQueue.push({
+        method: "damage",
+        dmg: dmg,
+        target: defMon
+    });
+}
+
+function damageMod(move, atkMon, defMon) {
+    return 1;
+}
+
+function showDamage(dmg, defMon) {
+    console.log(dmg);
+    var newHp = parseInt(defMon.hp.current) - dmg;
+    var newWidth = Math.round(defMon.healthDisplay.w * (newHp / parseInt(defMon.hp.current)));
+    defMon.hp.current = newHp;
+    damageInterval = setInterval(() => {
+        defMon.healthDisplay.w = lerp(defMon.healthDisplay.w, newWidth, 0.05);
+        if(defMon.healthDisplay.w >= (newWidth - 0.2) && defMon.healthDisplay.w <= (newWidth + 0.2)) {
+            clearInterval(damageInterval);
+            nextAction();
+        }
+    }, 20);
+}
+
+function randomMoveSelect() {
+    actions.opponent.action = "attack";
+    actions.opponent.id = (Math.floor(Math.random() * Object.keys(currentOpponentMon.moves).length) + 1);
 }

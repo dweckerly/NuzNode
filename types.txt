@@ -3,12 +3,13 @@ buff
 bug
 electric
 fire
-metal
+mechanical
 mind
 plant
 shady
 spooky
 stone
+toxic
 water
 
 (sky, sound, earth, wind, weird)?

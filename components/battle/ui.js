@@ -79,64 +79,35 @@ function drawDetailsRect() {
         playerDetailsRect.y = lerp(playerDetailsRect.y, endPositions.playerDetail, 0.05);
         opponentDetailsRect.y = lerp(opponentDetailsRect.y, endPositions.opponentDetail, 0.05);
 
-        playerNameTxt = {
-            x: playerDetailsRect.x + 20,
-            y: playerDetailsRect.y + 36,
-            txt: playerMonName
-        };
+        playerNameTxt.x = playerDetailsRect.x + 20;
+        playerNameTxt.y = playerDetailsRect.y + 36;
         
-        playerHealthBg = {
-            x: playerDetailsRect.x + 20,
-            y: playerDetailsRect.y + 60,
-            w: 40,
-            h: 16
-        }
-        pHpLabel = {
-            x: playerHealthBg.x + 10,
-            y: playerHealthBg.y + 13,
-            txt: "HP"
-        }
-        playerHealthRect = {
-            x: playerDetailsRect.x + 60,
-            y: playerDetailsRect.y + 60,
-            w: playerDetailsRect.w - 80,
-            h: 16
-        };
-        playerHealthOverlay = {
-            x: playerHealthRect.x,
-            y: playerHealthRect.y,
-            w: playerHealthRect.w,
-            h: playerHealthRect.h
-        };
-        opponentNameTxt = {
-            x: opponentDetailsRect.x + 20,
-            y: opponentDetailsRect.y + 36,
-            txt: opponentMonName
-        };
+        playerHealthBg.x = playerDetailsRect.x + 20;
+        playerHealthBg.y = playerDetailsRect.y + 60;
+
+        pHpLabel.x = playerHealthBg.x + 10;
+        pHpLabel.y = playerHealthBg.y + 13;
+
+        playerHealthRect.x = playerDetailsRect.x + 60;
+        playerHealthRect.y = playerDetailsRect.y + 60;
+
+        playerHealthOverlay.x = playerHealthRect.x;
+        playerHealthOverlay.y = playerHealthRect.y;
+
+        opponentNameTxt.x = opponentDetailsRect.x + 20;
+        opponentNameTxt.y = opponentDetailsRect.y + 36;
         
-        opponentHealthBg = {
-            x: opponentDetailsRect.x + 20,
-            y: opponentDetailsRect.y + 60,
-            w: 40,
-            h: 16
-        }
-        oHpLabel = {
-            x: opponentHealthBg.x + 10,
-            y: opponentHealthBg.y + 13,
-            txt: "HP"
-        }
-        opponentHealthRect = {
-            x: opponentDetailsRect.x + 60,
-            y: opponentDetailsRect.y + 60,
-            w: opponentDetailsRect.w - 80,
-            h: 16
-        };
-        opponentHealthOverlay = {
-            x: opponentHealthRect.x,
-            y: opponentHealthRect.y,
-            w: opponentHealthRect.w,
-            h: opponentHealthRect.h
-        };
+        opponentHealthBg.x = opponentDetailsRect.x + 20;
+        opponentHealthBg.y =  opponentDetailsRect.y + 60;
+
+        oHpLabel.x = opponentHealthBg.x + 10;
+        oHpLabel.y = opponentHealthBg.y + 13;
+
+        opponentHealthRect.x = opponentDetailsRect.x + 60; 
+        opponentHealthRect.y = opponentDetailsRect.y + 60;
+        
+        opponentHealthOverlay.x = opponentHealthRect.x;
+        opponentHealthOverlay.y = opponentHealthRect.y;
 
         if (playerDetailsRect.y <= endPositions.playerDetail + 0.1) {
             animTracker.detailsAnim = false;

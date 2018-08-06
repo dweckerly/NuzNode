@@ -14,7 +14,9 @@ var pLvlTxt = "lvl. " + playerMonLvl
 $('#player-img').attr('src', currentPlayerMon.img);
 
 if(battleType === 'wild') {
+    console.log(wildMon);
     currentOpponentMon = wildMon;
+    currentOpponentMon['ai'] = "random";
 }
 
 var opponentMonName = currentOpponentMon.name;
@@ -51,7 +53,7 @@ var playerLvlTxt = {
 var playerHealthRect = {
     x: playerDetailsRect.x + 20,
     y: playerDetailsRect.y + 20,
-    w: playerDetailsRect.w - 40,
+    w: playerDetailsRect.w - 80,
     h: 16
 };
 var playerHealthOverlay = {
@@ -60,11 +62,14 @@ var playerHealthOverlay = {
     w: playerHealthRect.w,
     h: playerHealthRect.h
 };
+
+currentPlayerMon['healthDisplay'] = playerHealthOverlay;
+
 var playerHealthBg = {
     x: playerHealthRect.x,
     y: playerHealthRect.y,
-    w: playerHealthRect.w,
-    h: playerHealthRect.h
+    w: 60,
+    h: 16
 }
 var pHpLabel = {
     x: 0,
@@ -91,7 +96,7 @@ var opponentLvlTxt = {
 var opponentHealthRect = {
     x: opponentDetailsRect.x + 60,
     y: opponentDetailsRect.y + 60,
-    w: opponentDetailsRect.w - 40,
+    w: opponentDetailsRect.w - 80,
     h: 16
 };
 var opponentHealthOverlay = {
@@ -100,10 +105,13 @@ var opponentHealthOverlay = {
     w: opponentHealthRect.w,
     h: opponentHealthRect.h
 };
+
+currentOpponentMon['healthDisplay'] = opponentHealthOverlay;
+
 var opponentHealthBg = {
     x: opponentHealthRect.x,
     y: opponentHealthRect.y,
-    w: opponentHealthRect.w,
+    w: 60,
     h: opponentHealthRect.h
 }
 var oHpLabel = {
@@ -128,28 +136,77 @@ var phases = ['select', 'pre', 'main', 'post'];
 var phaseCounter = 0;
 
 var playerMods = {
-    atk: 0,
-    def: 0,
-    sAtk: 0,
-    sDef: 0,
-    speed: 0,
-    acc: 0,
-    eva: 0,
-    crit: 0
+    atk: {
+        value: 1,
+        count: 0
+    },
+    def: {
+        value: 1,
+        count: 0
+    },
+    sAtk: {
+        value: 1,
+        count: 0
+    },
+    sDef: {
+        value: 1,
+        count: 0
+    },
+    speed: {
+        value: 1,
+        count: 0
+    },
+    acc: {
+        value: 1,
+        count: 0
+    },
+    eva: {
+        value: 1,
+        count: 0
+    },
+    crit: {
+        value: 1,
+        count: 0
+    }
 }
 
 var opponentMods = {
-    atk: 0,
-    def: 0,
-    sAtk: 0,
-    sDef: 0,
-    speed: 0,
-    acc: 0,
-    eva: 0,
-    crit: 0
+    atk: {
+        value: 1,
+        count: 0
+    },
+    def: {
+        value: 1,
+        count: 0
+    },
+    sAtk: {
+        value: 1,
+        count: 0
+    },
+    sDef: {
+        value: 1,
+        count: 0
+    },
+    speed: {
+        value: 1,
+        count: 0
+    },
+    acc: {
+        value: 1,
+        count: 0
+    },
+    eva: {
+        value: 1,
+        count: 0
+    },
+    crit: {
+        value: 1,
+        count: 0
+    }
 }
 
-var textInterval, damageInterval;
+var textInterval, damageInterval, animationInterval;
 
+var actionCount = 0;
 var actionQueue = [];
 var turn = [];

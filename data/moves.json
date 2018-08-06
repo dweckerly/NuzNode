@@ -109,14 +109,14 @@
     },
     "10": {
         "name": "Stink Weed",
-        "description": "Releases a noxious odor that may sicken the opponent.",
+        "description": "Releases a noxious odor that lowers opponent's DEF and may make it sick.",
         "type": "Plant",
         "category": "status",
         "range": "ranged",
         "dmg": 0,
-        "acc": 50,
+        "acc": 100,
         "crit": 0,
-        "effects": ["sick-target-100"],
+        "effects": ["dec-def-target-1", "sick-target-20"],
         "anim": ""
     },
     "11": {
