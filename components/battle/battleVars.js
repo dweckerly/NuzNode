@@ -1,6 +1,15 @@
 var c = document.getElementById('battle-canvas');
 var ctx = c.getContext('2d');
 
+function createStatusString(mon) {
+    var str = ""
+    for(let i = 0; i < mon.status.length; i++) {
+        str += mon.status[i] + "-";
+    } 
+    str = str.substring(0, str.length - 1);
+    return str;
+}
+
 var currentPlayerMon, currentOpponentMon;
 for(let i = 0; i < partyMons.length; i++) {
     if(partyMons[i]['partyPosition'] == 1) {
@@ -12,6 +21,9 @@ var playerMonName = currentPlayerMon['name'];
 var playerMonLvl = currentPlayerMon['level'];
 var pLvlTxt = "lvl. " + playerMonLvl
 $('#player-img').attr('src', currentPlayerMon.img);
+var playerStatusTxt = createStatusString(currentPlayerMon);
+
+
 
 if(battleType === 'wild') {
     console.log(wildMon);
@@ -76,7 +88,7 @@ var pHpLabel = {
     y: 0,
     txt: "HP"
 }
-var playerStatus = { x: 0, y: 0, txt: "" };
+var playerStatus = { x: 0, y: 0, txt: playerStatusTxt };
 var playerExpRect = { x: 0, y: 0, w: 0, h: 0 };
 var playerExpOverlay = { x: 0, y: 0, w: 0, h: 0 };
 
@@ -119,7 +131,7 @@ var oHpLabel = {
     y: 0,
     txt: "HP"
 }
-var opponentStatus = { x: 0, y: 0, txt: "" };
+var opponentStatus = { x: 0, y: 0, txt: createStatusString(currentOpponentMon) };
 
 var actions = {
     player: {

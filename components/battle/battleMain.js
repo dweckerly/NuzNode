@@ -53,7 +53,7 @@ function preBattlePhase() {
     for(let i = 0; i < turn.length; i++) {
         if (actions[turn[i]].action == "switch") {
             switchMon(turn[i]);
-        } else if (actions[turn[i]].action == "item") {
+        } else if (actions[turn[i]].action == "catch") {
             useItem(turn[i]);
         }
     }

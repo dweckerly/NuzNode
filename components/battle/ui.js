@@ -94,6 +94,9 @@ function drawDetailsRect() {
         playerHealthOverlay.x = playerHealthRect.x;
         playerHealthOverlay.y = playerHealthRect.y;
 
+        playerStatus.x = playerDetailsRect.x + 124;
+        playerStatus.y = playerDetailsRect.y + 36;
+
         opponentNameTxt.x = opponentDetailsRect.x + 20;
         opponentNameTxt.y = opponentDetailsRect.y + 36;
         
@@ -105,9 +108,12 @@ function drawDetailsRect() {
 
         opponentHealthRect.x = opponentDetailsRect.x + 60; 
         opponentHealthRect.y = opponentDetailsRect.y + 60;
-        
+
         opponentHealthOverlay.x = opponentHealthRect.x;
         opponentHealthOverlay.y = opponentHealthRect.y;
+
+        opponentStatus.x = opponentDetailsRect.x + 124;
+        opponentStatus.y = opponentDetailsRect.y + 36;
 
         if (playerDetailsRect.y <= endPositions.playerDetail + 0.1) {
             animTracker.detailsAnim = false;
@@ -122,6 +128,10 @@ function drawNames() {
     ctx.font = "26px ShadowsIntoLight";
     ctx.fillText(playerNameTxt.txt, playerNameTxt.x, playerNameTxt.y);
     ctx.fillText(opponentNameTxt.txt, opponentNameTxt.x, opponentNameTxt.y);
+
+    ctx.font = "20px ShadowsIntoLight";
+    ctx.fillText(playerStatus.txt, playerStatus.x, playerStatus.y);
+    ctx.fillText(opponentStatus.txt, opponentStatus.x, opponentStatus.y);
 
     ctx.font = "18px Courier New";
     ctx.fillText(playerLvlTxt.txt, playerLvlTxt.x, playerLvlTxt.y);
