@@ -68,7 +68,7 @@ currentPlayerMon['healthDisplay'] = playerHealthOverlay;
 var playerHealthBg = {
     x: playerHealthRect.x,
     y: playerHealthRect.y,
-    w: 60,
+    w: 42,
     h: 16
 }
 var pHpLabel = {
@@ -111,7 +111,7 @@ currentOpponentMon['healthDisplay'] = opponentHealthOverlay;
 var opponentHealthBg = {
     x: opponentHealthRect.x,
     y: opponentHealthRect.y,
-    w: 60,
+    w: 42,
     h: opponentHealthRect.h
 }
 var oHpLabel = {

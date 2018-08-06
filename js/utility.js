@@ -208,6 +208,7 @@ function createMon(id, lvl) {
     let potential = geneticPotential(geneticFactors);
 
     let mon = {
+        "id": uuidv1(),
         "name": monBase['name'],
         "species": monBase['name'],
         "descripion": monBase['description'],

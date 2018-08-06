@@ -1,6 +1,3 @@
-
-
-
 function readSave() {
     let data = fs.readFileSync('data/player/' + player['id'] + '.json');
     let json = JSON.parse(data);

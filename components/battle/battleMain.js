@@ -8,7 +8,6 @@ function startFight() {
 function round() {
     actionQueue = [];
     console.log(phases[phaseCounter]);
-    console.log(phaseCounter);
     if(phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
@@ -41,7 +40,6 @@ function runActionQueue() {
             showDamage(damage.dmg, damage.target);
         } else if (actionQueue[0].method == "status") {
             let status = actionQueue.shift();
-            console.log(status.id);
             nextAction();
         }
     } else {
@@ -461,7 +459,6 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
     if(dmg < 1) {
         dmg = 1;
     }
-    console.log(dmg);
     actionQueue.push({
         method: "damage",
         dmg: dmg,
@@ -474,9 +471,15 @@ function damageMod(move, atkMon, defMon) {
 }
 
 function showDamage(dmg, defMon) {
-    console.log(dmg);
     var newHp = parseInt(defMon.hp.current) - dmg;
+    if(newHp < 0) {
+        newHp = 0;
+        die(defMon);
+    }
     var newWidth = Math.round(defMon.healthDisplay.w * (newHp / parseInt(defMon.hp.current)));
+    if(newHp > 0 && newWidth <= 0) {
+        newWidth = 1;
+    }
     defMon.hp.current = newHp;
     damageInterval = setInterval(() => {
         defMon.healthDisplay.w = lerp(defMon.healthDisplay.w, newWidth, 0.05);
@@ -485,6 +488,31 @@ function showDamage(dmg, defMon) {
             nextAction();
         }
     }, 20);
+}
+
+function die(mon) {
+    actionQueue = [];
+    actionQueue.push({
+        method: "text",
+        txt: mon.name + " has been defeated!"
+    });
+    if(mon == currentPlayerMon) {
+
+    } else {
+        if(battleType === 'wild') {
+            calculateExp(currentPlayerMon, currentOpponentMon);
+            endBattle();
+        }
+    }
+}
+
+function calculateExp(winMon, loseMon) {
+
+}
+
+function endBattle() {
+    // will need to save info here
+    console.log("battle ended");
 }
 
 function randomMoveSelect() {

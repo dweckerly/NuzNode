@@ -36,7 +36,7 @@ $('#mon-btn').click(() => {
 
 });
 
-$('#item-btn').click(() => {
+$('#catch-btn').click(() => {
     
 });
 
