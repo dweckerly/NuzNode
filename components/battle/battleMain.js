@@ -40,7 +40,7 @@ function runActionQueue() {
             showDamage(damage.dmg, damage.target);
         } else if (actionQueue[0].method == "status") {
             let status = actionQueue.shift();
-            nextAction();
+            showStatusChange(status.target);
         }
     } else {
         round();
@@ -370,15 +370,29 @@ function statusEffect(status, target, prob) {
         } else {
             var str = target.name + " is " + status + "ed!";
         }
+        target.status.push(status);
         actionQueue.push({
             method: 'text',
             txt: str
         });
         actionQueue.push({
             method: 'status',
-            id: status
+            id: status,
+            target: target
         });
     }
+}
+
+function showStatusChange(target) {
+    if(target == currentPlayerMon) {
+        playerStatus.txt = createStatusString(currentPlayerMon);
+    } else {
+        opponentStatus.txt = createStatusString(currentOpponentMon);
+    }
+    statusInterval = setInterval(() => {
+        clearInterval(statusInterval);
+        nextAction();
+    }, 500);
 }
 
 function decreaseMod(target, mods, stat, amount) {

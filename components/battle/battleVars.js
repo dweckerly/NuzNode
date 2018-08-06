@@ -217,7 +217,7 @@ var opponentMods = {
     }
 }
 
-var textInterval, damageInterval, animationInterval;
+var textInterval, damageInterval, animationInterval, statusInterval;
 
 var actionCount = 0;
 var actionQueue = [];
