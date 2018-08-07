@@ -97,10 +97,23 @@ function nextAction() {
     }
 }
 
+function checkMainStatus(target) {
+    if(target == "player") {
+        var mon = currentPlayerMon;
+    } else if (target == "opponent") {
+        var mon = currentOpponentMon;
+    }
+    for(let i = 0; i < mon.status.length; i++) {
+        if(mon.status[i] == "sleep") {
+
+        }
+    }
+}
+
 function checkSpeed() {
     turn = [];
-    let pSpeed = parseInt(currentPlayerMon.stats.speed) + playerMods.speed;
-    let oSpeed = parseInt(currentOpponentMon.stats.speed) + opponentMods.speed;
+    let pSpeed = parseInt(currentPlayerMon.stats.speed) * playerMods.speed.value;
+    let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value;
     if(pSpeed > oSpeed) {
         turn = ["player", "opponent"];
     } else if (oSpeed > pSpeed) {
@@ -401,7 +414,8 @@ function decreaseMod(target, mods, stat, amount) {
             amount = parseInt(mods[stat].count) - (-5);
         } 
         mods[stat].count -= parseInt(amount);
-        mods[stat].value -= 0.2 * parseInt(amount);
+        mods[stat].value = 2 / (mods[stat].count + 2);
+        console.log(mods[stat].value);
         if(amount == 1) {
             actionQueue.push({
                 method: "text",
@@ -433,7 +447,8 @@ function increaseMod(target, mods, stat, amount) {
             amount = 5 - parseInt(mods[stat].count);
         } 
         mods[stat].count += parseInt(amount);
-        mods[stat].value += 0.2 * parseInt(amount);
+        mods[stat].value = (mods[stat].count + 2) / 2;
+        console.log(mods[stat].value);
         if(amount == 1) {
             actionQueue.push({
                 method: "text",
@@ -511,7 +526,7 @@ function die(mon) {
         txt: mon.name + " has been defeated!"
     });
     if(mon == currentPlayerMon) {
-
+        
     } else {
         if(battleType === 'wild') {
             calculateExp(currentPlayerMon, currentOpponentMon);
@@ -529,7 +544,3 @@ function endBattle() {
     console.log("battle ended");
 }
 
-function randomMoveSelect() {
-    actions.opponent.action = "attack";
-    actions.opponent.id = (Math.floor(Math.random() * Object.keys(currentOpponentMon.moves).length) + 1);
-}

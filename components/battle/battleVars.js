@@ -24,7 +24,6 @@ $('#player-img').attr('src', currentPlayerMon.img);
 var playerStatusTxt = createStatusString(currentPlayerMon);
 
 
-
 if(battleType === 'wild') {
     console.log(wildMon);
     currentOpponentMon = wildMon;
@@ -148,73 +147,13 @@ var phases = ['select', 'pre', 'main', 'post'];
 var phaseCounter = 0;
 
 var playerMods = {
-    atk: {
-        value: 1,
-        count: 0
-    },
-    def: {
-        value: 1,
-        count: 0
-    },
-    sAtk: {
-        value: 1,
-        count: 0
-    },
-    sDef: {
-        value: 1,
-        count: 0
-    },
-    speed: {
-        value: 1,
-        count: 0
-    },
-    acc: {
-        value: 1,
-        count: 0
-    },
-    eva: {
-        value: 1,
-        count: 0
-    },
-    crit: {
-        value: 1,
-        count: 0
-    }
+    atk: {value: 1, count: 0}, def: {value: 1, count: 0}, sAtk: {value: 1, count: 0}, sDef: {value: 1, count: 0},
+    speed: {value: 1, count: 0}, acc: {value: 1, count: 0}, eva: {value: 1, count: 0}, crit: {value: 1, count: 0}
 }
 
 var opponentMods = {
-    atk: {
-        value: 1,
-        count: 0
-    },
-    def: {
-        value: 1,
-        count: 0
-    },
-    sAtk: {
-        value: 1,
-        count: 0
-    },
-    sDef: {
-        value: 1,
-        count: 0
-    },
-    speed: {
-        value: 1,
-        count: 0
-    },
-    acc: {
-        value: 1,
-        count: 0
-    },
-    eva: {
-        value: 1,
-        count: 0
-    },
-    crit: {
-        value: 1,
-        count: 0
-    }
+    atk: {value: 1,count: 0}, def: {value: 1, count: 0}, sAtk: {value: 1, count: 0}, sDef: {value: 1, count: 0},
+    speed: {value: 1, count: 0}, acc: {value: 1, count: 0}, eva: {value: 1, count: 0}, crit: {value: 1, count: 0}
 }
 
 var textInterval, damageInterval, animationInterval, statusInterval;
@@ -222,3 +161,39 @@ var textInterval, damageInterval, animationInterval, statusInterval;
 var actionCount = 0;
 var actionQueue = [];
 var turn = [];
+
+var statusMods = {
+    burn: {
+        stats: ['def'],
+        mod: 0.3
+    },
+    sick: {
+        stats: ['atk', 'sAtk'],
+        mod: 0.3
+    },
+    sleep: {
+        stats: ['sDef', 'eva'],
+        mod: 0.5
+    },
+    stun: {
+        stats: ['speed', 'eva'],
+        mod: 0.5
+    },
+    wet: {
+        stats: ['acc'],
+        mod: 0.2
+    }
+}
+
+var statusCounter = {
+    player: {
+        daze: {count: 0, max: 1},
+        sleep: {count: 0, max: 5},
+        stun: {count: 0, max: 5}
+    },
+    opponent: {
+        daze: {count: 0, max: 1},
+        sleep: {count: 0, max: 5},
+        stun: {count: 0, max: 5}
+    }
+}
