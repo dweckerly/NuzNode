@@ -271,7 +271,7 @@ function setPartyMons() {
         if(monData['mons'][i]['partyPosition'] != 0) {
             partyMons.push(monData['mons'][i]);
         } else {
-
+            reserveMons.push(monData['mons'][i]);
         }
     }
 }

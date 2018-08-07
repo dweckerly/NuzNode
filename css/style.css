@@ -108,7 +108,7 @@ canvas {
 }
 
 .col-30 {
-    flex:30%;
+    flex: 30%;
 }
 
 .col-20 {
@@ -387,6 +387,22 @@ input[type=range] {
     border: 1px solid black;
 }
 
+/*************************
+* Party
+*************************/
+
+#party-main {
+    margin: 26px;
+}
+
+.party-mon-img {
+    border-radius: 50%;
+}
+
+.party-mon-img:hover {
+    cursor: pointer;
+    background-color: rgb(236, 236, 236);
+}
 
 /*************************
 * Nav 
@@ -421,6 +437,11 @@ input[type=range] {
 .nav-btn {
     display: block;
     margin: 18px;
+}
+
+.nav-btn:hover {
+    border-radius: 50%;
+    background-color: rgb(236, 236, 236);
 }
 
 
