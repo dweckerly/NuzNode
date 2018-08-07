@@ -3,7 +3,7 @@ buff
 bug
 electric
 fire
-mechanical
+mech
 mind
 plant
 shady

@@ -213,7 +213,7 @@ function createMon(id, lvl) {
         "species": monBase['name'],
         "descripion": monBase['description'],
         "img": monBase['img'],
-        "type": [],
+        "type": monBase['type'],
         "hp": {
             "current": Math.round((((monBase['hp'] + geneticFactors['hp']) * lvl) / 50) + 5 + lvl),
             "max": Math.round((((monBase['hp'] + geneticFactors['hp']) * lvl) / 50) + 5 + lvl),

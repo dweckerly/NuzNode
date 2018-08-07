@@ -265,6 +265,15 @@ function targetHit(acc, accMod, eva) {
     }
 }
 
+function hasType(mon, type) {
+    for(let i = 0; i < mon.type.length; i++) {
+        if(mon.type[i] == type) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function damageEffects() {
     /*
     will use this for 
@@ -278,42 +287,49 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
         switch(e[0]) {
             case "burn":
                 if(e[1] == 'target') {
-                    // will need to check for type immunity for some of these...
-                    statusEffect('burn', defMon, e[2])
+                    if(!hasType(defMon, 'Fire')) {
+                        statusEffect('burn', defMon, e[2]);
+                    }
                 } else if(e[1] == 'self') {
-                    statusEffect('burn', atkMon, e[2])
+                    if(!hasType(atkMon, 'Fire')) {
+                        statusEffect('burn', atkMon, e[2]);
+                    }
                 }
                 break;
             case "daze":
                 if(e[1] == 'target') {
-                    statusEffect('daze', defMon, e[2])
+                    statusEffect('daze', defMon, e[2]);
                 } else if(e[1] == 'self') {
-                    statusEffect('daze', atkMon, e[2])
+                    statusEffect('daze', atkMon, e[2]);
                 }
                 break;
             case "dec":
                 if(e[2] == 'target') {
-                    decreaseMod(defMon, defMods, e[1], e[3])
+                    decreaseMod(defMon, defMods, e[1], e[3]);
                 } else if(e[2] == 'self') {
-                    decreaseMod(atkMon, atkMods, e[1], e[3])
+                    decreaseMod(atkMon, atkMods, e[1], e[3]);
                 }
                 break;
             case "heal":
                 break;
             case "inc": 
                 if(e[2] == 'target') {
-                    increaseMod(defMon, defMods, e[1], e[3])
+                    increaseMod(defMon, defMods, e[1], e[3]);
                 } else if(e[2] == 'self') {
-                    increaseMod(atkMon, atkMods, e[1], e[3])
+                    increaseMod(atkMon, atkMods, e[1], e[3]);
                 }
                 break;
             case "persist":
                 break;
             case "poison":
                 if(e[1] == 'target') {
-                    statusEffect('poison', defMon, e[2])
+                    if(!hasType(defMon, 'Toxic')) {
+                        statusEffect('poison', defMon, e[2]);
+                    }
                 } else if(e[1] == 'self') {
-                    statusEffect('poison', atkMon, e[2])
+                    if(!hasType(atkMon, 'Toxic')) {
+                        statusEffect('poison', atkMon, e[2]);
+                    }
                 }
                 break;
             case "recoil":
@@ -324,39 +340,43 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 break;
             case "sick":
                 if(e[1] == 'target') {
-                    statusEffect('sick', defMon, e[2])
+                    statusEffect('sick', defMon, e[2]);
                 } else if(e[1] == 'self') {
-                    statusEffect('sick', atkMon, e[2])
+                    statusEffect('sick', atkMon, e[2]);
                 }
                 break;
             case "sleep":
                 if(e[1] == 'target') {
-                    statusEffect('sick', defMon, e[2])
+                    statusEffect('sleep', defMon, e[2]);
                 } else if(e[1] == 'self') {
-                    statusEffect('sick', atkMon, e[2])
+                    statusEffect('sleep', atkMon, e[2]);
                 }
                 break;
             case "steal":
                 break;
             case "stun":
                 if(e[1] == 'target') {
-                    statusEffect('stun', defMon, e[2])
+                    statusEffect('stun', defMon, e[2]);
                 } else if(e[1] == 'self') {
-                    statusEffect('stun', atkMon, e[2])
+                    statusEffect('stun', atkMon, e[2]);
                 }
                 break;
             case "wet":
                 if(e[1] == 'target') {
-                    statusEffect('wet', defMon, e[2])
+                    statusEffect('wet', defMon, e[2]);
                 } else if(e[1] == 'self') {
-                    statusEffect('wet', atkMon, e[2])
+                    statusEffect('wet', atkMon, e[2]);
                 }
                 break;
             case "wound":
                 if(e[1] == 'target') {
-                    statusEffect('wound', defMon, e[2])
+                    if(!hasType(defMon, 'Mech') && !hasType(defMon, 'Spooky')) {
+                        statusEffect('wound', defMon, e[2]);
+                    }
                 } else if(e[1] == 'self') {
-                    statusEffect('wound', atkMon, e[2])
+                    if(!hasType(atkMon, 'Mech') && !hasType(atkMon, 'Spooky')) {
+                        statusEffect('wound', atkMon, e[2]);
+                    }
                 }
                 break;
             default:
@@ -526,7 +546,7 @@ function die(mon) {
         txt: mon.name + " has been defeated!"
     });
     if(mon == currentPlayerMon) {
-        
+
     } else {
         if(battleType === 'wild') {
             calculateExp(currentPlayerMon, currentOpponentMon);
