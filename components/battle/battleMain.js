@@ -7,7 +7,6 @@ function startFight() {
 
 function round() {
     actionQueue = [];
-    console.log(phases[phaseCounter]);
     if(phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
@@ -22,7 +21,6 @@ function round() {
 }
 
 function endRound() {
-    console.log("end");
     $('#battle-util-div').fadeOut(() => {
         $('#battle-btns-div').show();
         $('#battle-util-div').fadeIn();
@@ -30,7 +28,6 @@ function endRound() {
 }
 
 function runActionQueue() {
-    console.log(actionQueue);
     if(actionQueue.length > 0) {
         if(actionQueue[0].method == "text") {
             let str = actionQueue.shift();
@@ -41,6 +38,8 @@ function runActionQueue() {
         } else if (actionQueue[0].method == "status") {
             let status = actionQueue.shift();
             showStatusChange(status.target);
+        } else if(actionQueue[0].method == "end") {
+            endBattle();
         }
     } else {
         round();
@@ -66,9 +65,17 @@ function mainBattlePhase() {
     if(actions.player.action == "attack" && actions.opponent.action == "attack") {
         checkPriority();
     }
+    if(checkFear(currentPlayerMon)) {
+        actions.player.action = "shudder";
+    }
+    if(checkFear(currentOpponentMon)) {
+        actions.opponent.action = "shudder";
+    }
     for(let i = 0 ; i < turn.length; i++) {
         if (actions[turn[i]].action == "attack") {
             parseAttack(turn[i]);
+        } else if(actions[turn[i]].action == "shudder") {
+            shudder(turn[i]);
         }
     }
     runActionQueue();
@@ -95,6 +102,26 @@ function nextAction() {
     } else {
         round();
     }
+}
+
+function checkFear(mon) {
+    if(mon == currentPlayerMon) {
+        if(mon.happiness < 50) {
+            var threshold = mon.hp.max - (mon.hp.max * (mon.happiness / 100));
+        } else {
+            var threshold = 0;
+        }
+    } else {
+        var threshold = mon.hp.max / 4;
+    }
+
+    if(mon.hp.current < threshold) {
+        let chance = Math.random();
+        if(chance < 0.5) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function checkMainStatus(target) {
@@ -160,6 +187,21 @@ function switchMon(id) {
 
 function useItem(id) {
 
+}
+
+function shudder(id) {
+    if(id == 'player') {
+        actionQueue.push({
+            method: 'text',
+            txt: currentPlayerMon.name + " is too scared to fight!"
+        });
+    } else if(id == 'opponent') {
+        actionQueue.push({
+            method: 'text',
+            txt: currentOpponentMon.name + " shudders with fear!"
+        });
+        $('#run-btn').html("Yield");
+    }
 }
 
 function parseAttack(id) {
@@ -289,10 +331,20 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 if(e[1] == 'target') {
                     if(!hasType(defMon, 'Fire')) {
                         statusEffect('burn', defMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: defMon.name + " cannot be burnt."
+                        });
                     }
                 } else if(e[1] == 'self') {
                     if(!hasType(atkMon, 'Fire')) {
                         statusEffect('burn', atkMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: atkMon.name + " cannot be burnt."
+                        });
                     }
                 }
                 break;
@@ -325,10 +377,20 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 if(e[1] == 'target') {
                     if(!hasType(defMon, 'Toxic')) {
                         statusEffect('poison', defMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: defMon.name + " cannot be poisoned."
+                        });
                     }
                 } else if(e[1] == 'self') {
                     if(!hasType(atkMon, 'Toxic')) {
                         statusEffect('poison', atkMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: atkMon.name + " cannot be poisoned."
+                        });
                     }
                 }
                 break;
@@ -347,9 +409,23 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 break;
             case "sleep":
                 if(e[1] == 'target') {
-                    statusEffect('sleep', defMon, e[2]);
+                    if(!hasType(defMon, 'Mech')) {
+                        statusEffect('sleep', defMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: defMon.name + " does not sleep."
+                        });
+                    }
                 } else if(e[1] == 'self') {
-                    statusEffect('sleep', atkMon, e[2]);
+                    if(!hasType(atkMon, 'Mech')) {
+                        statusEffect('sleep', atkMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: atkMon.name + " does not sleep."
+                        });
+                    }
                 }
                 break;
             case "steal":
@@ -370,12 +446,22 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 break;
             case "wound":
                 if(e[1] == 'target') {
-                    if(!hasType(defMon, 'Mech') && !hasType(defMon, 'Spooky')) {
+                    if(!hasType(defMon, 'Spooky')) {
                         statusEffect('wound', defMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: defMon.name + " cannot be wounded."
+                        });
                     }
                 } else if(e[1] == 'self') {
-                    if(!hasType(atkMon, 'Mech') && !hasType(atkMon, 'Spooky')) {
+                    if(!hasType(atkMon, 'Spooky')) {
                         statusEffect('wound', atkMon, e[2]);
+                    } else {
+                        actionQueue.push({
+                            method: "text",
+                            txt: atkMon.name + " cannot be wounded."
+                        });
                     }
                 }
                 break;
@@ -435,7 +521,6 @@ function decreaseMod(target, mods, stat, amount) {
         } 
         mods[stat].count -= parseInt(amount);
         mods[stat].value = 2 / (mods[stat].count + 2);
-        console.log(mods[stat].value);
         if(amount == 1) {
             actionQueue.push({
                 method: "text",
@@ -468,7 +553,6 @@ function increaseMod(target, mods, stat, amount) {
         } 
         mods[stat].count += parseInt(amount);
         mods[stat].value = (mods[stat].count + 2) / 2;
-        console.log(mods[stat].value);
         if(amount == 1) {
             actionQueue.push({
                 method: "text",
@@ -521,15 +605,21 @@ function damageMod(move, atkMon, defMon) {
 
 function showDamage(dmg, defMon) {
     var newHp = parseInt(defMon.hp.current) - dmg;
-    if(newHp < 0) {
+    console.log(newHp);
+    if(newHp <= 0) {
         newHp = 0;
-        die(defMon);
+        var newWidth = 0;
+    } else {
+        var newWidth = Math.round(defMon.healthDisplay.w * (newHp / parseInt(defMon.hp.current)));
     }
-    var newWidth = Math.round(defMon.healthDisplay.w * (newHp / parseInt(defMon.hp.current)));
     if(newHp > 0 && newWidth <= 0) {
         newWidth = 1;
     }
     defMon.hp.current = newHp;
+    if(defMon.hp.current == 0) {
+        die(defMon);
+    }
+    updatePartyMons();
     damageInterval = setInterval(() => {
         defMon.healthDisplay.w = lerp(defMon.healthDisplay.w, newWidth, 0.05);
         if(defMon.healthDisplay.w >= (newWidth - 0.2) && defMon.healthDisplay.w <= (newWidth + 0.2)) {
@@ -546,13 +636,39 @@ function die(mon) {
         txt: mon.name + " has been defeated!"
     });
     if(mon == currentPlayerMon) {
-
+        if(hasMonsAvailable('player')) {
+            console.log("call switch here");
+        } else {
+            actionQueue.push({
+                method: "text",
+                txt: player.name + " is out of NuzMon!"
+            });
+            actionQueue.push({
+                method: "text",
+                txt: player.name + " blacked out!"
+            });
+            actionQueue.push({
+                method: "end",
+            });
+        }
     } else {
         if(battleType === 'wild') {
-            calculateExp(currentPlayerMon, currentOpponentMon);
-            endBattle();
+            actionQueue.push({
+                method: "end",
+            });
         }
     }
+}
+
+function hasMonsAvailable(id) {
+    if(id == 'player') {
+        for(let i = 0; i < partyMons.length; i++) {
+            if(partyMons[i].hp.current > 0) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function calculateExp(winMon, loseMon) {
@@ -560,6 +676,9 @@ function calculateExp(winMon, loseMon) {
 }
 
 function endBattle() {
+    actionQueue = [];
+    calculateExp(currentPlayerMon, currentOpponentMon);
+    goToLocation();
     // will need to save info here
     console.log("battle ended");
 }

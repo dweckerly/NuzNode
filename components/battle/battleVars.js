@@ -28,6 +28,8 @@ if(battleType === 'wild') {
     console.log(wildMon);
     currentOpponentMon = wildMon;
     currentOpponentMon['ai'] = "random";
+} else if(battleType === 'trainer') {
+    var opponentMons = [];
 }
 
 var opponentMonName = currentOpponentMon.name;

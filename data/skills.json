@@ -50,7 +50,7 @@
         "effect": ""
     },
     "11": {
-        "name": "Of the Sea",
+        "name": "",
         "desciption": "Increases the effectiveness of Water type NuzMon.",
         "effect": ""
     },
@@ -79,13 +79,38 @@
         "description": "Increases the effectiveness of Buff type NuzMon.",
         "effect": ""
     },
-    "22": {
+    "17": {
+        "name": "Engineer",
+        "description": "Increases the effectiveness of Mech type NuzMon.",
+        "effect": ""
+    },
+    "18": {
+        "name": "Clairvoyant",
+        "description": "Increases the effectiveness of Mind type NuzMon.",
+        "effect": ""
+    },
+    "19": {
+        "name": "",
+        "description": "Increases the effectiveness of Shady type NuzMon.",
+        "effect": ""
+    },
+    "20": {
+        "name": "",
+        "description": "Increases the effectiveness of Spooky type NuzMon.",
+        "effect": ""
+    },
+    "21": {
+        "name": "",
+        "description": "Increases the effectiveness of Toxic type NuzMon.",
+        "effect": ""
+    },
+    "24": {
         "name": "Size Up",
         "description": "You can detect the skills of other trainers.",
         "effect": ""
     },
-    "23": {
-        "name": "Size Up",
+    "25": {
+        "name": "",
         "description": "You can detect the innate potential of wild NuzMon.",
         "effect": ""
     }
