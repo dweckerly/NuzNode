@@ -7,6 +7,7 @@ function startFight() {
 
 function round() {
     actionQueue = [];
+    console.log(phases[phaseCounter]);
     if(phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
@@ -201,16 +202,11 @@ function switchMon(target, id) {
                 method: "text",
                 txt: currentPlayerMon.name + " come back!"
             });
-            for(let i = 0; i < partyMons.length; i++) {
-                if(partyMons[i].id == id) {
-                    currentPlayerMon = partyMons[i];
-                }
-            }
             actionQueue.push({
-                method: "text",
-                txt: currentPlayerMon.name + " go!"
+                method: "switch",
+                id: id,
+                target: 'player'
             });
-            $('#player-img').attr("src", currentPlayerMon.img);
         } else {
             actionQueue.push({
                 method: "switch",
@@ -222,7 +218,6 @@ function switchMon(target, id) {
 }
 
 function switchIn(target, id) {
-    resetMods(target);
     if(target == 'player') {
         for(let i = 0; i < partyMons.length; i++) {
             if(partyMons[i].id == id) {
@@ -230,11 +225,12 @@ function switchIn(target, id) {
             }
         }
     }
+    changeMon(target);
     actionQueue.push({
         method: "text",
         txt: currentPlayerMon.name + " go!"
     });
-    $('#player-img').attr("src", currentPlayerMon.img);
+    nextAction();
 }
 
 function useItem(id) {

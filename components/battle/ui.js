@@ -63,7 +63,6 @@ function drawImages() {
             if (playerImg.x >= endPositions.playerImg - 0.1) {
                 animTracker.imagesAnim = false;
                 animTracker.detailsAnim = true;
-                //showBattleText();
             }
         }
     }
@@ -81,6 +80,7 @@ function drawDetailsRect() {
 
         playerNameTxt.x = playerDetailsRect.x + 20;
         playerNameTxt.y = playerDetailsRect.y + 36;
+        playerNameTxt.txt = playerMonName;
         
         playerHealthBg.x = playerDetailsRect.x + 20;
         playerHealthBg.y = playerDetailsRect.y + 60;
@@ -99,6 +99,7 @@ function drawDetailsRect() {
 
         opponentNameTxt.x = opponentDetailsRect.x + 20;
         opponentNameTxt.y = opponentDetailsRect.y + 36;
+        opponentNameTxt.txt = opponentMonName;
         
         opponentHealthBg.x = opponentDetailsRect.x + 20;
         opponentHealthBg.y =  opponentDetailsRect.y + 60;
