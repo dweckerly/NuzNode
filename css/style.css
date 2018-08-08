@@ -64,6 +64,19 @@ canvas {
     animation-timing-function: linear;
 }
 
+.modal-bg {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
 
 .no-style-btn {
     background: none;
@@ -154,6 +167,37 @@ canvas {
     font-size: 24px;
     background-color: #888;
     box-shadow: 3px 3px 15px #888888;
+}
+
+.mon-container, .mon-container-current {
+    display: flex;
+    border: 1px solid #888;
+    border-radius: 10px;
+    margin: 10px;
+    padding: -10px;
+}
+
+.mon-container:hover {
+    cursor: pointer;
+    background-color: rgb(236, 236, 236);
+}
+
+#switch-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    min-height: 50%;
+}
+
+.switch-btn-div {
+    margin-left: auto;
+}
+
+.switch-in-btn {
+    margin: 12px;
 }
 
 /***********************

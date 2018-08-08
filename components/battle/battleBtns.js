@@ -33,7 +33,7 @@ $('#fight-btn').click(() => {
 });
 
 $('#mon-btn').click(() => {
-
+    $('#switch-mon-div').fadeIn();
 });
 
 $('#catch-btn').click(() => {
