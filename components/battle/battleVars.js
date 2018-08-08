@@ -202,3 +202,5 @@ var statusCounter = {
         stun: {count: 0, max: 5}
     }
 }
+
+var mustSwitch = false;

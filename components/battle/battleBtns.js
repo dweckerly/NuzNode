@@ -33,6 +33,7 @@ $('#fight-btn').click(() => {
 });
 
 $('#mon-btn').click(() => {
+    populateSwitch();
     $('#switch-mon-div').fadeIn();
 });
 
@@ -47,12 +48,7 @@ $('#back-btn').click(() => {
 });
 
 $('.atk-btn').click(function () {
-    phaseCounter++;
     actions.player.action = "attack";
     actions.player.id = $(this).attr('data');
-    $('#fight-btns-div').fadeOut(() => {
-        $('#battle-util-div').fadeIn();
-        $('#battle-btns-div').hide();
-        startFight();
-    });
+    endSelectPhase();
 });

@@ -38,6 +38,12 @@ function runActionQueue() {
         } else if (actionQueue[0].method == "status") {
             let status = actionQueue.shift();
             showStatusChange(status.target);
+        } else if (actionQueue[0].method == 'switch') {
+            let switchMon = actionQueue.shift();
+            switchIn(switchMon.target, switchMon.id);
+        } else if (actionQueue[0].method == "must-switch") {
+            console.log("must switch called in queue");
+            $('#switch-mon-div').fadeIn(); 
         } else if(actionQueue[0].method == "end") {
             endBattle();
         }
@@ -51,7 +57,8 @@ function preBattlePhase() {
     checkSpeed();
     for(let i = 0; i < turn.length; i++) {
         if (actions[turn[i]].action == "switch") {
-            switchMon(turn[i]);
+            console.log(actions[turn[i]].id);
+            switchMon(turn[i], actions[turn[i]].id);
         } else if (actions[turn[i]].action == "catch") {
             useItem(turn[i]);
         }
@@ -83,7 +90,13 @@ function mainBattlePhase() {
 
 function postBattlePhase() {
     phaseCounter++;
-    round();
+    for(let i = 0 ; i < turn.length; i++) {
+        if (actions[turn[i]].action == "must-switch") {
+            populateSwitch();
+            $('#switch-mon-div').fadeIn();
+        }
+    }
+    runActionQueue();
 }
 
 function showBattleText(txt) {
@@ -181,8 +194,47 @@ function checkPriority() {
     }
 }
 
-function switchMon(id) {
+function switchMon(target, id) {
+    if(target == 'player') {
+        if(currentPlayerMon.hp.current > 0) {
+            actionQueue.push({
+                method: "text",
+                txt: currentPlayerMon.name + " come back!"
+            });
+            for(let i = 0; i < partyMons.length; i++) {
+                if(partyMons[i].id == id) {
+                    currentPlayerMon = partyMons[i];
+                }
+            }
+            actionQueue.push({
+                method: "text",
+                txt: currentPlayerMon.name + " go!"
+            });
+            $('#player-img').attr("src", currentPlayerMon.img);
+        } else {
+            actionQueue.push({
+                method: "switch",
+                id: id,
+                target: 'player'
+            });
+        }
+    }
+}
 
+function switchIn(target, id) {
+    resetMods(target);
+    if(target == 'player') {
+        for(let i = 0; i < partyMons.length; i++) {
+            if(partyMons[i].id == id) {
+                currentPlayerMon = partyMons[i];
+            }
+        }
+    }
+    actionQueue.push({
+        method: "text",
+        txt: currentPlayerMon.name + " go!"
+    });
+    $('#player-img').attr("src", currentPlayerMon.img);
 }
 
 function useItem(id) {
@@ -630,14 +682,21 @@ function showDamage(dmg, defMon) {
 }
 
 function die(mon) {
-    actionQueue = [];
+    // will need some way to check if more actions need to be done
+    // such as post hit effects (attacker is buffed, etc.)
+    // instead of clearing the queue
+    
     actionQueue.push({
         method: "text",
         txt: mon.name + " has been defeated!"
     });
+    actionQueue = [];
     if(mon == currentPlayerMon) {
         if(hasMonsAvailable('player')) {
-            console.log("call switch here");
+            mustSwitch = true;
+            actionQueue.push({
+                method: "must-switch",
+            });
         } else {
             actionQueue.push({
                 method: "text",

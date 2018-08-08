@@ -14,6 +14,19 @@ function updatePartyMons() {
 }
 
 function populateSwitch() {
+    $('#switch-content').html("");
+    if(!mustSwitch) {
+        $('#switch-content').append("<span class='switch-close'>&times;</span>");
+        $('.switch-close').click(() => {
+            $('#switch-mon-div').fadeOut();
+        });
+    }
+    if($('#switch-close').length) {
+        if(mustSwitch) {
+            $('#switch-close').remove();
+        }
+    }
+
     for(let i = 0; i < partyMons.length; i++) {
         if(partyMons[i] == currentPlayerMon) {
             $('#switch-content').append(`
@@ -29,7 +42,7 @@ function populateSwitch() {
                     <img width='64' height='64' src='` + partyMons[i].img + `'>
                     <p>` + partyMons[i].name + ` ` + partyMons[i].hp.current + `/` + partyMons[i].hp.max + `</p>
                     <div class="switch-btn-div">
-                        <button class="switch-in-btn" id='` + partyMons[i].id + `'>Switch In!</button>
+                        <button class="switch-in-btn" data='` + partyMons[i].id + `'>Switch In!</button>
                     </div>
                 </div>
                 `);
@@ -50,10 +63,38 @@ function populateSwitch() {
         switchBtns[i].addEventListener("click", function () {
             let id = $(this).attr('data');
             $('#switch-mon-div').fadeOut(() => {
-                switchMon(id);
+                actions.player.action = "switch";
+                actions.player.id = id;
+                endSelectPhase();
             });
         });
     }
 }
 
-populateSwitch();
+function endSelectPhase() {
+    mustSwitch = false;
+    phaseCounter++;
+    $('#fight-btns-div').fadeOut(() => {
+        $('#battle-util-div').fadeIn();
+        $('#battle-btns-div').hide();
+        startFight();
+    });
+}
+
+function resetMods(target) {
+    if(target == 'player') {
+        playerMods = {
+            atk: {value: 1, count: 0}, def: {value: 1, count: 0}, sAtk: {value: 1, count: 0}, sDef: {value: 1, count: 0},
+            speed: {value: 1, count: 0}, acc: {value: 1, count: 0}, eva: {value: 1, count: 0}, crit: {value: 1, count: 0}
+        }
+    } else if (target == 'opponent') {
+        opponentMods = {
+            atk: {value: 1,count: 0}, def: {value: 1, count: 0}, sAtk: {value: 1, count: 0}, sDef: {value: 1, count: 0},
+            speed: {value: 1, count: 0}, acc: {value: 1, count: 0}, eva: {value: 1, count: 0}, crit: {value: 1, count: 0}
+        }
+    }
+}
+
+function changeMon() {
+
+}
