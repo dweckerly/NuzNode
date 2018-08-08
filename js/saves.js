@@ -22,6 +22,10 @@ function checkSaves() {
     return false;
 }
 
+function saveMons(data) {
+    fs.writeFileSync("data/player/" + player.id + "-mons.json", JSON.stringify(data), "utf8");
+}
+
 function saveSync() {
     fs.writeFileSync("data/player/" + player.id + ".json", JSON.stringify(player), "utf8");
 }

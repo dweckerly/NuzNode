@@ -520,7 +520,7 @@ function decreaseMod(target, mods, stat, amount) {
             amount = parseInt(mods[stat].count) - (-5);
         } 
         mods[stat].count -= parseInt(amount);
-        mods[stat].value = 2 / (mods[stat].count + 2);
+        mods[stat].value = 2 / (Math.abs(mods[stat].count) + 2);
         if(amount == 1) {
             actionQueue.push({
                 method: "text",
@@ -672,7 +672,10 @@ function hasMonsAvailable(id) {
 }
 
 function calculateExp(winMon, loseMon) {
-
+    let delta = 0.8 * (Math.pow((parseInt(winMon.level) + 1), 2.5) - Math.pow(parseInt(winMon.level), 2.5));
+    let factor = parseInt(loseMon.xp) * (loseMon.level / winMon.level);
+    let gain = Math.round(((delta * factor) / inBattle.length) + 1);
+    return gain;
 }
 
 function endBattle() {

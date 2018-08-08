@@ -12,7 +12,8 @@
         "speed": 20,
         "movePool": 1,
         "anim": "swing",
-        "evo": "lvl-15_2"
+        "evo": "lvl-15_2",
+        "xp": 1
     },
     "2": {
         "name": "Visanip",
@@ -27,7 +28,8 @@
         "speed": 30,
         "movePool": 1,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "3": {
         "name": "Piranhanip",
@@ -42,7 +44,8 @@
         "speed": 50,
         "movePool": 1,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "4": {
         "name": "Embah",
@@ -57,7 +60,8 @@
         "speed": 50,
         "movePool": 2,
         "anim": "hop",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "5": {
         "name": "Agoany",
@@ -72,7 +76,8 @@
         "speed": 70,
         "movePool": 2,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "6": {
         "name": "Diagoat",
@@ -87,7 +92,8 @@
         "speed": 90,
         "movePool": 2,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "7": {
         "name": "Derple",
@@ -102,7 +108,8 @@
         "speed": 30,
         "movePool": 3,
         "anim": "wiggle",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "8": {
         "name": "Turinvert",
@@ -117,7 +124,8 @@
         "speed": 40,
         "movePool": 3,
         "anim": "wiggle",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "9": {
         "name": "Glortoise",
@@ -132,7 +140,8 @@
         "speed": 55,
         "movePool": 3,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "10": {
         "name": "Caterbrow",
@@ -147,7 +156,8 @@
         "speed": 40,
         "movePool": 4,
         "anim": "wiggle",
-        "evo": "lvl-9_11"
+        "evo": "lvl-9_11",
+        "xp": 1
     },
     "11": {
         "name": "Cofrons",
@@ -162,7 +172,8 @@
         "speed": 25,
         "movePool": 4,
         "anim": "wiggle",
-        "evo": "lvl-15_12"
+        "evo": "lvl-15_12",
+        "xp": 2
     },
     "12": {
         "name": "Mothstatio",
@@ -177,7 +188,8 @@
         "speed": 70,
         "movePool": 4,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "13": {
         "name": "Wormado-N",
@@ -192,7 +204,8 @@
         "speed": 40,
         "movePool": 5,
         "anim": "wiggle",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "14": {
         "name": "Wormado-Y",
@@ -207,7 +220,8 @@
         "speed": 40,
         "movePool": 5,
         "anim": "wiggle",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "15": {
         "name": "Wormado-S",
@@ -222,7 +236,8 @@
         "speed": 40,
         "movePool": 5,
         "anim": "wiggle",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "16": {
         "name": "Roakuza-N",
@@ -237,7 +252,8 @@
         "speed": 80,
         "movePool": "",
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "17": {
         "name": "Roakuza-Y",
@@ -252,7 +268,8 @@
         "speed": 50,
         "movePool": "",
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "18": {
         "name": "Roakuza-S",
@@ -267,7 +284,8 @@
         "speed": 60,
         "movePool": "",
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "19": {
         "name": "Beamo",
@@ -282,7 +300,8 @@
         "speed": 45,
         "movePool": 6,
         "anim": "hop",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "20": {
         "name": "Apagoose",
@@ -297,7 +316,8 @@
         "speed": 65,
         "movePool": 6,
         "anim": "hop",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "21": {
         "name": "Eagoth",
@@ -312,7 +332,8 @@
         "speed": 80,
         "movePool": 6,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "22": {
         "name": "Snek",
@@ -327,7 +348,8 @@
         "speed": 65,
         "movePool": 7,
         "anim": "swing",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "23": {
         "name": "Circumsnek",
@@ -342,7 +364,8 @@
         "speed": 75,
         "movePool": 7,
         "anim": "rotate",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "24": {
         "name": "Infinisnek",
@@ -357,7 +380,8 @@
         "speed": 85,
         "movePool": 7,
         "anim": "rotate",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "25": {
         "name": "Sneknot",
@@ -372,7 +396,8 @@
         "speed": 105,
         "movePool": 7,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     },
     "26": {
         "name": "Messip",
@@ -387,7 +412,8 @@
         "speed": 70,
         "movePool": 8,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "27": {
         "name": "Felichen",
@@ -402,7 +428,8 @@
         "speed": 85,
         "movePool": 8,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "28": {
         "name": "Dozly",
@@ -417,7 +444,8 @@
         "speed": 25,
         "movePool": 9,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 1
     },
     "29": {
         "name": "Slumbear",
@@ -432,7 +460,8 @@
         "speed": 35,
         "movePool": 9,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 2
     },
     "30": {
         "name": "Ursnore",
@@ -447,6 +476,7 @@
         "speed": 45,
         "movePool": 9,
         "anim": "",
-        "evo": ""
+        "evo": "",
+        "xp": 3
     }
 }

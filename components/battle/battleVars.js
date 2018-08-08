@@ -17,6 +17,9 @@ for(let i = 0; i < partyMons.length; i++) {
     }
 }
 
+var inBattle = [];
+inBattle.push(currentPlayerMon);
+
 var playerMonName = currentPlayerMon['name'];
 var playerMonLvl = currentPlayerMon['level'];
 var pLvlTxt = "lvl. " + playerMonLvl

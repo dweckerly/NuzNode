@@ -257,7 +257,8 @@ function createMon(id, lvl) {
         },
         "happiness": 50,
         "moves": getMoves(monBase, lvl),
-        "partyPosition": partyPosition()
+        "partyPosition": partyPosition(),
+        "xp": monBase['xp']
     }
 
     return mon;
@@ -274,4 +275,10 @@ function setPartyMons() {
             reserveMons.push(monData['mons'][i]);
         }
     }
+}
+
+function addMon(mon) {
+    let monData = load(player.id + "-mons");
+    monData['mons'].push(mon);
+    saveMons(monData);
 }

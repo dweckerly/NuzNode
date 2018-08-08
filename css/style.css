@@ -172,7 +172,7 @@ canvas {
     background-color: rgba(0, 0, 0, 0.4);
  }
 
- #battle-type-div, #trainer-choice-div, #wild-choice-div {
+ #battle-type-div, #trainer-choice-div, #wild-choice-div, #give-choice-div {
     background-color: #fefefe;
     margin: 15% auto;
     padding: 30px;
@@ -181,7 +181,7 @@ canvas {
     min-height: 50%;
  }
 
- .wild-select {
+ .wild-select, .give-select {
      cursor: pointer;
  }
 
