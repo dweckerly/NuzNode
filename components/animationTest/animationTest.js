@@ -5,6 +5,8 @@ animating = false;
 var animI = 0;
 var animFunc;
 
+var animQueue = [];
+
 var c = document.getElementById('anim-canvas');
 var ctx = c.getContext('2d');
 
@@ -63,12 +65,38 @@ function parabolaWithMove(x, dist, height) {
     return height*Math.sin(x * Math.PI / dist);
 }
 
+function hop(img, sPos) {
+    img.y = parabolaSimple(sPos.y, 20);
+    if(img.y < sPos.y) {
+        animI += 3;   
+    } else {
+        img.y = sPos.y;
+        stopAnimation();
+    }
+    ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
+}
+
+function doubleHop(img, sPos) {
+    img.y = parabolaSimple(sPos.y, 20);
+    if(img.y < sPos.y) {
+        animI += 3;   
+    } else {
+        img.y = sPos.y;
+        stopAnimation(function () {
+            startAnimation();
+            hop(img, sPos)
+        });
+    }
+    ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
+}
+
 function jump(img) {
     img.y = parabolaSimple(startPos.y, 60);
     if(img.y < startPos.y) {
         animI += 2;   
     } else {
         img.y = startPos.y;
+        stopAnimation();
     }
     ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
 }
@@ -79,15 +107,19 @@ function jumpRight(img) {
         img.x += 2.5;
     } else {
         img.y = startPos.y;
+        stopAnimation();
     }
     ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
 }
 
 function jumpLeft(img) {
+    img.y = -(parabolaWithMove(img.x, 60, startPos.y + 60));
     if(img.y < startPos.y) {
         img.x -= 2.5;
+    } else {
+        img.y = startPos.y;
+        stopAnimation();
     }
-    img.y = -(parabolaWithMove(img, 60, startPos.y + 60));
     ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
 }
 
@@ -109,16 +141,17 @@ function spin(img) {
 
 function shake(img) {
     
+    ctx.drawImage(img.img, img.x, img.y, img.w, img.h);
 }
 
 function animate(img) {
-    if(!calledInterval) {
-        calledInterval = true;
-        animInterval = setInterval(() => {
-            stopAnimation();
-        }, animTime);
-    }
     switch(animFunc) {
+        case 'hop':
+            hop(img, startPos);
+            break;
+        case 'hopD':
+            doubleHop(img, startPos);
+            break;
         case 'jump':
             jump(img);
             break;
@@ -131,20 +164,31 @@ function animate(img) {
         case 'mirrorImage':
             mirrorImage(img);
             break;
-        case 'spin' :
-            spin(img);
-            break;
         case 'shake' :
             shake(img);
+            break;
+        case 'spin' :
+            spin(img);
             break;
         default:
             break;
     }
-    
-    
+
+    if(!animating) {
+        runAnimQueue();
+        animating = true;
+    }
 }
 
-function stopAnimation() {
+function runAnimQueue() {
+    var anim = animQueue.shift();
+}
+
+function startAnimation() {
+
+}
+
+function stopAnimation(nextAnim) {
     animI = 0;
     animating = false;
     clearInterval(animInterval);
@@ -153,7 +197,25 @@ function stopAnimation() {
     animImg.w = 256;
     animImg.h = 256;
     $('#anim-btn').prop('disabled', false);
+    if(nextAnim) {
+        nextAnim();
+    }
 }
+
+function startAnimation() {
+    $('#anim-btn-basic').prop('disabled', true);
+    $('#anim-btn-chain').prop('disabled', true);
+}
+
+$('#anim-btn-basic').click(() => {
+    animFunc = $('#anim-select-basic').val();
+    startAnimation();
+});
+
+$('#anim-btn-chain').click(() => {
+    animFunc = $('#anim-select-chain').val();
+    startAnimation();
+});
 
 function drawImages(){
     ctx.drawImage(refImg.img, refImg.x, refImg.y, refImg.w, refImg.h);
@@ -174,11 +236,3 @@ function update() {
     requestAnimationFrame(update);
 }
 update();
-
-
-$('#anim-btn').click(() => {
-    $('#anim-btn').prop('disabled', true);
-    animFunc = $('#anim-select').val();
-    animating = true;
-    calledInterval = false;
-});

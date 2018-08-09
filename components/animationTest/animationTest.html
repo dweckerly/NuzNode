@@ -1,15 +1,24 @@
 <div id="anim-div" align="center">
     <canvas id="anim-canvas" width="750" height="400" style="border: 1px solid black;"></canvas>
     <div id="select-div">
-        <select id="anim-select">
+        <label>Basic</label>
+        <select id="anim-select-basic">
+            <option value="hop">Hop</option>
             <option value="jump">Jump</option>
             <option value="jumpR">Jump Right</option>
             <option value="jumpL">Jump Left</option>
             <option value="mirrorImage">Mirror Image</option>
-            <option value="shake">Shake</option>
             <option value="spin">Spin</option>
         </select>
-        <button id="anim-btn">Animate</button>
+        <button id="anim-btn-basic">Animate</button>
+        <label>Chained</label>
+        <select id="anim-select-chain">
+            <option value="hopD">Hop Double</option>
+            <option value="jumpR">Jump Right</option>
+            <option value="jumpL">Jump Left</option>
+            <option value="shake">Shake</option>
+        </select>
+        <button id="anim-btn-chain">Animate</button>
     </div>
     <div id="anim-img-div" style="display: none">
         <img id="anim-img" src="img/mons/embah.png">
