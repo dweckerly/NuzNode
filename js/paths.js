@@ -1,3 +1,4 @@
+const animTestComp = "components/animationTest/animationTest.html";
 const battleComp = "components/battle/battle.html";
 const battleTestComp = "components/battleTest/battleTest.html";
 const chooseMonComp = "components/chooseMon/chooseMon.html";

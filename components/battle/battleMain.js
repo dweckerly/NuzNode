@@ -138,6 +138,13 @@ function checkFear(mon) {
     return false;
 }
 
+function checkKO(mon, dmg) {
+    if(parseInt(mon.hp.current) - dmg <= 0) {
+        return true;
+    }
+    return false;
+}
+ 
 function checkMainStatus(target) {
     if(target == "player") {
         var mon = currentPlayerMon;
@@ -443,6 +450,7 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "recoil":
+                recoil(atkMon, e[1]);
                 break;
             case "recover":
                 break;
@@ -622,6 +630,24 @@ function increaseMod(target, mods, stat, amount) {
             method: "text",
             txt: target.name + "'s " + stat.toUpperCase() + " can't go any higher!",
         });
+    }
+}
+
+function recoil(mon, amount) {
+    let dmg = Math.round(mon.hp.max * (amount / 100));
+
+    actionQueue.push({
+        method: "damage",
+        dmg: dmg,
+        target: mon
+    });
+    actionQueue.push({
+        method: "text",
+        txt: mon.name + " took recoil damage.",
+    });
+
+    if(checkKO(mon, dmg)) {
+        die(mon);
     }
 }
 

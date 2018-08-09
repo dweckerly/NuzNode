@@ -32,7 +32,7 @@
         "dmg": 30,
         "acc": 90,
         "crit": 1,
-        "effects": ["recoil-10"],
+        "effects": ["recoil-20"],
         "anim": ""
     },
     "4": {

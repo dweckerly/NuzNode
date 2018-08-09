@@ -13,3 +13,7 @@ $("#new-btn").click(() => {
 $('#battle-test').click(() => {
     addComponent('util', battleTestComp);
 });
+
+$('#anim-test').click(() => {
+    changeSection('main', animTestComp);
+});
