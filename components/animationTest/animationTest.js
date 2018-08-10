@@ -563,8 +563,6 @@ function wait() {
 
 function invertColor() {
     animI++;
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, c.width, c.height);
     ctx.drawImage(animTarget.img, animTarget.x, animTarget.y, animTarget.w, animTarget.h);
     var imgData = ctx.getImageData(animTarget.x, animTarget.y, animTarget.w, animTarget.h);
     var data = imgData.data;
@@ -573,6 +571,8 @@ function invertColor() {
         data[i + 1] = 255 - data[i + 1];
         data[i + 2] = 255 - data[i + 2];
     }
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, c.width, c.height);
     ctx.putImageData(imgData, animTarget.x, animTarget.y);
     if(animI >= 30) {
         stopAnimation();
