@@ -3,22 +3,43 @@
     <div id="select-div">
         <label>Basic</label>
         <select id="anim-select-basic">
+            <option value="circlef">Circle Forward</option>
+            <option value="circleb">Circle Back</option>
+            <option value="circlecounterf">Circle Counter Forward</option>
+            <option value="circlecounterb">Circle Counter Back</option>
+            <option value="flipB">Flip Back</option>
+            <option value="flipF">Flip Front</option>
             <option value="hop">Hop</option>
             <option value="jump">Jump</option>
+            <option value="jumpflip">Jump Flip</option>
             <option value="jumpR">Jump Right</option>
             <option value="jumpL">Jump Left</option>
-            <option value="mirrorImage">Mirror Image</option>
-            <option value="spin">Spin</option>
+            <option value="ltoleft">Lerp to Left</option>
+            <option value="ltoright">Lerp to Right</option>
+            <option value="mirimg">Mirror Image</option>
+            <option value="movel">Move Left</option>
+            <option value="mover">Move Right</option>
+            <option value="movefl">Move Fast Left</option>
+            <option value="movefr">Move Fast Right</option>
+            <option value="rushl">Rush Left</option>
+            <option value="rushr">Rush Right</option>
         </select>
         <button id="anim-btn-basic">Animate</button>
         <label>Chained</label>
         <select id="anim-select-chain">
-            <option value="hopD">Hop Double</option>
-            <option value="jumpR">Jump Right</option>
-            <option value="jumpL">Jump Left</option>
-            <option value="shake">Shake</option>
+            <option value="circlecounterf-circleb">Figure-8</option>
+            <option value="circlef-hop-movefl-ltostart">Circle Hop Move Fast Left then Return</option>
+            <option value="hop-hop">Hop Double</option>
+            <option value="hop-movefl-ltostart">Hop Move Fast Left then Return</option>
+            <option value="hop-movefr-ltostart">Hop Move Fast Right then Return</option>
+            <option value="jumpL-ltostart">Jump Left and Return</option>
+            <option value="jumpR-ltostart">Jump Right and Return</option>
+            <option value="mirimg-flipB">Mirror then BackFlip</option>
+            <option value="rushl-ltostart">Rush Left then Return</option>
+            <option value="rushr-ltostart">Rush Right then Return</option>
         </select>
         <button id="anim-btn-chain">Animate</button>
+        <button id="anim-stop">STOP</button>
     </div>
     <div id="anim-img-div" style="display: none">
         <img id="anim-img" src="img/mons/embah.png">
