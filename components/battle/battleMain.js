@@ -82,6 +82,7 @@ function preBattlePhase() {
     }
     if (actions[turn[turnCount]].action == "switch") {
         switchMon(turn[turnCount], actions[turn[turnCount]].id);
+        actions[turn[turnCount]].action = "";
     } else if (actions[turn[turnCount]].action == "catch") {
         useItem(turn[turnCount]);
     }
@@ -114,7 +115,12 @@ function postBattlePhase() {
         checkSpeed();
     }
     if (actions[turn[turnCount]].action == "switch") {
-        switchMon(turn[turnCount], actions[turn[turnCount]].id);
+        mustSwitch = false;
+        actionQueue.push({
+            method: "switch",
+            id: actions[turn[turnCount]].id,
+            target: turn[turnCount]
+        });
     }
     nextAction();
 }

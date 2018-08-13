@@ -65,14 +65,17 @@ function populateSwitch() {
             $('#switch-mon-div').fadeOut(() => {
                 actions.player.action = "switch";
                 actions.player.id = id;
-                endSelectPhase();
+                if(!mustSwitch) {
+                    endSelectPhase();
+                } else {
+                    round();
+                }
             });
         });
     }
 }
 
 function endSelectPhase() {
-    mustSwitch = false;
     $('#fight-btns-div').fadeOut(() => {
         $('#battle-util-div').fadeIn();
         $('#battle-btns-div').hide();
