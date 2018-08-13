@@ -166,6 +166,7 @@ var textInterval, damageInterval, animationInterval, statusInterval;
 var actionCount = 0;
 var actionQueue = [];
 var turn = [];
+var turnCount = 0;
 
 var statusMods = {
     burn: {

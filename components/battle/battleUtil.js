@@ -73,7 +73,6 @@ function populateSwitch() {
 
 function endSelectPhase() {
     mustSwitch = false;
-    phaseCounter++;
     $('#fight-btns-div').fadeOut(() => {
         $('#battle-util-div').fadeIn();
         $('#battle-btns-div').hide();
@@ -107,6 +106,7 @@ function changeMon(target) {
         let per = currentPlayerMon.hp.current / currentPlayerMon.hp.max;
         playerHealthOverlay.w = playerHealthRect.w * per;
         populateMoveBtns();
+        inBattle.push(currentPlayerMon);
     } else if (target == 'opponent'){
 
     }
@@ -145,4 +145,72 @@ function populateMoveBtns() {
         $('#atk-4').prop("disabled", true);
         $('#atk-4').html("-");
     }
+}
+
+function typeCheck(atkType, defType) {
+    if(atkType == 'Plant') {
+        if(defType == 'Water') {
+            return 2;
+        } else if(defType == 'Stone') {
+            return 2;
+        } else if(defType == 'Bug') {
+            return 0.5;
+        } else if(defType == 'Fire') {
+            return 0.5
+        }
+    } else if(atkType == 'Fire') {
+        if(defType == 'Plant') {
+            return 2;
+        } else if(defType == 'Mech') {
+            return 2;
+        } else if(defType == 'Fire') {
+            return 0;
+        } else if(defType == 'Water') {
+            return 0.5;
+        } else if(defType == 'Stone') {
+            return 0.5;
+        }
+    } else if(atkType == 'Water') {
+        if(defType == 'Fire') {
+            return 2;
+        } else if(defType == 'Stone') {
+            return 2;
+        } else if(defType == 'Plant') {
+            return 0.5;
+        } else if(defType == 'Water') {
+            return 0.5;
+        }
+    } else if(atkType == 'Bug') {
+        if(defType == 'Plant') {
+            return 2;
+        } else if(defType == 'Shady') {
+            return 2;
+        } else if(defType == 'Mech') {
+            return 0.5;
+        } else if(defType == 'Stone') {
+            return 0.5;
+        }
+    } else if(atkType == 'Electric') {
+        if(defType == 'Water') {
+            return 2;
+        } else if(defType == 'Mech') {
+            return 2;
+        } else if(defType == 'Electric') {
+            return 0;
+        } else if(defType == 'Stone') {
+            return 0.5;
+        } else if(defType == 'Plant') {
+            return 0.5;
+        }
+    }
+    return 1; 
+}
+
+function checkStab(mon, move) {
+    for(let i = 0; i < mon.type.length; i++) {
+        if(move.type == mon.type[i]) {
+            return 1.25;
+        }
+    }
+    return 1;
 }

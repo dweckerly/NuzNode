@@ -7,6 +7,7 @@ function startFight() {
 
 function round() {
     actionQueue = [];
+    phaseCounter++;
     console.log(phases[phaseCounter]);
     if(phases[phaseCounter] == 'pre') {
         preBattlePhase();
@@ -29,47 +30,68 @@ function endRound() {
 }
 
 function runActionQueue() {
-    if(actionQueue.length > 0) {
-        if(actionQueue[0].method == "text") {
-            let str = actionQueue.shift();
-            showBattleText(str.txt);
-        } else if (actionQueue[0].method == "damage") {
-            let damage = actionQueue.shift();
-            showDamage(damage.dmg, damage.target);
-        } else if (actionQueue[0].method == "status") {
-            let status = actionQueue.shift();
-            showStatusChange(status.target);
-        } else if (actionQueue[0].method == 'switch') {
-            let switchMon = actionQueue.shift();
-            switchIn(switchMon.target, switchMon.id);
-        } else if (actionQueue[0].method == "must-switch") {
-            console.log("must switch called in queue");
-            $('#switch-mon-div').fadeIn(); 
-        } else if(actionQueue[0].method == "end") {
-            endBattle();
-        }
-    } else {
+    if(actionQueue[0].method == "text") {
+        let str = actionQueue.shift();
+        showBattleText(str.txt);
+    } else if (actionQueue[0].method == "damage") {
+        let damage = actionQueue.shift();
+        showDamage(damage.dmg, damage.target);
+    } else if (actionQueue[0].method == "status") {
+        let status = actionQueue.shift();
+        showStatusChange(status.target);
+    } else if (actionQueue[0].method == 'switch') {
+        let switchMon = actionQueue.shift();
+        switchIn(switchMon.target, switchMon.id);
+    } else if (actionQueue[0].method == "must-switch") {
+        populateSwitch();
+        $('#switch-mon-div').fadeIn(); 
+    } else if(actionQueue[0].method == "end") {
+        endBattle();
+    } else if(actionQueue[0].method == 'xp') {
+        let exp = actionQueue.shift();
+        giveXp(exp.winMon, exp.loseMon);
+    }
+}
+
+function nextTurn() {
+    turnCount++;
+    if(turnCount > 1) {
+        turnCount = 0;
         round();
+    } else {
+        switch(phases[phaseCounter]) {
+            case 'pre':
+                preBattlePhase();
+                break;
+            case 'main':
+                mainBattlePhase();
+                break;
+            case 'post':
+                postBattlePhase();
+                break;
+            default:
+                round();
+                break;
+        }
     }
 }
 
 function preBattlePhase() {
-    phaseCounter++;
-    checkSpeed();
-    for(let i = 0; i < turn.length; i++) {
-        if (actions[turn[i]].action == "switch") {
-            console.log(actions[turn[i]].id);
-            switchMon(turn[i], actions[turn[i]].id);
-        } else if (actions[turn[i]].action == "catch") {
-            useItem(turn[i]);
-        }
+    if(turnCount == 0) {
+        checkSpeed();
     }
-    runActionQueue();
+    if (actions[turn[turnCount]].action == "switch") {
+        switchMon(turn[turnCount], actions[turn[turnCount]].id);
+    } else if (actions[turn[turnCount]].action == "catch") {
+        useItem(turn[turnCount]);
+    }
+    nextAction();
 }
 
 function mainBattlePhase() {
-    phaseCounter++;
-    checkSpeed();
+    if(turnCount == 0) {
+        checkSpeed();
+    }
     if(actions.player.action == "attack" && actions.opponent.action == "attack") {
         checkPriority();
     }
@@ -79,25 +101,22 @@ function mainBattlePhase() {
     if(checkFear(currentOpponentMon)) {
         actions.opponent.action = "shudder";
     }
-    for(let i = 0 ; i < turn.length; i++) {
-        if (actions[turn[i]].action == "attack") {
-            parseAttack(turn[i]);
-        } else if(actions[turn[i]].action == "shudder") {
-            shudder(turn[i]);
-        }
+    if (actions[turn[turnCount]].action == "attack") {
+        parseAttack(turn[turnCount]);
+    } else if(actions[turn[turnCount]].action == "shudder") {
+        shudder(turn[turnCount]);
     }
-    runActionQueue();
+    nextAction();
 }
 
 function postBattlePhase() {
-    phaseCounter++;
-    for(let i = 0 ; i < turn.length; i++) {
-        if (actions[turn[i]].action == "must-switch") {
-            populateSwitch();
-            $('#switch-mon-div').fadeIn();
-        }
+    if(turnCount == 0) {
+        checkSpeed();
     }
-    runActionQueue();
+    if (actions[turn[turnCount]].action == "switch") {
+        switchMon(turn[turnCount], actions[turn[turnCount]].id);
+    }
+    nextAction();
 }
 
 function showBattleText(txt) {
@@ -114,7 +133,7 @@ function nextAction() {
     if(actionQueue.length > 0) {
         runActionQueue();
     } else {
-        round();
+        nextTurn();
     }
 }
 
@@ -527,34 +546,58 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
 }
 
 function statusEffect(status, target, prob) {
-    // will need to check if mon already has status...
-    let chance = Math.random();
-    let decProb = parseInt(prob) / 100;
-    if(chance <= decProb) {
-        if(status == 'wet') {
-            var str = target.name + " is " + status + "!";
-        } else if(status == 'sick') {
-            var str = target.name + " is " + status + "ened!";
-        } else if(status == 'stun') {
-            var str = target.name + " is " + status + "ned!";
-        } else if(status == 'sleep') {
-            var str = target.name + " fell a" + status + "!";
-        } else if (status == 'daze') {
-            var str = target.name + " is " + status + "d!";
-        } else {
-            var str = target.name + " is " + status + "ed!";
+    if(!hasStatus(target, status)) {
+        let chance = Math.random();
+        let decProb = parseInt(prob) / 100;
+        if(chance <= decProb) {
+            if(status == 'wet') {
+                var str = target.name + " is " + status + "!";
+            } else if(status == 'sick') {
+                var str = target.name + " is " + status + "ened!";
+            } else if(status == 'stun') {
+                var str = target.name + " is " + status + "ned!";
+            } else if(status == 'sleep') {
+                var str = target.name + " fell a" + status + "!";
+            } else if (status == 'daze') {
+                var str = target.name + " is " + status + "d!";
+            } else {
+                var str = target.name + " is " + status + "ed!";
+            }
+            target.status.push(status);
+            actionQueue.push({
+                method: 'text',
+                txt: str
+            });
+            actionQueue.push({
+                method: 'status',
+                id: status,
+                target: target
+            });
         }
-        target.status.push(status);
+    } else {
+        if(status == 'wet' || status == 'sick') {
+            var str = target.name + " is already " + status + ".";
+        } else if(status == 'stun') {
+            var str = target.name + " is already " + status + "ned.";
+        } else if(status == 'sleep') {
+            var str = target.name + " is already a" + status + ".";
+        } else {
+            var str = target.name + " is already " + status + "ed.";
+        }
         actionQueue.push({
             method: 'text',
             txt: str
         });
-        actionQueue.push({
-            method: 'status',
-            id: status,
-            target: target
-        });
     }
+}
+
+function hasStatus(target, status) {
+    for(let i = 0; i < target.status.length; i++) {
+        if(target.status[i] == status) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function showStatusChange(target) {
@@ -634,7 +677,6 @@ function increaseMod(target, mods, stat, amount) {
 
 function recoil(mon, amount) {
     let dmg = Math.round(mon.hp.max * (amount / 100));
-
     actionQueue.push({
         method: "damage",
         dmg: dmg,
@@ -644,7 +686,6 @@ function recoil(mon, amount) {
         method: "text",
         txt: mon.name + " took recoil damage.",
     });
-
     if(checkKO(mon, dmg)) {
         die(mon);
     }
@@ -673,7 +714,23 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
 }
 
 function damageMod(move, atkMon, defMon) {
-    return 1;
+    let mod = 1;
+    let stab = checkStab(atkMon, move);
+    for(let i = 0; i < defMon.type.length; i++) {
+        mod *= typeCheck(move.type, defMon.type[i]);
+    }
+    if(mod > 1) {
+        actionQueue.push({
+            method: "text",
+            txt: defMon.name + " is devastated!",
+        });
+    } else if (mod < 1) {
+        actionQueue.push({
+            method: "text",
+            txt: defMon.name + " resists.",
+        });
+    }
+    return mod * stab;
 }
 
 function showDamage(dmg, defMon) {
@@ -702,17 +759,18 @@ function showDamage(dmg, defMon) {
     }, 20);
 }
 
-function die(mon) {
-    // will need some way to check if more actions need to be done
-    // such as post hit effects (attacker is buffed, etc.)
-    // instead of clearing the queue
-    
+function die(mon) {    
     actionQueue.push({
         method: "text",
         txt: mon.name + " has been defeated!"
     });
-    actionQueue = [];
     if(mon == currentPlayerMon) {
+        for(let i = 0; i < inBattle.length; i++) {
+            if(inBattle[i] == currentPlayerMon) {
+                inBattle.splice(i, 1);
+            }
+        }
+        actions.player.action = "switch";
         if(hasMonsAvailable('player')) {
             mustSwitch = true;
             actionQueue.push({
@@ -732,6 +790,11 @@ function die(mon) {
             });
         }
     } else {
+        actionQueue.push({
+            method: 'xp',
+            winMon: currentPlayerMon,
+            loseMon: currentOpponentMon
+        });
         if(battleType === 'wild') {
             actionQueue.push({
                 method: "end",
@@ -751,6 +814,26 @@ function hasMonsAvailable(id) {
     return false;
 }
 
+function giveXp(winMon, loseMon) {
+    for(let i = 0; i < inBattle.length; i++) {
+        let xp = calculateExp(inBattle[i], loseMon);
+        actionQueue.push({
+            method: "text",
+            txt: inBattle[i].name + " gained " + xp + " XP!"
+        });
+        if(checkLevelUp(winMon, xp)) {
+        
+        }
+    }
+}
+
+function checkLevelUp(mon, xp) {
+    if (parseInt(mon.exp.current) + xp >= parseInt(mon.exp.next)) {
+        return true;
+    }
+    return false;
+}
+
 function calculateExp(winMon, loseMon) {
     let delta = 0.8 * (Math.pow((parseInt(winMon.level) + 1), 2.5) - Math.pow(parseInt(winMon.level), 2.5));
     let factor = parseInt(loseMon.xp) * (loseMon.level / winMon.level);
@@ -760,7 +843,6 @@ function calculateExp(winMon, loseMon) {
 
 function endBattle() {
     actionQueue = [];
-    calculateExp(currentPlayerMon, currentOpponentMon);
     goToLocation();
     // will need to save info here
     console.log("battle ended");
