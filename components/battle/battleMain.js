@@ -335,7 +335,7 @@ function parseAttack(id) {
 
 function selfHit(acc, accMod) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) * parseInt(accMod)) / 100;
+    let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10);
     if(chance <= accuracy) {
         return true;
     } else {
@@ -349,8 +349,7 @@ function selfHit(acc, accMod) {
 
 function targetHit(acc, accMod, eva) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) * parseInt(accMod)) / 100;
-    accuracy *= (2 - parseInt(eva)); 
+    let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10) - (parseInt(eva) / 10);
     if(chance <= accuracy) {
         return true;
     } else {
