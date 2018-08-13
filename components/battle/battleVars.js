@@ -168,29 +168,6 @@ var actionQueue = [];
 var turn = [];
 var turnCount = 0;
 
-var statusMods = {
-    burn: {
-        stats: ['def'],
-        mod: 0.3
-    },
-    sick: {
-        stats: ['atk', 'sAtk'],
-        mod: 0.3
-    },
-    sleep: {
-        stats: ['sDef', 'eva'],
-        mod: 0.5
-    },
-    stun: {
-        stats: ['speed', 'eva'],
-        mod: 0.5
-    },
-    wet: {
-        stats: ['acc'],
-        mod: 0.2
-    }
-}
-
 var statusCounter = {
     player: {
         daze: {count: 0, max: 1},

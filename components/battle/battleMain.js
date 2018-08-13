@@ -85,6 +85,8 @@ function preBattlePhase() {
         actions[turn[turnCount]].action = "";
     } else if (actions[turn[turnCount]].action == "catch") {
         useItem(turn[turnCount]);
+    } else {
+        checkPreStatus(turn[turnCount]);
     }
     nextAction();
 }
@@ -106,6 +108,14 @@ function mainBattlePhase() {
         parseAttack(turn[turnCount]);
     } else if(actions[turn[turnCount]].action == "shudder") {
         shudder(turn[turnCount]);
+    } else if(actions[turn[turnCount]].action == "daze") {
+        console.log("dazed");
+    } else if(actions[turn[turnCount]].action == "sick") {
+        console.log("sick");
+    } else if(actions[turn[turnCount]].action == "sleep") {
+        console.log("asleep");
+    } else if(actions[turn[turnCount]].action == "stun") {
+        console.log("stunned");
     }
     nextAction();
 }
@@ -170,15 +180,50 @@ function checkKO(mon, dmg) {
     return false;
 }
  
-function checkMainStatus(target) {
+function checkPreStatus(target) {
     if(target == "player") {
         var mon = currentPlayerMon;
     } else if (target == "opponent") {
         var mon = currentOpponentMon;
     }
     for(let i = 0; i < mon.status.length; i++) {
-        if(mon.status[i] == "sleep") {
-
+        if(mon.status[i] == "daze") {
+            // will need a way for a target to not be dazed consecutively
+            if(statusCounter[target].daze.count == 0) {
+                statusCounter[target].daze.count++;
+                actions[target].action = "daze";
+            } else if(statusCounter[target].daze.count >= statusCounter[target].daze.max) {
+                removeStatus(mon, "daze");
+            }
+        } else if(mon.status[i] == "sick") {
+            let chance = Math.random();
+            if(chance > 0.5) {
+                actions[target].action = "sick";
+            } 
+        } else if(mon.status[i] == "sleep") {
+            if(statusCounter[target].sleep.count >= statusCounter[target].sleep.max) {
+                removeStatus(mon, "sleep");
+            } else {
+                let chance = Math.random();
+                if(chance > 0.5) {
+                    statusCounter[target].sleep.count++;
+                    actions[target].action = "sleep";
+                } else {
+                    removeStatus(mon, 'sleep');
+                }
+            }
+        } else if(mon.status[i] == "stun") {
+            if(statusCounter[target].stun.count >= statusCounter[target].stun.max) {
+                removeStatus(mon, "stun");
+            } else {
+                let chance = Math.random();
+                if(chance > 0.5) {
+                    statusCounter[target].stun.count++;
+                    actions[target].action = "stun";
+                } else {
+                    removeStatus(mon, 'stun');
+                }
+            }
         }
     }
 }
@@ -594,6 +639,56 @@ function statusEffect(status, target, prob) {
             method: 'text',
             txt: str
         });
+    }
+}
+
+function removeStatus(mon, status) {
+    if(mon == currentPlayerMon) {
+        var target = 'player';
+    } else if(mon == currentOpponentMon) {
+        var target = 'opponent';
+    }
+    for(let i = 0; i < mon.status.length; i++) {
+        if(mon.status[i] == status) {
+            mon.status.splice(i, 1);
+            statusCounter[target][status].count = 0;
+            if(status == "daze") {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " is no longer dazed!"
+                });
+            } else if (status == "sick") {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " feels better!"
+                });
+            } else if(status == 'sleep') {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " woke up!"
+                });
+            } else if(status == "stun") {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " is no longer stunned!"
+                });
+            } else if (status == "wet") {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " dried off!"
+                });
+            } else {
+                actionQueue.push({
+                    method: "text",
+                    txt: mon.name + " is no longer " + status + "ed!"
+                });
+            }
+            actionQueue.push({
+                method: 'status',
+                id: "",
+                target: mon
+            });
+        }
     }
 }
 

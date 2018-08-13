@@ -217,3 +217,31 @@ function checkStab(mon, move) {
     }
     return 1;
 }
+
+function statusMods(mon) {
+    let mod = {
+        atk: 1,
+        def: 1,
+        sAtk: 1,
+        sDef: 1, 
+        speed: 1,
+        acc: 1,
+        eva: 1
+    };
+    for(let i = 0; i < mon.status.length; i++) {
+        if(mon.status[i] == 'burn') {
+            mod.def *= 0.5;
+        } else if(mon.status[i] == 'sick') {
+            mod.atk *= 0.5;
+            mod.sAtk *= 0.5;
+        } else if(mon.status[i] == 'sleep') {
+            mod.sDef *= 0.5;
+            mod.eva *= 0.5;
+        } else if(mon.status[i] == 'stun') {
+            mod.speed *= 0.5;
+            mod.eva *= 0.75;
+        } else if(mon.status[i] == 'wet') {
+            mod.acc *= 0.75;
+        }
+    }
+}
