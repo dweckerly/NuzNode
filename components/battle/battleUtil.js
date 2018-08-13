@@ -98,7 +98,7 @@ function resetMods(target) {
 function changeMon(target) {
     resetMods(target) 
     if(target == 'player') {
-        playerMonName = currentPlayerMon['name'];
+        playerNameTxt.txt = currentPlayerMon['name'];
         playerMonLvl = currentPlayerMon['level'];
         pLvlTxt = "lvl. " + playerMonLvl
         $('#player-img').attr('src', currentPlayerMon.img);
@@ -127,14 +127,20 @@ function populateMoveBtns() {
                 $('#atk-4').prop("disabled", false);
             } else {
                 $('#atk-4').prop("disabled", true);
+                $('#atk-4').html("-");
             }
         } else {
             $('#atk-3').prop("disabled", true);
+            $('#atk-3').html("-");
             $('#atk-4').prop("disabled", true);
+            $('#atk-4').html("-");
         }
     } else {
         $('#atk-2').prop("disabled", true);
+        $('#atk-2').html("-");
         $('#atk-3').prop("disabled", true);
+        $('#atk-3').html("-");
         $('#atk-4').prop("disabled", true);
+        $('#atk-4').html("-");
     }
 }
