@@ -104,6 +104,8 @@ function changeMon(target) {
         $('#player-img').attr('src', currentPlayerMon.img);
         playerStatusTxt = createStatusString(currentPlayerMon);
         currentPlayerMon['healthDisplay'] = playerHealthOverlay;
+        let per = currentPlayerMon.hp.current / currentPlayerMon.hp.max;
+        playerHealthOverlay.w = playerHealthRect.w * per;
         populateMoveBtns();
     } else if (target == 'opponent'){
 
