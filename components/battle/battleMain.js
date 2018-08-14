@@ -32,7 +32,11 @@ function endRound() {
 function runActionQueue() {
     if (actionQueue[0].method == "text") {
         let str = actionQueue.shift();
-        showBattleText(str.txt);
+        if('style' in str) {
+            showBattleText(str.txt, str.style);
+        } else {
+            showBattleText(str.txt);
+        }
     } else if (actionQueue[0].method == "damage") {
         let damage = actionQueue.shift();
         showDamage(damage.dmg, damage.target);
@@ -137,7 +141,11 @@ function postBattlePhase() {
     nextAction();
 }
 
-function showBattleText(txt) {
+function showBattleText(txt, style) {
+    $('#battle-text').removeClass('shake');
+    if(style == 'shake') {
+        $('#battle-text').addClass('shake');
+    }
     typeWriter('battle-text', txt);
     var time = (txt.length * 50) + 1000;
     textInterval = setInterval(() => {
@@ -940,11 +948,12 @@ function damageMod(move, atkMon, defMon) {
         actionQueue.push({
             method: "text",
             txt: defMon.name + " is devastated!",
+            style: 'shake'
         });
     } else if (mod < 1) {
         actionQueue.push({
             method: "text",
-            txt: defMon.name + " resists.",
+            txt: defMon.name + " resists."
         });
     }
     return mod * stab;

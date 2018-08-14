@@ -89,6 +89,10 @@ canvas {
     display: inline-block;
 }
 
+.shake {
+    animation: shake 0.5s; 
+    animation-iteration-count: infinite; 
+}
 .valign {
     position: fixed;
     top: 50%;
