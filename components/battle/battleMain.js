@@ -1,5 +1,5 @@
 function startFight() {
-    if(currentOpponentMon.ai == "random") {
+    if (currentOpponentMon.ai == "random") {
         randomMoveSelect();
     }
     round();
@@ -9,14 +9,14 @@ function round() {
     actionQueue = [];
     phaseCounter++;
     console.log(phases[phaseCounter]);
-    if(phases[phaseCounter] == 'pre') {
+    if (phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
         mainBattlePhase();
     } else if (phases[phaseCounter] == 'post') {
         postBattlePhase();
     }
-    if(phaseCounter >= 4) {
+    if (phaseCounter >= 4) {
         phaseCounter = 0;
         endRound();
     }
@@ -30,7 +30,7 @@ function endRound() {
 }
 
 function runActionQueue() {
-    if(actionQueue[0].method == "text") {
+    if (actionQueue[0].method == "text") {
         let str = actionQueue.shift();
         showBattleText(str.txt);
     } else if (actionQueue[0].method == "damage") {
@@ -44,10 +44,11 @@ function runActionQueue() {
         switchIn(switchMon.target, switchMon.id);
     } else if (actionQueue[0].method == "must-switch") {
         populateSwitch();
-        $('#switch-mon-div').fadeIn(); 
-    } else if(actionQueue[0].method == "end") {
+        $('#switch-mon-div').fadeIn();
+    } else if (actionQueue[0].method == "end") {
         endBattle();
-    } else if(actionQueue[0].method == 'xp') {
+    } else if (actionQueue[0].method == 'xp') {
+        console.log("xp called");
         let exp = actionQueue.shift();
         giveXp(exp.winMon, exp.loseMon);
     }
@@ -55,11 +56,11 @@ function runActionQueue() {
 
 function nextTurn() {
     turnCount++;
-    if(turnCount > 1) {
+    if (turnCount > 1) {
         turnCount = 0;
         round();
     } else {
-        switch(phases[phaseCounter]) {
+        switch (phases[phaseCounter]) {
             case 'pre':
                 preBattlePhase();
                 break;
@@ -77,7 +78,7 @@ function nextTurn() {
 }
 
 function preBattlePhase() {
-    if(turnCount == 0) {
+    if (turnCount == 0) {
         checkSpeed();
     }
     if (actions[turn[turnCount]].action == "switch") {
@@ -92,36 +93,36 @@ function preBattlePhase() {
 }
 
 function mainBattlePhase() {
-    if(turnCount == 0) {
+    if (turnCount == 0) {
         checkSpeed();
     }
-    if(actions.player.action == "attack" && actions.opponent.action == "attack") {
+    if (actions.player.action == "attack" && actions.opponent.action == "attack") {
         checkPriority();
     }
-    if(checkFear(currentPlayerMon)) {
+    if (checkFear(currentPlayerMon)) {
         actions.player.action = "shudder";
     }
-    if(checkFear(currentOpponentMon)) {
+    if (checkFear(currentOpponentMon)) {
         actions.opponent.action = "shudder";
     }
     if (actions[turn[turnCount]].action == "attack") {
         parseAttack(turn[turnCount]);
-    } else if(actions[turn[turnCount]].action == "shudder") {
+    } else if (actions[turn[turnCount]].action == "shudder") {
         shudder(turn[turnCount]);
-    } else if(actions[turn[turnCount]].action == "daze") {
-        console.log("dazed");
-    } else if(actions[turn[turnCount]].action == "sick") {
-        console.log("sick");
-    } else if(actions[turn[turnCount]].action == "sleep") {
-        console.log("asleep");
-    } else if(actions[turn[turnCount]].action == "stun") {
-        console.log("stunned");
+    } else if (actions[turn[turnCount]].action == "daze") {
+        cantMove(turn[turnCount], 'daze');
+    } else if (actions[turn[turnCount]].action == "sick") {
+        cantMove(turn[turnCount], 'sick');
+    } else if (actions[turn[turnCount]].action == "sleep") {
+        cantMove(turn[turnCount], 'sleep');
+    } else if (actions[turn[turnCount]].action == "stun") {
+        cantMove(turn[turnCount], 'stun');
     }
     nextAction();
 }
 
 function postBattlePhase() {
-    if(turnCount == 0) {
+    if (turnCount == 0) {
         checkSpeed();
     }
     if (actions[turn[turnCount]].action == "switch") {
@@ -146,7 +147,7 @@ function showBattleText(txt) {
 }
 
 function nextAction() {
-    if(actionQueue.length > 0) {
+    if (actionQueue.length > 0) {
         runActionQueue();
     } else {
         nextTurn();
@@ -154,8 +155,8 @@ function nextAction() {
 }
 
 function checkFear(mon) {
-    if(mon == currentPlayerMon) {
-        if(mon.happiness < 50) {
+    if (mon == currentPlayerMon) {
+        if (mon.happiness < 50) {
             var threshold = mon.hp.max - (mon.hp.max * (mon.happiness / 100));
         } else {
             var threshold = 0;
@@ -164,9 +165,9 @@ function checkFear(mon) {
         var threshold = mon.hp.max / 4;
     }
 
-    if(mon.hp.current < threshold) {
+    if (mon.hp.current < threshold) {
         let chance = Math.random();
-        if(chance < 0.5) {
+        if (chance < 0.5) {
             return true;
         }
     }
@@ -174,50 +175,50 @@ function checkFear(mon) {
 }
 
 function checkKO(mon, dmg) {
-    if(parseInt(mon.hp.current) - dmg <= 0) {
+    if (parseInt(mon.hp.current) - dmg <= 0) {
         return true;
     }
     return false;
 }
- 
+
 function checkPreStatus(target) {
-    if(target == "player") {
+    if (target == "player") {
         var mon = currentPlayerMon;
     } else if (target == "opponent") {
         var mon = currentOpponentMon;
     }
-    for(let i = 0; i < mon.status.length; i++) {
-        if(mon.status[i] == "daze") {
+    for (let i = 0; i < mon.status.length; i++) {
+        if (mon.status[i] == "daze") {
             // will need a way for a target to not be dazed consecutively
-            if(statusCounter[target].daze.count == 0) {
+            if (statusCounter[target].daze.count == 0) {
                 statusCounter[target].daze.count++;
                 actions[target].action = "daze";
-            } else if(statusCounter[target].daze.count >= statusCounter[target].daze.max) {
+            } else if (statusCounter[target].daze.count >= statusCounter[target].daze.max) {
                 removeStatus(mon, "daze");
             }
-        } else if(mon.status[i] == "sick") {
+        } else if (mon.status[i] == "sick") {
             let chance = Math.random();
-            if(chance > 0.5) {
+            if (chance > 0.5) {
                 actions[target].action = "sick";
-            } 
-        } else if(mon.status[i] == "sleep") {
-            if(statusCounter[target].sleep.count >= statusCounter[target].sleep.max) {
+            }
+        } else if (mon.status[i] == "sleep") {
+            if (statusCounter[target].sleep.count >= statusCounter[target].sleep.max) {
                 removeStatus(mon, "sleep");
             } else {
                 let chance = Math.random();
-                if(chance > 0.5) {
+                if (chance > 0.5) {
                     statusCounter[target].sleep.count++;
                     actions[target].action = "sleep";
                 } else {
                     removeStatus(mon, 'sleep');
                 }
             }
-        } else if(mon.status[i] == "stun") {
-            if(statusCounter[target].stun.count >= statusCounter[target].stun.max) {
+        } else if (mon.status[i] == "stun") {
+            if (statusCounter[target].stun.count >= statusCounter[target].stun.max) {
                 removeStatus(mon, "stun");
             } else {
                 let chance = Math.random();
-                if(chance > 0.5) {
+                if (chance > 0.5) {
                     statusCounter[target].stun.count++;
                     actions[target].action = "stun";
                 } else {
@@ -232,13 +233,13 @@ function checkSpeed() {
     turn = [];
     let pSpeed = parseInt(currentPlayerMon.stats.speed) * playerMods.speed.value;
     let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value;
-    if(pSpeed > oSpeed) {
+    if (pSpeed > oSpeed) {
         turn = ["player", "opponent"];
     } else if (oSpeed > pSpeed) {
         turn = ["opponent", "player"];
     } else if (pSpeed == oSpeed) {
         let chance = Math.random();
-        if(chance >= 0.5) {
+        if (chance >= 0.5) {
             turn = ["player", "opponent"];
         } else {
             turn = ["opponent", "player"];
@@ -252,20 +253,20 @@ function checkPriority() {
     var oP = 0;
     var pP = 0;
 
-    for(let i = 0; i < oEff.length; i++) {
-        if(oEff[i].includes("priority")) {
+    for (let i = 0; i < oEff.length; i++) {
+        if (oEff[i].includes("priority")) {
             let p = oEff[i].split('-');
             oP = p[1];
         }
     }
-    for(let i = 0; i < pEff.length; i++) {
-        if(pEff[i].includes("priority")) {
-            let p = oEff[i].split('-');
+    for (let i = 0; i < pEff.length; i++) {
+        if (pEff[i].includes("priority")) {
+            let p = pEff[i].split('-');
             pP = p[1];
         }
     }
 
-    if(oP > pP) {
+    if (oP > pP) {
         turn = ["opponent", "player"];
     } else if (pP > oP) {
         turn = ["player", "opponent"];
@@ -273,8 +274,8 @@ function checkPriority() {
 }
 
 function switchMon(target, id) {
-    if(target == 'player') {
-        if(currentPlayerMon.hp.current > 0) {
+    if (target == 'player') {
+        if (currentPlayerMon.hp.current > 0) {
             actionQueue.push({
                 method: "text",
                 txt: currentPlayerMon.name + " come back!"
@@ -295,9 +296,9 @@ function switchMon(target, id) {
 }
 
 function switchIn(target, id) {
-    if(target == 'player') {
-        for(let i = 0; i < partyMons.length; i++) {
-            if(partyMons[i].id == id) {
+    if (target == 'player') {
+        for (let i = 0; i < partyMons.length; i++) {
+            if (partyMons[i].id == id) {
                 currentPlayerMon = partyMons[i];
             }
         }
@@ -315,12 +316,12 @@ function useItem(id) {
 }
 
 function shudder(id) {
-    if(id == 'player') {
+    if (id == 'player') {
         actionQueue.push({
             method: 'text',
             txt: currentPlayerMon.name + " is too scared to fight!"
         });
-    } else if(id == 'opponent') {
+    } else if (id == 'opponent') {
         actionQueue.push({
             method: 'text',
             txt: currentOpponentMon.name + " shudders with fear!"
@@ -330,13 +331,13 @@ function shudder(id) {
 }
 
 function parseAttack(id) {
-    if(id == 'player') { 
+    if (id == 'player') {
         actionQueue.push({
             method: 'text',
             txt: currentPlayerMon.name + " uses " + currentPlayerMon.moves[actions[id]['id']].name + "!"
         });
         if (currentPlayerMon.moves[actions[id]['id']].range == 'self') {
-            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
+            if (selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
                 if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                 } else {
@@ -345,8 +346,8 @@ function parseAttack(id) {
                 }
             }
         } else if (currentPlayerMon.moves[actions[id]['id']].range == 'all') {
-            if(selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
-                if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
+            if (selfHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value)) {
+                if (targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
                     if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
                         parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                     } else {
@@ -356,7 +357,7 @@ function parseAttack(id) {
                 }
             }
         } else {
-            if(targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
+            if (targetHit(currentPlayerMon.moves[actions[id]['id']].acc, playerMods.acc.value, opponentMods.eva.value)) {
                 if (currentPlayerMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentPlayerMon.moves[actions[id]['id']].effects, currentPlayerMon, playerMods, currentOpponentMon, opponentMods);
                 } else {
@@ -370,18 +371,18 @@ function parseAttack(id) {
             method: 'text',
             txt: currentOpponentMon.name + " uses " + currentOpponentMon.moves[actions[id]['id']].name + "!"
         });
-        if(currentOpponentMon.moves[actions[id]['id']].range == 'self') {
-            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
+        if (currentOpponentMon.moves[actions[id]['id']].range == 'self') {
+            if (selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
                 if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 } else {
                     calculateDamage(currentOpponentMon.moves[actions[id]['id']], currentOpponentMon, opponentMods, currentPlayerMon, playerMods)
                     parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
-                } 
+                }
             }
         } else if (currentOpponentMon.moves[actions[id]['id']].range == 'all') {
-            if(selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
-                if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
+            if (selfHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value)) {
+                if (targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
                     if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
                         parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                     } else {
@@ -391,7 +392,7 @@ function parseAttack(id) {
                 }
             }
         } else {
-            if(targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
+            if (targetHit(currentOpponentMon.moves[actions[id]['id']].acc, opponentMods.acc.value, playerMods.eva.value)) {
                 if (currentOpponentMon.moves[actions[id]['id']].category == 'status') {
                     parseEffects(currentOpponentMon.moves[actions[id]['id']].effects, currentOpponentMon, opponentMods, currentPlayerMon, playerMods);
                 } else {
@@ -406,7 +407,7 @@ function parseAttack(id) {
 function selfHit(acc, accMod) {
     let chance = Math.random();
     let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10);
-    if(chance <= accuracy) {
+    if (chance <= accuracy) {
         return true;
     } else {
         actionQueue.push({
@@ -420,7 +421,7 @@ function selfHit(acc, accMod) {
 function targetHit(acc, accMod, eva) {
     let chance = Math.random();
     let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10) - (parseInt(eva) / 10);
-    if(chance <= accuracy) {
+    if (chance <= accuracy) {
         return true;
     } else {
         actionQueue.push({
@@ -432,8 +433,8 @@ function targetHit(acc, accMod, eva) {
 }
 
 function hasType(mon, type) {
-    for(let i = 0; i < mon.type.length; i++) {
-        if(mon.type[i] == type) {
+    for (let i = 0; i < mon.type.length; i++) {
+        if (mon.type[i] == type) {
             return true;
         }
     }
@@ -448,12 +449,12 @@ function damageEffects() {
 }
 
 function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
-    for(let i = 0; i < eff.length; i++) {
+    for (let i = 0; i < eff.length; i++) {
         let e = eff[i].split('-');
-        switch(e[0]) {
+        switch (e[0]) {
             case "burn":
-                if(e[1] == 'target') {
-                    if(!hasType(defMon, 'Fire')) {
+                if (e[1] == 'target') {
+                    if (!hasType(defMon, 'Fire')) {
                         statusEffect('burn', defMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -461,8 +462,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                             txt: defMon.name + " cannot be burnt."
                         });
                     }
-                } else if(e[1] == 'self') {
-                    if(!hasType(atkMon, 'Fire')) {
+                } else if (e[1] == 'self') {
+                    if (!hasType(atkMon, 'Fire')) {
                         statusEffect('burn', atkMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -473,33 +474,33 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "daze":
-                if(e[1] == 'target') {
+                if (e[1] == 'target') {
                     statusEffect('daze', defMon, e[2]);
-                } else if(e[1] == 'self') {
+                } else if (e[1] == 'self') {
                     statusEffect('daze', atkMon, e[2]);
                 }
                 break;
             case "dec":
-                if(e[2] == 'target') {
+                if (e[2] == 'target') {
                     decreaseMod(defMon, defMods, e[1], e[3]);
-                } else if(e[2] == 'self') {
+                } else if (e[2] == 'self') {
                     decreaseMod(atkMon, atkMods, e[1], e[3]);
                 }
                 break;
             case "heal":
                 break;
-            case "inc": 
-                if(e[2] == 'target') {
+            case "inc":
+                if (e[2] == 'target') {
                     increaseMod(defMon, defMods, e[1], e[3]);
-                } else if(e[2] == 'self') {
+                } else if (e[2] == 'self') {
                     increaseMod(atkMon, atkMods, e[1], e[3]);
                 }
                 break;
             case "persist":
                 break;
             case "poison":
-                if(e[1] == 'target') {
-                    if(!hasType(defMon, 'Toxic')) {
+                if (e[1] == 'target') {
+                    if (!hasType(defMon, 'Toxic')) {
                         statusEffect('poison', defMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -507,8 +508,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                             txt: defMon.name + " cannot be poisoned."
                         });
                     }
-                } else if(e[1] == 'self') {
-                    if(!hasType(atkMon, 'Toxic')) {
+                } else if (e[1] == 'self') {
+                    if (!hasType(atkMon, 'Toxic')) {
                         statusEffect('poison', atkMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -526,15 +527,15 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
             case "remove":
                 break;
             case "sick":
-                if(e[1] == 'target') {
+                if (e[1] == 'target') {
                     statusEffect('sick', defMon, e[2]);
-                } else if(e[1] == 'self') {
+                } else if (e[1] == 'self') {
                     statusEffect('sick', atkMon, e[2]);
                 }
                 break;
             case "sleep":
-                if(e[1] == 'target') {
-                    if(!hasType(defMon, 'Mech')) {
+                if (e[1] == 'target') {
+                    if (!hasType(defMon, 'Mech')) {
                         statusEffect('sleep', defMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -542,8 +543,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                             txt: defMon.name + " does not sleep."
                         });
                     }
-                } else if(e[1] == 'self') {
-                    if(!hasType(atkMon, 'Mech')) {
+                } else if (e[1] == 'self') {
+                    if (!hasType(atkMon, 'Mech')) {
                         statusEffect('sleep', atkMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -556,22 +557,22 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
             case "steal":
                 break;
             case "stun":
-                if(e[1] == 'target') {
+                if (e[1] == 'target') {
                     statusEffect('stun', defMon, e[2]);
-                } else if(e[1] == 'self') {
+                } else if (e[1] == 'self') {
                     statusEffect('stun', atkMon, e[2]);
                 }
                 break;
             case "wet":
-                if(e[1] == 'target') {
+                if (e[1] == 'target') {
                     statusEffect('wet', defMon, e[2]);
-                } else if(e[1] == 'self') {
+                } else if (e[1] == 'self') {
                     statusEffect('wet', atkMon, e[2]);
                 }
                 break;
             case "wound":
-                if(e[1] == 'target') {
-                    if(!hasType(defMon, 'Spooky')) {
+                if (e[1] == 'target') {
+                    if (!hasType(defMon, 'Spooky')) {
                         statusEffect('wound', defMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -579,8 +580,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                             txt: defMon.name + " cannot be wounded."
                         });
                     }
-                } else if(e[1] == 'self') {
-                    if(!hasType(atkMon, 'Spooky')) {
+                } else if (e[1] == 'self') {
+                    if (!hasType(atkMon, 'Spooky')) {
                         statusEffect('wound', atkMon, e[2]);
                     } else {
                         actionQueue.push({
@@ -593,21 +594,21 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
             default:
                 break;
         }
-    }   
+    }
 }
 
 function statusEffect(status, target, prob) {
-    if(!hasStatus(target, status)) {
+    if (!hasStatus(target, status)) {
         let chance = Math.random();
         let decProb = parseInt(prob) / 100;
-        if(chance <= decProb) {
-            if(status == 'wet') {
+        if (chance <= decProb) {
+            if (status == 'wet') {
                 var str = target.name + " is " + status + "!";
-            } else if(status == 'sick') {
+            } else if (status == 'sick') {
                 var str = target.name + " is " + status + "ened!";
-            } else if(status == 'stun') {
+            } else if (status == 'stun') {
                 var str = target.name + " is " + status + "ned!";
-            } else if(status == 'sleep') {
+            } else if (status == 'sleep') {
                 var str = target.name + " fell a" + status + "!";
             } else if (status == 'daze') {
                 var str = target.name + " is " + status + "d!";
@@ -626,11 +627,11 @@ function statusEffect(status, target, prob) {
             });
         }
     } else {
-        if(status == 'wet' || status == 'sick') {
+        if (status == 'wet' || status == 'sick') {
             var str = target.name + " is already " + status + ".";
-        } else if(status == 'stun') {
+        } else if (status == 'stun') {
             var str = target.name + " is already " + status + "ned.";
-        } else if(status == 'sleep') {
+        } else if (status == 'sleep') {
             var str = target.name + " is already a" + status + ".";
         } else {
             var str = target.name + " is already " + status + "ed.";
@@ -643,16 +644,16 @@ function statusEffect(status, target, prob) {
 }
 
 function removeStatus(mon, status) {
-    if(mon == currentPlayerMon) {
+    if (mon == currentPlayerMon) {
         var target = 'player';
-    } else if(mon == currentOpponentMon) {
+    } else if (mon == currentOpponentMon) {
         var target = 'opponent';
     }
-    for(let i = 0; i < mon.status.length; i++) {
-        if(mon.status[i] == status) {
+    for (let i = 0; i < mon.status.length; i++) {
+        if (mon.status[i] == status) {
             mon.status.splice(i, 1);
             statusCounter[target][status].count = 0;
-            if(status == "daze") {
+            if (status == "daze") {
                 actionQueue.push({
                     method: "text",
                     txt: mon.name + " is no longer dazed!"
@@ -662,12 +663,12 @@ function removeStatus(mon, status) {
                     method: "text",
                     txt: mon.name + " feels better!"
                 });
-            } else if(status == 'sleep') {
+            } else if (status == 'sleep') {
                 actionQueue.push({
                     method: "text",
                     txt: mon.name + " woke up!"
                 });
-            } else if(status == "stun") {
+            } else if (status == "stun") {
                 actionQueue.push({
                     method: "text",
                     txt: mon.name + " is no longer stunned!"
@@ -693,8 +694,8 @@ function removeStatus(mon, status) {
 }
 
 function hasStatus(target, status) {
-    for(let i = 0; i < target.status.length; i++) {
-        if(target.status[i] == status) {
+    for (let i = 0; i < target.status.length; i++) {
+        if (target.status[i] == status) {
             return true;
         }
     }
@@ -702,7 +703,7 @@ function hasStatus(target, status) {
 }
 
 function showStatusChange(target) {
-    if(target == currentPlayerMon) {
+    if (target == currentPlayerMon) {
         playerStatus.txt = createStatusString(currentPlayerMon);
     } else {
         opponentStatus.txt = createStatusString(currentOpponentMon);
@@ -714,13 +715,13 @@ function showStatusChange(target) {
 }
 
 function decreaseMod(target, mods, stat, amount) {
-    if(mods[stat].count > -5) {
-        if(parseInt(mods[stat].count) - parseInt(amount) < -5) {
+    if (mods[stat].count > -5) {
+        if (parseInt(mods[stat].count) - parseInt(amount) < -5) {
             amount = parseInt(mods[stat].count) - (-5);
-        } 
+        }
         mods[stat].count -= parseInt(amount);
         mods[stat].value = 2 / (Math.abs(mods[stat].count) + 2);
-        if(amount == 1) {
+        if (amount == 1) {
             actionQueue.push({
                 method: "text",
                 txt: target.name + "'s " + stat.toUpperCase() + " decreased!",
@@ -746,13 +747,13 @@ function decreaseMod(target, mods, stat, amount) {
 
 
 function increaseMod(target, mods, stat, amount) {
-    if(mods[stat].count < 5) {
-        if(parseInt(mods[stat].count) + parseInt(amount) > 5) {
+    if (mods[stat].count < 5) {
+        if (parseInt(mods[stat].count) + parseInt(amount) > 5) {
             amount = 5 - parseInt(mods[stat].count);
-        } 
+        }
         mods[stat].count += parseInt(amount);
         mods[stat].value = (mods[stat].count + 2) / 2;
-        if(amount == 1) {
+        if (amount == 1) {
             actionQueue.push({
                 method: "text",
                 txt: target.name + "'s " + stat.toUpperCase() + " increased!",
@@ -787,7 +788,7 @@ function recoil(mon, amount) {
         method: "text",
         txt: mon.name + " took recoil damage.",
     });
-    if(checkKO(mon, dmg)) {
+    if (checkKO(mon, dmg)) {
         die(mon);
     }
 }
@@ -795,16 +796,16 @@ function recoil(mon, amount) {
 function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
     var lvl = parseInt(atkMon.level);
     var base = parseInt(move.dmg);
-    if(move.category == 'physical') {
-        var a = parseInt(atkMon.stats.atk) * parseInt(atkMods.atk.value);
-        var d = parseInt(defMon.stats.def) * parseInt(defMods.def.value);
+    if (move.category == 'physical') {
+        var a = parseInt(atkMon.stats.atk) * parseFloat(atkMods.atk.value);
+        var d = parseInt(defMon.stats.def) * parseFloat(defMods.def.value);
     } else if (move.category == 'special') {
-        var a = parseInt(atkMon.stats.sAtk) * parseInt(atkMods.sAtk.value);
-        var d = parseInt(defMon.stats.sDef) * parseInt(defMods.sDef.value);
+        var a = parseInt(atkMon.stats.sAtk) * parseFloat(atkMods.sAtk.value);
+        var d = parseInt(defMon.stats.sDef) * parseFloat(defMods.sDef.value);
     }
     var dmgMod = damageMod(move, atkMon, defMon);
     var dmg = Math.round(((((((2 * lvl) / 5) + 2) * base * (a / d)) / 50) + 2) * dmgMod);
-    if(dmg < 1) {
+    if (dmg < 1) {
         dmg = 1;
     }
     actionQueue.push({
@@ -817,10 +818,10 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
 function damageMod(move, atkMon, defMon) {
     let mod = 1;
     let stab = checkStab(atkMon, move);
-    for(let i = 0; i < defMon.type.length; i++) {
+    for (let i = 0; i < defMon.type.length; i++) {
         mod *= typeCheck(move.type, defMon.type[i]);
     }
-    if(mod > 1) {
+    if (mod > 1) {
         actionQueue.push({
             method: "text",
             txt: defMon.name + " is devastated!",
@@ -836,43 +837,42 @@ function damageMod(move, atkMon, defMon) {
 
 function showDamage(dmg, defMon) {
     var newHp = parseInt(defMon.hp.current) - dmg;
-    console.log(newHp);
-    if(newHp <= 0) {
+    if (newHp <= 0) {
         newHp = 0;
         var newWidth = 0;
     } else {
         var newWidth = Math.round(defMon.healthDisplay.w * (newHp / parseInt(defMon.hp.current)));
     }
-    if(newHp > 0 && newWidth <= 0) {
+    if (newHp > 0 && newWidth <= 0) {
         newWidth = 1;
     }
     defMon.hp.current = newHp;
-    if(defMon.hp.current == 0) {
+    if (defMon.hp.current == 0) {
         die(defMon);
     }
     updatePartyMons();
     damageInterval = setInterval(() => {
         defMon.healthDisplay.w = lerp(defMon.healthDisplay.w, newWidth, 0.05);
-        if(defMon.healthDisplay.w >= (newWidth - 0.2) && defMon.healthDisplay.w <= (newWidth + 0.2)) {
+        if (defMon.healthDisplay.w >= (newWidth - 0.2) && defMon.healthDisplay.w <= (newWidth + 0.2)) {
             clearInterval(damageInterval);
             nextAction();
         }
     }, 20);
 }
 
-function die(mon) {    
+function die(mon) {
     actionQueue.push({
         method: "text",
         txt: mon.name + " has been defeated!"
     });
-    if(mon == currentPlayerMon) {
-        for(let i = 0; i < inBattle.length; i++) {
-            if(inBattle[i] == currentPlayerMon) {
+    if (mon == currentPlayerMon) {
+        for (let i = 0; i < inBattle.length; i++) {
+            if (inBattle[i] == currentPlayerMon) {
                 inBattle.splice(i, 1);
             }
         }
         actions.player.action = "switch";
-        if(hasMonsAvailable('player')) {
+        if (hasMonsAvailable('player')) {
             mustSwitch = true;
             actionQueue.push({
                 method: "must-switch",
@@ -896,18 +896,13 @@ function die(mon) {
             winMon: currentPlayerMon,
             loseMon: currentOpponentMon
         });
-        if(battleType === 'wild') {
-            actionQueue.push({
-                method: "end",
-            });
-        }
     }
 }
 
 function hasMonsAvailable(id) {
-    if(id == 'player') {
-        for(let i = 0; i < partyMons.length; i++) {
-            if(partyMons[i].hp.current > 0) {
+    if (id == 'player') {
+        for (let i = 0; i < partyMons.length; i++) {
+            if (partyMons[i].hp.current > 0) {
                 return true;
             }
         }
@@ -916,16 +911,29 @@ function hasMonsAvailable(id) {
 }
 
 function giveXp(winMon, loseMon) {
-    for(let i = 0; i < inBattle.length; i++) {
+    for (let i = 0; i < inBattle.length; i++) {
         let xp = calculateExp(inBattle[i], loseMon);
         actionQueue.push({
             method: "text",
             txt: inBattle[i].name + " gained " + xp + " XP!"
         });
-        if(checkLevelUp(winMon, xp)) {
-        
+        if (checkLevelUp(winMon, xp)) {
+            actionQueue.push({
+                method: "text",
+                txt: inBattle[i].name + " leveled up!"
+            });
+            actionQueue.push({
+                method: "levelup",
+                target: inBattle[i]
+            });
         }
     }
+    if (battleType === 'wild') {
+        actionQueue.push({
+            method: "end",
+        });
+    }
+    nextAction();
 }
 
 function checkLevelUp(mon, xp) {
@@ -948,4 +956,3 @@ function endBattle() {
     // will need to save info here
     console.log("battle ended");
 }
-

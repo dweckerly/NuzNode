@@ -131,7 +131,7 @@
         "effects": ["dec-acc-target-1"],
         "anim": ""
     },
-    "12" : {
+    "12": {
         "name": "Amp Up",
         "description": "Concentrates electrical energy. Raises ATK and SATK.",
         "type": "Electric",
@@ -140,7 +140,7 @@
         "dmg": 0,
         "acc": 100,
         "crit": 0,
-        "effects": ["inc-atk-self-1", "inc-satk-self-1"],
+        "effects": ["inc-atk-self-1", "inc-sAtk-self-1"],
         "anim": ""
     },
     "13": {
@@ -212,7 +212,7 @@
         "dmg": 0,
         "acc": 100,
         "crit": 0,
-        "effects": ["inc-def-self-1", "inc-sdef-self-1"],
+        "effects": ["inc-def-self-1", "inc-sDef-self-1"],
         "anim": ""
     },
     "19": {
@@ -224,7 +224,7 @@
         "dmg": 0,
         "acc": 100,
         "crit": 0,
-        "effects": ["dec-def-self-3", "dec-sdef-self-3", "inc-satk-self-2", "inc-speed-self-1"],
+        "effects": ["dec-def-self-3", "dec-sDef-self-3", "inc-sAtk-self-2", "inc-speed-self-1"],
         "anim": ""
     },
     "20": {
@@ -440,7 +440,7 @@
         "dmg": 0,
         "acc": 100,
         "crit": 0,
-        "effects": ["inc-eva-self-1", "inc-speed-self-1", "dec-sdef-self-1"],
+        "effects": ["inc-eva-self-1", "inc-speed-self-1", "dec-sDef-self-1"],
         "anim": ""
     },
     "38": {
