@@ -83,6 +83,22 @@ function endSelectPhase() {
     });
 }
 
+function copyMods(sourceMods, destMods, mod) {
+    if(mod == 'all') {
+        destMods = sourceMods;
+        actionQueue.push({
+            method: "text",
+            txt: atkMon.name + " copied all " + defMon.name + "'s stat changes!"
+        });
+    } else {
+        destMods[mod] = sourceMods[mod];
+        actionQueue.push({
+            method: "text",
+            txt: atkMon.name + " copied " + defMon.name + "'s " + mod.toUpperCase() + " changes!"
+        });
+    }
+}
+
 function resetMods(target) {
     if (target == 'player') {
         playerMods = {
@@ -256,6 +272,7 @@ function statusMods(mon) {
             mod.acc *= 0.75;
         }
     }
+    return mod;
 }
 
 function cantMove(target, eff) {

@@ -86,8 +86,6 @@ function preBattlePhase() {
         actions[turn[turnCount]].action = "";
     } else if (actions[turn[turnCount]].action == "catch") {
         useItem(turn[turnCount]);
-    } else {
-        checkPreStatus(turn[turnCount]);
     }
     nextAction();
 }
@@ -102,6 +100,7 @@ function mainBattlePhase() {
     if (checkFear(currentPlayerMon)) {
         actions.player.action = "shudder";
     }
+    checkMainStatus(turn[turnCount]);
     if (checkFear(currentOpponentMon)) {
         actions.opponent.action = "shudder";
     }
@@ -132,6 +131,8 @@ function postBattlePhase() {
             id: actions[turn[turnCount]].id,
             target: turn[turnCount]
         });
+    } else {
+        checkPostStatus(turn[turnCount]);
     }
     nextAction();
 }
@@ -167,7 +168,7 @@ function checkFear(mon) {
 
     if (mon.hp.current < threshold) {
         let chance = Math.random();
-        if (chance < 0.5) {
+        if (chance < 0.25) {
             return true;
         }
     }
@@ -181,7 +182,7 @@ function checkKO(mon, dmg) {
     return false;
 }
 
-function checkPreStatus(target) {
+function checkMainStatus(target) {
     if (target == "player") {
         var mon = currentPlayerMon;
     } else if (target == "opponent") {
@@ -229,10 +230,51 @@ function checkPreStatus(target) {
     }
 }
 
+function checkPostStatus(target) {
+    var woundCount = 0;
+    if(target == 'player') {
+        var mon = currentPlayerMon;
+    } else if (target == 'opponent') {
+        var mon = currentOpponentMon;
+    }
+    for (let i = 0; i < mon.status.length; i++) {
+        if (mon.status[i] == "burn") {
+            applyPostStatus(mon, 'burn', 0.0625);
+        } else if (mon.status[i] == 'poison') {
+            applyPostStatus(mon, 'poison', 0.125);
+        } else if (mon.status[i] == 'wound') {
+            woundCount++;
+        }
+    }
+    if(woundCount > 0) {
+        if(woundCount >= 3) {
+            woundCount = 4;
+        }
+        applyPostStatus(mon, 'wound', (woundCount / 16));
+    }
+}
+
+function applyPostStatus(mon, eff, amount) {
+    actionQueue.push({
+        method: "text",
+        txt: mon.name + " is hurt by the " + eff + "."
+    });
+    let dmg = Math.round(parseInt(mon.hp.max) * amount); 
+    actionQueue.push({
+        method: "damage",
+        dmg: dmg,
+        target: mon
+    });
+}
+
 function checkSpeed() {
+    var statusMod = {
+        player: statusMods(currentPlayerMon),
+        opponent: statusMods(currentOpponentMon)
+    }
     turn = [];
-    let pSpeed = parseInt(currentPlayerMon.stats.speed) * playerMods.speed.value;
-    let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value;
+    let pSpeed = parseInt(currentPlayerMon.stats.speed) * playerMods.speed.value * statusMod.player.speed;
+    let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value *  statusMod.opponent.speed;
     if (pSpeed > oSpeed) {
         turn = ["player", "opponent"];
     } else if (oSpeed > pSpeed) {
@@ -488,6 +530,7 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "heal":
+                removeStatus(atkMon, e[1]);
                 break;
             case "inc":
                 if (e[2] == 'target') {
@@ -495,8 +538,6 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 } else if (e[2] == 'self') {
                     increaseMod(atkMon, atkMods, e[1], e[3]);
                 }
-                break;
-            case "persist":
                 break;
             case "poison":
                 if (e[1] == 'target') {
@@ -523,8 +564,23 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 recoil(atkMon, e[1]);
                 break;
             case "recover":
+                if(e[1] == 'self') {
+                    calculateRecover(atkMon, e[2]);
+                } else if(e[1] == 'target') {
+                    calculateRecover(defMon, e[2]);
+                }
                 break;
             case "remove":
+                if(e[1] == 'mod') {
+                    if(e[2] == 'all') {
+                        resetMods('player');
+                        resetMods('opponent');
+                        actionQueue.push({
+                            method: "text",
+                            txt: "All status changes have been removed!"
+                        });
+                    }
+                }
                 break;
             case "sick":
                 if (e[1] == 'target') {
@@ -555,6 +611,9 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "steal":
+                if(e[1] == 'mod') {
+                    copyMods(defMods, atkMods, e[2]);
+                }
                 break;
             case "stun":
                 if (e[1] == 'target') {
@@ -599,31 +658,38 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
 
 function statusEffect(status, target, prob) {
     if (!hasStatus(target, status)) {
-        let chance = Math.random();
-        let decProb = parseInt(prob) / 100;
-        if (chance <= decProb) {
-            if (status == 'wet') {
-                var str = target.name + " is " + status + "!";
-            } else if (status == 'sick') {
-                var str = target.name + " is " + status + "ened!";
-            } else if (status == 'stun') {
-                var str = target.name + " is " + status + "ned!";
-            } else if (status == 'sleep') {
-                var str = target.name + " fell a" + status + "!";
-            } else if (status == 'daze') {
-                var str = target.name + " is " + status + "d!";
-            } else {
-                var str = target.name + " is " + status + "ed!";
+        if(target.status.length < 3) {
+            let chance = Math.random();
+            let decProb = parseInt(prob) / 100;
+            if (chance <= decProb) {
+                if (status == 'wet') {
+                    var str = target.name + " is " + status + "!";
+                } else if (status == 'sick') {
+                    var str = target.name + " is " + status + "ened!";
+                } else if (status == 'stun') {
+                    var str = target.name + " is " + status + "ned!";
+                } else if (status == 'sleep') {
+                    var str = target.name + " fell a" + status + "!";
+                } else if (status == 'daze') {
+                    var str = target.name + " is " + status + "d!";
+                } else {
+                    var str = target.name + " is " + status + "ed!";
+                }
+                target.status.push(status);
+                actionQueue.push({
+                    method: 'text',
+                    txt: str
+                });
+                actionQueue.push({
+                    method: 'status',
+                    id: status,
+                    target: target
+                });
             }
-            target.status.push(status);
+        } else {
             actionQueue.push({
                 method: 'text',
-                txt: str
-            });
-            actionQueue.push({
-                method: 'status',
-                id: status,
-                target: target
+                txt: target.name + " resists the " + status + "."
             });
         }
     } else {
@@ -648,6 +714,18 @@ function removeStatus(mon, status) {
         var target = 'player';
     } else if (mon == currentOpponentMon) {
         var target = 'opponent';
+    }
+    if(status == 'all') {
+        mon.status == [];
+        actionQueue.push({
+            method: "text",
+            txt: mon.name + " completely healed!"
+        });
+        actionQueue.push({
+            method: 'status',
+            id: "",
+            target: mon
+        });
     }
     for (let i = 0; i < mon.status.length; i++) {
         if (mon.status[i] == status) {
@@ -794,14 +872,18 @@ function recoil(mon, amount) {
 }
 
 function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
+    var statusMod = {
+        atkMon: statusMods(atkMon),
+        defMon: statusMods(defMon)
+    }
     var lvl = parseInt(atkMon.level);
     var base = parseInt(move.dmg);
     if (move.category == 'physical') {
-        var a = parseInt(atkMon.stats.atk) * parseFloat(atkMods.atk.value);
-        var d = parseInt(defMon.stats.def) * parseFloat(defMods.def.value);
+        var a = parseInt(atkMon.stats.atk) * parseFloat(atkMods.atk.value) * statusMod.atkMon.atk;
+        var d = parseInt(defMon.stats.def) * parseFloat(defMods.def.value) * statusMod.defMon.def;
     } else if (move.category == 'special') {
-        var a = parseInt(atkMon.stats.sAtk) * parseFloat(atkMods.sAtk.value);
-        var d = parseInt(defMon.stats.sDef) * parseFloat(defMods.sDef.value);
+        var a = parseInt(atkMon.stats.sAtk) * parseFloat(atkMods.sAtk.value) * statusMod.atkMon.sAtk;
+        var d = parseInt(defMon.stats.sDef) * parseFloat(defMods.sDef.value) * statusMod.defMon.sDef;
     }
     var dmgMod = damageMod(move, atkMon, defMon);
     var dmg = Math.round(((((((2 * lvl) / 5) + 2) * base * (a / d)) / 50) + 2) * dmgMod);
@@ -812,6 +894,30 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
         method: "damage",
         dmg: dmg,
         target: defMon
+    });
+}
+
+function calculateRecover(mon, amount) {
+    let rec = Math.round(parseInt(mon.hp.max) * (parseInt(amount) / 100));
+    if((parseInt(mon.hp.current) + rec) > mon.hp.max) {
+        rec = parseInt(mon.hp.max) - parseInt(mon.hp.current);
+    }
+    if(rec > 0) {
+        actionQueue.push({
+            method: "text",
+            txt: mon.name + " recovered health!",
+        });
+    } else {
+        actionQueue.push({
+            method: "text",
+            txt: mon.name + " is already at full health.",
+        });
+    }
+    
+    actionQueue.push({
+        method: "damage",
+        dmg: -(rec),
+        target: mon
     });
 }
 

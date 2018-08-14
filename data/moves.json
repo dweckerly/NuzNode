@@ -502,5 +502,20 @@
         "crit": 33,
         "effects": [],
         "anim": ""
+    },
+    "43": {
+        "name": "Noxious Cloud",
+        "description": "Spews a cloud of toxins that poisons the opponent and may also sicken.",
+        "type": "Toxic",
+        "category": "status",
+        "range": "ranged",
+        "dmg": 0,
+        "acc": 50,
+        "crit": 0,
+        "effects": ["poison-target-100", "sick-target-25"],
+        "anim": ""
+    },
+    "44": {
+        
     }
 }
