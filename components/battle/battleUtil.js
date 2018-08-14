@@ -267,12 +267,27 @@ function statusMods(mon) {
             mod.eva *= 0.5;
         } else if (mon.status[i] == 'stun') {
             mod.speed *= 0.5;
-            mod.eva *= 0.75;
+            mod.eva *= 0.5;
         } else if (mon.status[i] == 'wet') {
-            mod.acc *= 0.75;
+            
         }
     }
     return mod;
+}
+
+function statusTypeCheck(type, mon) {
+    if(hasStatus(mon, 'wet')) {
+        if(type == 'Electric') {
+            return 2;
+        } else if (type == 'Fire') {
+            return 0.5;
+        }
+    } else if (hasStatus(mon, 'sleep')) {
+        if(type == 'Spooky') {
+            return 2;
+        }
+    }
+    return 1;
 }
 
 function cantMove(target, eff) {
@@ -281,7 +296,6 @@ function cantMove(target, eff) {
     } else if (target == 'opponent') {
         var mon = currentOpponentMon;
     }
-
     if (eff == 'daze') {
         actionQueue.push({
             method: "text",

@@ -823,7 +823,6 @@ function decreaseMod(target, mods, stat, amount) {
     }
 }
 
-
 function increaseMod(target, mods, stat, amount) {
     if (mods[stat].count < 5) {
         if (parseInt(mods[stat].count) + parseInt(amount) > 5) {
@@ -895,6 +894,16 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
         dmg: dmg,
         target: defMon
     });
+    if(move.range == 'contact') {
+        if(hasStatus(defMon, 'sleep')) {
+            removeStatus(defMon, 'sleep');
+        }
+    }
+    if(move.type == 'Fire') {
+        if((move.range != 'self') && hasStatus(defMon, 'wet')) {
+            removeStatus(defMon, 'wet');
+        }
+    }
 }
 
 function calculateRecover(mon, amount) {
@@ -913,7 +922,6 @@ function calculateRecover(mon, amount) {
             txt: mon.name + " is already at full health.",
         });
     }
-    
     actionQueue.push({
         method: "damage",
         dmg: -(rec),
@@ -927,6 +935,7 @@ function damageMod(move, atkMon, defMon) {
     for (let i = 0; i < defMon.type.length; i++) {
         mod *= typeCheck(move.type, defMon.type[i]);
     }
+    mod *= statusTypeCheck(move.type, defMon);
     if (mod > 1) {
         actionQueue.push({
             method: "text",
@@ -969,7 +978,7 @@ function showDamage(dmg, defMon) {
 function die(mon) {
     actionQueue.push({
         method: "text",
-        txt: mon.name + " has been defeated!"
+        txt: mon.name + " was defeated!"
     });
     if (mon == currentPlayerMon) {
         for (let i = 0; i < inBattle.length; i++) {
@@ -1044,13 +1053,15 @@ function giveXp(winMon, loseMon) {
 
 function checkLevelUp(mon, xp) {
     if (parseInt(mon.exp.current) + xp >= parseInt(mon.exp.next)) {
+        console.log("lvl up true");
         return true;
     }
+    console.log("lvl up false");
     return false;
 }
 
 function calculateExp(winMon, loseMon) {
-    let delta = 0.8 * (Math.pow((parseInt(winMon.level) + 1), 2.5) - Math.pow(parseInt(winMon.level), 2.5));
+    let delta = 0.8 * (Math.pow((parseInt(winMon.level) + 1), 1.5) - Math.pow(parseInt(winMon.level), 1.5));
     let factor = parseInt(loseMon.xp) * (loseMon.level / winMon.level);
     let gain = Math.round(((delta * factor) / inBattle.length) + 1);
     return gain;
