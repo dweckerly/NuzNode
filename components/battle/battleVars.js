@@ -148,7 +148,7 @@ var actions = {
     }  
 };
 
-var phases = ['select', 'pre', 'main', 'post'];
+var phases = ['select', 'pre', 'main', 'post', 'trans'];
 var phaseCounter = 0;
 
 var playerMods = {

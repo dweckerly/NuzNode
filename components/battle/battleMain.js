@@ -1,4 +1,5 @@
 function startFight() {
+    mustSwitch = false;
     if (currentOpponentMon.ai == "random") {
         randomMoveSelect();
     }
@@ -15,8 +16,10 @@ function round() {
         mainBattlePhase();
     } else if (phases[phaseCounter] == 'post') {
         postBattlePhase();
+    } else if(phases[phaseCounter] == 'trans'){
+        transitionPhase();
     }
-    if (phaseCounter >= 4) {
+    if (phaseCounter >= 5) {
         phaseCounter = 0;
         endRound();
     }
@@ -74,6 +77,9 @@ function nextTurn() {
             case 'post':
                 postBattlePhase();
                 break;
+            case 'trans':
+                transitionPhase();
+                break;
             default:
                 round();
                 break;
@@ -125,26 +131,31 @@ function mainBattlePhase() {
 }
 
 function postBattlePhase() {
+    console.log(actions[turn[turnCount]]);
     if (turnCount == 0) {
         checkSpeed();
     }
+    checkPostStatus(turn[turnCount]);
+    nextAction();
+}
+
+function transitionPhase() {
+    console.log(actions[turn[turnCount]]);
     if (actions[turn[turnCount]].action == "switch") {
-        mustSwitch = false;
         actionQueue.push({
             method: "switch",
             id: actions[turn[turnCount]].id,
             target: turn[turnCount]
         });
-    } else {
-        checkPostStatus(turn[turnCount]);
     }
     nextAction();
 }
 
 function showBattleText(txt, style) {
     $('#battle-text').removeClass('shake');
-    if(style == 'shake') {
-        $('#battle-text').addClass('shake');
+    $('#battle-text').removeClass('mute-text');
+    if(style) {
+        $('#battle-text').addClass(style);
     }
     typeWriter('battle-text', txt);
     var time = (txt.length * 50) + 1000;
@@ -249,20 +260,22 @@ function checkPostStatus(target) {
     } else if (target == 'opponent') {
         var mon = currentOpponentMon;
     }
-    for (let i = 0; i < mon.status.length; i++) {
-        if (mon.status[i] == "burn") {
-            applyPostStatus(mon, 'burn', 0.0625);
-        } else if (mon.status[i] == 'poison') {
-            applyPostStatus(mon, 'poison', 0.125);
-        } else if (mon.status[i] == 'wound') {
-            woundCount++;
+    if(mon.hp.current > 0) {
+        for (let i = 0; i < mon.status.length; i++) {
+            if (mon.status[i] == "burn") {
+                applyPostStatus(mon, 'burn', 0.0625);
+            } else if (mon.status[i] == 'poison') {
+                applyPostStatus(mon, 'poison', 0.125);
+            } else if (mon.status[i] == 'wound') {
+                woundCount++;
+            }
         }
-    }
-    if(woundCount > 0) {
-        if(woundCount >= 3) {
-            woundCount = 4;
+        if(woundCount > 0) {
+            if(woundCount >= 3) {
+                woundCount = 4;
+            }
+            applyPostStatus(mon, 'wound', (woundCount / 16));
         }
-        applyPostStatus(mon, 'wound', (woundCount / 16));
     }
 }
 
@@ -467,7 +480,8 @@ function selfHit(acc, accMod) {
     } else {
         actionQueue.push({
             method: 'text',
-            txt: "It fails..."
+            txt: "It fails...",
+            style: "mute-text"
         });
         return false;
     }
@@ -482,7 +496,8 @@ function targetHit(acc, accMod, eva) {
     } else {
         actionQueue.push({
             method: 'text',
-            txt: "It misses..."
+            txt: "It misses...",
+            style: "mute-text"
         });
         return false;
     }
@@ -515,7 +530,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: defMon.name + " cannot be burnt."
+                            txt: defMon.name + " cannot be burnt.",
+                            style: "mute-text"
                         });
                     }
                 } else if (e[1] == 'self') {
@@ -524,7 +540,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: atkMon.name + " cannot be burnt."
+                            txt: atkMon.name + " cannot be burnt.",
+                            style: "mute-text"
                         });
                     }
                 }
@@ -560,7 +577,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: defMon.name + " cannot be poisoned."
+                            txt: defMon.name + " cannot be poisoned.",
+                            style: "mute-text"
                         });
                     }
                 } else if (e[1] == 'self') {
@@ -569,7 +587,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: atkMon.name + " cannot be poisoned."
+                            txt: atkMon.name + " cannot be poisoned.",
+                            style: "mute-text"
                         });
                     }
                 }
@@ -610,7 +629,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: defMon.name + " does not sleep."
+                            txt: defMon.name + " does not sleep.",
+                            style: "mute-text"
                         });
                     }
                 } else if (e[1] == 'self') {
@@ -619,7 +639,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: atkMon.name + " does not sleep."
+                            txt: atkMon.name + " does not sleep.",
+                            style: "mute-text"
                         });
                     }
                 }
@@ -650,7 +671,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: defMon.name + " cannot be wounded."
+                            txt: defMon.name + " cannot be wounded.",
+                            style: "mute-text"
                         });
                     }
                 } else if (e[1] == 'self') {
@@ -659,7 +681,8 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                     } else {
                         actionQueue.push({
                             method: "text",
-                            txt: atkMon.name + " cannot be wounded."
+                            txt: atkMon.name + " cannot be wounded.",
+                            style: "mute-text"
                         });
                     }
                 }
@@ -718,7 +741,8 @@ function statusEffect(status, target, prob) {
         }
         actionQueue.push({
             method: 'text',
-            txt: str
+            txt: str,
+            style: "mute-text"
         });
     }
 }
@@ -936,7 +960,7 @@ function calculateRecover(mon, amount) {
     } else {
         actionQueue.push({
             method: "text",
-            txt: mon.name + " is already at full health.",
+            txt: mon.name + " is already at full health."
         });
     }
     actionQueue.push({
@@ -962,7 +986,8 @@ function damageMod(move, atkMon, defMon) {
     } else if (mod < 1) {
         actionQueue.push({
             method: "text",
-            txt: defMon.name + " resists."
+            txt: defMon.name + " resists.",
+            style: "mute-text"
         });
     }
     return mod * stab;

@@ -89,10 +89,15 @@ canvas {
     display: inline-block;
 }
 
+.mute-text {
+    color: gray;
+}
+
 .shake {
     animation: shake 0.5s; 
     animation-iteration-count: infinite; 
 }
+
 .valign {
     position: fixed;
     top: 50%;
