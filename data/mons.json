@@ -266,7 +266,7 @@
         "sAtk": 40,
         "sDef": 70,
         "speed": 50,
-        "movePool": "",
+        "movePool": 10,
         "anim": "",
         "evo": "",
         "xp": 2

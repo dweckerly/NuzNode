@@ -164,7 +164,7 @@
         "dmg": 0,
         "acc": 100,
         "crit": 0,
-        "effects": ["sleep-self-100", "recover-self-50"],
+        "effects": ["heal-all", "sleep-self-100", "recover-self-50"],
         "anim": ""
     },
     "15": {

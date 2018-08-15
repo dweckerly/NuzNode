@@ -205,12 +205,14 @@ function checkMainStatus(target) {
             } else if (statusCounter[target].daze.count >= statusCounter[target].daze.max) {
                 removeStatus(mon, "daze");
             }
-        } else if (mon.status[i] == "sick") {
+        }
+        if (mon.status[i] == "sick") {
             let chance = Math.random();
             if (chance > 0.5) {
                 actions[target].action = "sick";
             }
-        } else if (mon.status[i] == "sleep") {
+        }
+        if (mon.status[i] == "sleep") {
             if (statusCounter[target].sleep.count >= statusCounter[target].sleep.max) {
                 removeStatus(mon, "sleep");
             } else {
@@ -222,11 +224,13 @@ function checkMainStatus(target) {
                     removeStatus(mon, 'sleep');
                 }
             }
-        } else if (mon.status[i] == "stun") {
+        }
+        if (mon.status[i] == "stun") {
             if (statusCounter[target].stun.count >= statusCounter[target].stun.max) {
                 removeStatus(mon, "stun");
             } else {
                 let chance = Math.random();
+                console.log(chance);
                 if (chance > 0.5) {
                     statusCounter[target].stun.count++;
                     actions[target].action = "stun";
@@ -456,7 +460,8 @@ function parseAttack(id) {
 
 function selfHit(acc, accMod) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10);
+    let accuracy = (parseInt(acc) / 100) + parseFloat(accMod);
+    console.log(accuracy);
     if (chance <= accuracy) {
         return true;
     } else {
@@ -470,7 +475,8 @@ function selfHit(acc, accMod) {
 
 function targetHit(acc, accMod, eva) {
     let chance = Math.random();
-    let accuracy = (parseInt(acc) / 100) + (parseInt(accMod) / 10) - (parseInt(eva) / 10);
+    let accuracy = (parseInt(acc) / 100) + (parseFloat(accMod) - parseFloat(eva));
+    console.log(accuracy);
     if (chance <= accuracy) {
         return true;
     } else {
@@ -724,57 +730,60 @@ function removeStatus(mon, status) {
         var target = 'opponent';
     }
     if(status == 'all') {
-        mon.status == [];
-        actionQueue.push({
-            method: "text",
-            txt: mon.name + " completely healed!"
-        });
+        if(mon.status.length != 0) {
+            mon.status = [];
+            actionQueue.push({
+                method: "text",
+                txt: mon.name + " completely healed!"
+            });
+        }
         actionQueue.push({
             method: 'status',
             id: "",
             target: mon
         });
-    }
-    for (let i = 0; i < mon.status.length; i++) {
-        if (mon.status[i] == status) {
-            mon.status.splice(i, 1);
-            statusCounter[target][status].count = 0;
-            if (status == "daze") {
+    } else {
+        for (let i = 0; i < mon.status.length; i++) {
+            if (mon.status[i] == status) {
+                mon.status.splice(i, 1);
+                statusCounter[target][status].count = 0;
+                if (status == "daze") {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " is no longer dazed!"
+                    });
+                } else if (status == "sick") {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " feels better!"
+                    });
+                } else if (status == 'sleep') {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " woke up!"
+                    });
+                } else if (status == "stun") {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " is no longer stunned!"
+                    });
+                } else if (status == "wet") {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " dried off!"
+                    });
+                } else {
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " is no longer " + status + "ed!"
+                    });
+                }
                 actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " is no longer dazed!"
-                });
-            } else if (status == "sick") {
-                actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " feels better!"
-                });
-            } else if (status == 'sleep') {
-                actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " woke up!"
-                });
-            } else if (status == "stun") {
-                actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " is no longer stunned!"
-                });
-            } else if (status == "wet") {
-                actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " dried off!"
-                });
-            } else {
-                actionQueue.push({
-                    method: "text",
-                    txt: mon.name + " is no longer " + status + "ed!"
+                    method: 'status',
+                    id: "",
+                    target: mon
                 });
             }
-            actionQueue.push({
-                method: 'status',
-                id: "",
-                target: mon
-            });
         }
     }
 }
@@ -916,7 +925,7 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
 
 function calculateRecover(mon, amount) {
     let rec = Math.round(parseInt(mon.hp.max) * (parseInt(amount) / 100));
-    if((parseInt(mon.hp.current) + rec) > mon.hp.max) {
+    if((parseInt(mon.hp.current) + rec) > parseInt(mon.hp.max)) {
         rec = parseInt(mon.hp.max) - parseInt(mon.hp.current);
     }
     if(rec > 0) {
@@ -970,6 +979,13 @@ function showDamage(dmg, defMon) {
     if (newHp > 0 && newWidth <= 0) {
         newWidth = 1;
     }
+    if(newHp > defMon.hp.max) {
+        newHp = defMon.hp.max;
+    }
+    if(newWidth > playerHealthRect.w) {
+        newWidth = playerHealthRect.w;
+    }
+
     defMon.hp.current = newHp;
     if (defMon.hp.current == 0) {
         die(defMon);
