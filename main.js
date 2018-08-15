@@ -7,7 +7,11 @@ function createWindow() {
         width: 800,
         height: 600,
         //frame: false,
-        icon: 'img/icon.png'
+        icon: 'img/icon.png',
+        webPreferences: {
+            pageVisibility: true,
+            backgroundThrottling: false,
+        },
     });
     win.setMenu(null);
     //win.setResizable(false);
@@ -17,7 +21,7 @@ function createWindow() {
         win = null;
     });
 }
-
+app.commandLine.appendSwitch('disable-renderer-backgrounding');
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
