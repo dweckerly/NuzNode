@@ -318,3 +318,10 @@ function cantMove(target, eff) {
         });
     }
 }
+
+function calculateBaseXp(mon) {
+    let statTot = parseInt(mon.stats.atk) + parseInt(mon.stats.def) + parseInt(mon.stats.sAtk) + parseInt(mon.stats.sDef) + parseInt(mon.stats.speed);
+    let genTot = parseInt(mon.genetics.hp) + parseInt(mon.genetics.atk) + parseInt(mon.genetics.def) + parseInt(mon.genetics.sAtk) + parseInt(mon.genetics.sDef) + parseInt(mon.genetics.speed);
+    let genFactor = genTot / 77;
+    return (statTot / 3) * genFactor;
+}

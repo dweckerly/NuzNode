@@ -257,8 +257,7 @@ function createMon(id, lvl) {
         },
         "happiness": 50,
         "moves": getMoves(monBase, lvl),
-        "partyPosition": partyPosition(),
-        "xp": monBase['xp']
+        "partyPosition": partyPosition()
     }
 
     return mon;

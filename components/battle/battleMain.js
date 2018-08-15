@@ -1111,9 +1111,15 @@ function checkLevelUp(mon, xp) {
 }
 
 function calculateExp(winMon, loseMon) {
-    let delta = 0.8 * (Math.pow((parseInt(winMon.level) + 1), 1.5) - Math.pow(parseInt(winMon.level), 1.5));
-    let factor = parseInt(loseMon.xp) * (loseMon.level / winMon.level);
-    let gain = Math.round(((delta * factor) / inBattle.length) + 1);
+    if(battleType == 'wild') {
+        var a = 1;
+    } else {
+        var a = 1.5;
+    }
+    let baseXp = calculateBaseXp(loseMon);
+    let delta = (Math.pow(2 * parseInt(loseMon.level), 2.5) / Math.pow(parseInt(winMon.level) + parseInt(loseMon.level), 2.5));
+    let factor = baseXp * (parseInt(loseMon.level) / parseInt(winMon.level));
+    let gain = Math.round((((delta * factor) / inBattle.length) + 1) * a);
     return gain;
 }
 
