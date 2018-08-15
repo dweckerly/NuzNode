@@ -207,6 +207,8 @@ function createMon(id, lvl) {
 
     let potential = geneticPotential(geneticFactors);
 
+    let lvlFactor = statFactor(monBase, geneticFactors);
+
     let mon = {
         "id": uuidv1(),
         "name": monBase['name'],
@@ -230,8 +232,8 @@ function createMon(id, lvl) {
         "potential": potential,
         "level": lvl,
         "exp": {
-            "current": Math.floor(0.8 * Math.pow(lvl, 3)),
-            "next": Math.floor(0.8 * Math.pow((parseInt(lvl) + 1), 3))
+            "current": Math.floor(lvlFactor * Math.pow(lvl, 3)),
+            "next": Math.floor(lvlFactor * Math.pow((parseInt(lvl) + 1), 3))
         },
         "efforts": {
             "attack": {
@@ -280,4 +282,9 @@ function addMon(mon) {
     let monData = load(player.id + "-mons");
     monData['mons'].push(mon);
     saveMons(monData);
+}
+
+function statFactor(mon, gf) {
+    let statSum = mon.atk + gf.atk + mon.def + gf.def + mon.sAtk + gf.sAtk + mon.sDef + gf.sDef + mon.speed + gf.speed;
+    return statSum / 360;
 }
