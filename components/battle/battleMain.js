@@ -16,7 +16,7 @@ function round() {
         mainBattlePhase();
     } else if (phases[phaseCounter] == 'post') {
         postBattlePhase();
-    } else if(phases[phaseCounter] == 'trans'){
+    } else if (phases[phaseCounter] == 'trans') {
         transitionPhase();
     }
     if (phaseCounter >= 5) {
@@ -35,7 +35,7 @@ function endRound() {
 function runActionQueue() {
     if (actionQueue[0].method == "text") {
         let str = actionQueue.shift();
-        if('style' in str) {
+        if ('style' in str) {
             showBattleText(str.txt, str.style);
         } else {
             showBattleText(str.txt);
@@ -152,9 +152,8 @@ function transitionPhase() {
 }
 
 function showBattleText(txt, style) {
-    $('#battle-text').removeClass('shake');
-    $('#battle-text').removeClass('mute-text');
-    if(style) {
+    $('#battle-text').removeClass();
+    if (style) {
         $('#battle-text').addClass(style);
     }
     typeWriter('battle-text', txt);
@@ -255,12 +254,12 @@ function checkMainStatus(target) {
 
 function checkPostStatus(target) {
     var woundCount = 0;
-    if(target == 'player') {
+    if (target == 'player') {
         var mon = currentPlayerMon;
     } else if (target == 'opponent') {
         var mon = currentOpponentMon;
     }
-    if(mon.hp.current > 0) {
+    if (mon.hp.current > 0) {
         for (let i = 0; i < mon.status.length; i++) {
             if (mon.status[i] == "burn") {
                 applyPostStatus(mon, 'burn', 0.0625);
@@ -270,8 +269,8 @@ function checkPostStatus(target) {
                 woundCount++;
             }
         }
-        if(woundCount > 0) {
-            if(woundCount >= 3) {
+        if (woundCount > 0) {
+            if (woundCount >= 3) {
                 woundCount = 4;
             }
             applyPostStatus(mon, 'wound', (woundCount / 16));
@@ -284,7 +283,7 @@ function applyPostStatus(mon, eff, amount) {
         method: "text",
         txt: mon.name + " is hurt by the " + eff + "."
     });
-    let dmg = Math.round(parseInt(mon.hp.max) * amount); 
+    let dmg = Math.round(parseInt(mon.hp.max) * amount);
     actionQueue.push({
         method: "damage",
         dmg: dmg,
@@ -299,7 +298,7 @@ function checkSpeed() {
     }
     turn = [];
     let pSpeed = parseInt(currentPlayerMon.stats.speed) * playerMods.speed.value * statusMod.player.speed;
-    let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value *  statusMod.opponent.speed;
+    let oSpeed = parseInt(currentOpponentMon.stats.speed) * opponentMods.speed.value * statusMod.opponent.speed;
     if (pSpeed > oSpeed) {
         turn = ["player", "opponent"];
     } else if (oSpeed > pSpeed) {
@@ -597,15 +596,15 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 recoil(atkMon, e[1]);
                 break;
             case "recover":
-                if(e[1] == 'self') {
+                if (e[1] == 'self') {
                     calculateRecover(atkMon, e[2]);
-                } else if(e[1] == 'target') {
+                } else if (e[1] == 'target') {
                     calculateRecover(defMon, e[2]);
                 }
                 break;
             case "remove":
-                if(e[1] == 'mod') {
-                    if(e[2] == 'all') {
+                if (e[1] == 'mod') {
+                    if (e[2] == 'all') {
                         resetMods('player');
                         resetMods('opponent');
                         actionQueue.push({
@@ -646,7 +645,7 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 }
                 break;
             case "steal":
-                if(e[1] == 'mod') {
+                if (e[1] == 'mod') {
                     copyMods(defMods, atkMods, e[2]);
                 }
                 break;
@@ -695,7 +694,7 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
 
 function statusEffect(status, target, prob) {
     if (!hasStatus(target, status)) {
-        if(target.status.length < 3) {
+        if (target.status.length < 3) {
             let chance = Math.random();
             let decProb = parseInt(prob) / 100;
             if (chance <= decProb) {
@@ -753,8 +752,8 @@ function removeStatus(mon, status) {
     } else if (mon == currentOpponentMon) {
         var target = 'opponent';
     }
-    if(status == 'all') {
-        if(mon.status.length != 0) {
+    if (status == 'all') {
+        if (mon.status.length != 0) {
             mon.status = [];
             actionQueue.push({
                 method: "text",
@@ -935,13 +934,13 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
         dmg: dmg,
         target: defMon
     });
-    if(move.range == 'contact') {
-        if(hasStatus(defMon, 'sleep')) {
+    if (move.range == 'contact') {
+        if (hasStatus(defMon, 'sleep')) {
             removeStatus(defMon, 'sleep');
         }
     }
-    if(move.type == 'Fire') {
-        if((move.range != 'self') && hasStatus(defMon, 'wet')) {
+    if (move.type == 'Fire') {
+        if ((move.range != 'self') && hasStatus(defMon, 'wet')) {
             removeStatus(defMon, 'wet');
         }
     }
@@ -949,10 +948,10 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
 
 function calculateRecover(mon, amount) {
     let rec = Math.round(parseInt(mon.hp.max) * (parseInt(amount) / 100));
-    if((parseInt(mon.hp.current) + rec) > parseInt(mon.hp.max)) {
+    if ((parseInt(mon.hp.current) + rec) > parseInt(mon.hp.max)) {
         rec = parseInt(mon.hp.max) - parseInt(mon.hp.current);
     }
-    if(rec > 0) {
+    if (rec > 0) {
         actionQueue.push({
             method: "text",
             txt: mon.name + " recovered health!",
@@ -1004,10 +1003,10 @@ function showDamage(dmg, defMon) {
     if (newHp > 0 && newWidth <= 0) {
         newWidth = 1;
     }
-    if(newHp > defMon.hp.max) {
+    if (newHp > defMon.hp.max) {
         newHp = defMon.hp.max;
     }
-    if(newWidth > playerHealthRect.w) {
+    if (newWidth > playerHealthRect.w) {
         newWidth = playerHealthRect.w;
     }
 
@@ -1111,7 +1110,7 @@ function checkLevelUp(mon, xp) {
 }
 
 function calculateExp(winMon, loseMon) {
-    if(battleType == 'wild') {
+    if (battleType == 'wild') {
         var a = 1;
     } else {
         var a = 1.5;
