@@ -547,9 +547,17 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 break;
             case "dec":
                 if (e[2] == 'target') {
-                    decreaseMod(defMon, defMods, e[1], e[3]);
+                    if(e.length > 4) {
+                        decreaseMod(defMon, defMods, e[1], e[3], e[4]);
+                    } else {
+                        decreaseMod(defMon, defMods, e[1], e[3]);
+                    }
                 } else if (e[2] == 'self') {
-                    decreaseMod(atkMon, atkMods, e[1], e[3]);
+                    if(e.length > 4) {
+                        decreaseMod(atkMon, atkMods, e[1], e[3], e[4]);
+                    } else {
+                        decreaseMod(atkMon, atkMods, e[1], e[3]);
+                    }
                 }
                 break;
             case "heal":
@@ -557,9 +565,17 @@ function parseEffects(eff, atkMon, atkMods, defMon, defMods) {
                 break;
             case "inc":
                 if (e[2] == 'target') {
-                    increaseMod(defMon, defMods, e[1], e[3]);
+                    if(e.length > 4) {
+                        increaseMod(defMon, defMods, e[1], e[3], e[4]);
+                    } else {
+                        increaseMod(defMon, defMods, e[1], e[3]);
+                    }
                 } else if (e[2] == 'self') {
-                    increaseMod(atkMon, atkMods, e[1], e[3]);
+                    if(e.length > 4) {
+                        increaseMod(atkMon, atkMods, e[1], e[3], e[4]);
+                    } else {
+                        increaseMod(atkMon, atkMods, e[1], e[3]);
+                    }
                 }
                 break;
             case "poison":
@@ -828,64 +844,82 @@ function showStatusChange(target) {
 }
 
 function decreaseMod(target, mods, stat, amount) {
-    if (mods[stat].count > -5) {
-        if (parseInt(mods[stat].count) - parseInt(amount) < -5) {
-            amount = parseInt(mods[stat].count) - (-5);
+    let apply = true;
+    if(chance) {
+        let r = Math.random();
+        if(r > (chance / 100)) {
+            apply = false;
         }
-        mods[stat].count -= parseInt(amount);
-        mods[stat].value = 2 / (Math.abs(mods[stat].count) + 2);
-        if (amount == 1) {
+    }
+    if(apply) {
+        if (mods[stat].count > -5) {
+            if (parseInt(mods[stat].count) - parseInt(amount) < -5) {
+                amount = parseInt(mods[stat].count) - (-5);
+            }
+            mods[stat].count -= parseInt(amount);
+            mods[stat].value = 2 / (Math.abs(mods[stat].count) + 2);
+            if (amount == 1) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " decreased!",
+                });
+            } else if (amount == 2) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " decreased greatly!",
+                });
+            } else if (amount == 3) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " drastically decreased!",
+                });
+            }
+        } else {
             actionQueue.push({
                 method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " decreased!",
-            });
-        } else if (amount == 2) {
-            actionQueue.push({
-                method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " decreased greatly!",
-            });
-        } else if (amount == 3) {
-            actionQueue.push({
-                method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " drastically decreased!",
+                txt: target.name + "'s " + stat.toUpperCase() + " can't go any lower!",
             });
         }
-    } else {
-        actionQueue.push({
-            method: "text",
-            txt: target.name + "'s " + stat.toUpperCase() + " can't go any lower!",
-        });
     }
 }
 
-function increaseMod(target, mods, stat, amount) {
-    if (mods[stat].count < 5) {
-        if (parseInt(mods[stat].count) + parseInt(amount) > 5) {
-            amount = 5 - parseInt(mods[stat].count);
+function increaseMod(target, mods, stat, amount, chance) {
+    let apply = true;
+    if(chance) {
+        let r = Math.random();
+        if(r > (chance / 100)) {
+            apply = false;
         }
-        mods[stat].count += parseInt(amount);
-        mods[stat].value = (mods[stat].count + 2) / 2;
-        if (amount == 1) {
+    }
+    if(apply) {
+        if (mods[stat].count < 5) {
+            if (parseInt(mods[stat].count) + parseInt(amount) > 5) {
+                amount = 5 - parseInt(mods[stat].count);
+            }
+            mods[stat].count += parseInt(amount);
+            mods[stat].value = (mods[stat].count + 2) / 2;
+            if (amount == 1) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " increased!",
+                });
+            } else if (amount == 2) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " increased greatly!",
+                });
+            } else if (amount == 3) {
+                actionQueue.push({
+                    method: "text",
+                    txt: target.name + "'s " + stat.toUpperCase() + " drastically increased!",
+                });
+            }
+        } else {
             actionQueue.push({
                 method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " increased!",
-            });
-        } else if (amount == 2) {
-            actionQueue.push({
-                method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " increased greatly!",
-            });
-        } else if (amount == 3) {
-            actionQueue.push({
-                method: "text",
-                txt: target.name + "'s " + stat.toUpperCase() + " drastically increased!",
+                txt: target.name + "'s " + stat.toUpperCase() + " can't go any higher!",
             });
         }
-    } else {
-        actionQueue.push({
-            method: "text",
-            txt: target.name + "'s " + stat.toUpperCase() + " can't go any higher!",
-        });
     }
 }
 
