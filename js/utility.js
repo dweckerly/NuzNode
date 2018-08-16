@@ -213,6 +213,7 @@ function createMon(id, lvl) {
         "id": uuidv1(),
         "name": monBase['name'],
         "species": monBase['name'],
+        "sid": id,
         "descripion": monBase['description'],
         "img": monBase['img'],
         "type": monBase['type'],
@@ -232,8 +233,8 @@ function createMon(id, lvl) {
         "potential": potential,
         "level": lvl,
         "exp": {
-            "current": Math.floor(lvlFactor * Math.pow(lvl, 3)),
-            "next": Math.floor(lvlFactor * Math.pow((parseInt(lvl) + 1), 3))
+            "current": Math.floor(lvlFactor * Math.pow(lvl, lvlExp)),
+            "next": Math.floor(lvlFactor * Math.pow((parseInt(lvl) + 1), lvlExp))
         },
         "efforts": {
             "attack": {

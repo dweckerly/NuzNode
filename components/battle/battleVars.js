@@ -72,10 +72,11 @@ var playerHealthRect = {
     w: playerDetailsRect.w - 80,
     h: 16
 };
+let disPer = (currentPlayerMon.hp.current / currentPlayerMon.hp.max) * playerHealthRect.w;
 var playerHealthOverlay = {
     x: playerHealthRect.x,
     y: playerHealthRect.y,
-    w: playerHealthRect.w,
+    w: disPer,
     h: playerHealthRect.h
 };
 

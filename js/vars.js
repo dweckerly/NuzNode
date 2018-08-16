@@ -26,3 +26,5 @@ const locations = [cave, ranch, lake, forest, hills, hotel, lightHouse, marsh];
 var main, sinAnim;
 
 var wildMon, battleType;
+
+var lvlExp = 2.5;

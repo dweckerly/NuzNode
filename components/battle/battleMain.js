@@ -9,7 +9,6 @@ function startFight() {
 function round() {
     actionQueue = [];
     phaseCounter++;
-    console.log(phases[phaseCounter]);
     if (phases[phaseCounter] == 'pre') {
         preBattlePhase();
     } else if (phases[phaseCounter] == 'main') {
@@ -55,7 +54,6 @@ function runActionQueue() {
     } else if (actionQueue[0].method == "end") {
         endBattle();
     } else if (actionQueue[0].method == 'xp') {
-        console.log("xp called");
         let exp = actionQueue.shift();
         giveXp(exp.winMon, exp.loseMon);
     }
@@ -131,7 +129,6 @@ function mainBattlePhase() {
 }
 
 function postBattlePhase() {
-    console.log(actions[turn[turnCount]]);
     if (turnCount == 0) {
         checkSpeed();
     }
@@ -140,7 +137,6 @@ function postBattlePhase() {
 }
 
 function transitionPhase() {
-    console.log(actions[turn[turnCount]]);
     if (actions[turn[turnCount]].action == "switch") {
         actionQueue.push({
             method: "switch",
@@ -240,7 +236,6 @@ function checkMainStatus(target) {
                 removeStatus(mon, "stun");
             } else {
                 let chance = Math.random();
-                console.log(chance);
                 if (chance > 0.5) {
                     statusCounter[target].stun.count++;
                     actions[target].action = "stun";
@@ -473,7 +468,6 @@ function parseAttack(id) {
 function selfHit(acc, accMod) {
     let chance = Math.random();
     let accuracy = (parseInt(acc) / 100) + parseFloat(accMod);
-    console.log(accuracy);
     if (chance <= accuracy) {
         return true;
     } else {
@@ -489,7 +483,6 @@ function selfHit(acc, accMod) {
 function targetHit(acc, accMod, eva) {
     let chance = Math.random();
     let accuracy = (parseInt(acc) / 100) + (parseFloat(accMod) - parseFloat(eva));
-    console.log(accuracy);
     if (chance <= accuracy) {
         return true;
     } else {
@@ -729,7 +722,9 @@ function statusEffect(status, target, prob) {
             });
         }
     } else {
-        if (status == 'wet' || status == 'sick') {
+        if(status == 'daze') {
+            var str = target.name + " is already " + status + "d.";
+        } else if (status == 'wet' || status == 'sick') {
             var str = target.name + " is already " + status + ".";
         } else if (status == 'stun') {
             var str = target.name + " is already " + status + "ned.";
@@ -1081,15 +1076,8 @@ function giveXp(winMon, loseMon) {
             method: "text",
             txt: inBattle[i].name + " gained " + xp + " XP!"
         });
-        if (checkLevelUp(winMon, xp)) {
-            actionQueue.push({
-                method: "text",
-                txt: inBattle[i].name + " leveled up!"
-            });
-            actionQueue.push({
-                method: "levelup",
-                target: inBattle[i]
-            });
+        if (checkLevelUp(inBattle[i], xp)) {
+            levelUpMon(inBattle[i]);
         }
     }
     if (battleType === 'wild') {
@@ -1101,11 +1089,11 @@ function giveXp(winMon, loseMon) {
 }
 
 function checkLevelUp(mon, xp) {
-    if (parseInt(mon.exp.current) + xp >= parseInt(mon.exp.next)) {
-        console.log("lvl up true");
+    mon.exp.current = parseInt(mon.exp.current) + xp;
+    if (parseInt(mon.exp.current) >= parseInt(mon.exp.next)) {
+        levelUpMon(mon);
         return true;
     }
-    console.log("lvl up false");
     return false;
 }
 
@@ -1124,7 +1112,74 @@ function calculateExp(winMon, loseMon) {
 
 function endBattle() {
     actionQueue = [];
+    postBattleUpdateMons();
     goToLocation();
-    // will need to save info here
     console.log("battle ended");
 }
+
+function levelUpMon(mon) {
+    actionQueue.push({
+        method: "text",
+        txt: mon.name + " leveled up!"
+    });
+    let lvl = parseInt(mon.level);
+    lvl += 1;
+    mon.level = lvl;
+    let monData = JSON.parse(fs.readFileSync('data/mons.json', 'utf8'));
+    let monBase = monData[mon.sid];
+    let lvlFactor = statFactor(monBase, mon.genetics);
+    let tempHp = mon.hp.max;
+    mon.hp.max = Math.round((((parseInt(monBase['hp']) + parseInt(mon.genetics.hp)) * lvl) / 50) + 5 + parseInt(lvl));
+    let hpDif = mon.hp.max - tempHp;
+    if(hpDif + mon.hp.current > mon.hp.max) {
+        mon.hp.current = mon.hp.max;
+    } else {
+        mon.hp.current += hpDif;
+    }
+    mon.stats.atk = Math.round((((monBase['atk'] + mon.genetics.atk) * lvl) / 50) + 5);
+    mon.stats.def = Math.round((((monBase['def'] + mon.genetics.def) * lvl) / 50) + 5);
+    mon.stats.sAtk = Math.round((((monBase['sAtk'] + mon.genetics.sAtk) * lvl) / 50) + 5);
+    mon.stats.sDef = Math.round((((monBase['sDef'] + mon.genetics.sDef) * lvl) / 50) + 5);
+    mon.stats.speed = Math.round((((monBase['speed'] + mon.genetics.speed) * lvl) / 50) + 5);
+    mon.exp.next = Math.floor(lvlFactor * Math.pow((parseInt(lvl) + 1), lvlExp));
+    
+
+    let newMove = getMoveUpdate(monBase.movePool, lvl);
+    if(newMove != null){
+        if(Object.keys(mon.moves).length < 4) {
+            for(let i = 1; i <= 4; i++) {
+                if(!(i in mon.moves)) {
+                    mon.moves[i] = newMove;
+                    actionQueue.push({
+                        method: "text",
+                        txt: mon.name + " learned " + newMove.name + "!"
+                    });
+                    break;
+                }
+            }
+        } else {
+            actionQueue.push({
+                method: "text",
+                txt: inBattle[i].name + " can now learn " + newMove.name + "!"
+            });
+        }
+    }
+}
+
+function postBattleUpdateMons() {
+    let data = fs.readFileSync('data/player/' + player.id + '-mons.json');
+    let json = JSON.parse(data);
+    for(let i = 0; i < json.mons.length; i++) {
+        for(let j = 0; j < partyMons.length; j++) {
+            if('healthDisplay' in partyMons[j]) {
+                delete partyMons[j].healthDisplay;
+            }
+            if(partyMons[j].id == json.mons[i].id) {
+                json.mons[i] = partyMons[j];
+                break;
+            }
+        }
+    }
+    saveMons(json);
+}
+

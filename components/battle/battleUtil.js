@@ -325,3 +325,16 @@ function calculateBaseXp(mon) {
     let genFactor = genTot / 77;
     return (statTot / 3) * genFactor;
 }
+
+function getMoveUpdate(mid, lvl) {
+    let movePoolData = JSON.parse(fs.readFileSync('data/movePools.json', 'utf8'));
+    for(let i = 0; i < movePoolData[mid].level.length; i++) {
+        if(movePoolData[mid].level[i] == lvl) {
+            let moveId = movePoolData[mid].id[i];
+            let moveData = JSON.parse(fs.readFileSync('data/moves.json', 'utf8'));
+            let move = moveData[moveId];
+            return move;
+        }
+    }
+    return null;
+}
