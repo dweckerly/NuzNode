@@ -299,12 +299,12 @@ function cantMove(target, eff) {
     if (eff == 'daze') {
         actionQueue.push({
             method: "text",
-            txt: mon.name + " is dazed!"
+            txt: mon.name + " is seeing stars!"
         });
     } else if (eff == 'sick') {
         actionQueue.push({
             method: "text",
-            txt: mon.name + " is too sick to move!"
+            txt: mon.name + " is wretching uncontrollably!"
         });
     } else if (eff == 'sleep') {
         actionQueue.push({

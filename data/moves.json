@@ -516,6 +516,18 @@
         "anim": ""
     },
     "44": {
+        "name": "Strange Maneuver",
+        "description": "An odd ritual that may increase any, all, or none of the user's stats.",
+        "type": "Weird",
+        "category": "status",
+        "range": "self",
+        "dmg": 0,
+        "acc": 100,
+        "crit": 0,
+        "effects": ["inc-atk-self-1-50", "inc-def-self-1-50", "inc-sAtk-self-1-50", "inc-sDef-self-1-50", "inc-speed-self-1-50"],
+        "anim": ""
+    },
+    "45": {
         
     }
 }

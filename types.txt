@@ -11,5 +11,6 @@ spooky
 stone
 toxic
 water
+weird
 
-(sky, sound, earth, wind, weird)?
+(sky, sound, earth, wind)?

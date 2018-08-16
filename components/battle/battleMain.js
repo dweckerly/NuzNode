@@ -843,7 +843,7 @@ function showStatusChange(target) {
     }, 500);
 }
 
-function decreaseMod(target, mods, stat, amount) {
+function decreaseMod(target, mods, stat, amount, chance) {
     let apply = true;
     if(chance) {
         let r = Math.random();
@@ -1110,9 +1110,7 @@ function giveXp(winMon, loseMon) {
             method: "text",
             txt: inBattle[i].name + " gained " + xp + " XP!"
         });
-        if (checkLevelUp(inBattle[i], xp)) {
-            levelUpMon(inBattle[i]);
-        }
+        checkLevelUp(inBattle[i], xp);
     }
     if (battleType === 'wild') {
         actionQueue.push({
@@ -1126,9 +1124,7 @@ function checkLevelUp(mon, xp) {
     mon.exp.current = parseInt(mon.exp.current) + xp;
     if (parseInt(mon.exp.current) >= parseInt(mon.exp.next)) {
         levelUpMon(mon);
-        return true;
     }
-    return false;
 }
 
 function calculateExp(winMon, loseMon) {
