@@ -120,8 +120,6 @@ function drawDetailsRect() {
             animTracker.detailsAnim = false;
         }
     }
-
-
 }
 
 function drawNames() {

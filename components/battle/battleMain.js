@@ -939,6 +939,15 @@ function recoil(mon, amount) {
     }
 }
 
+function checkCrit(move, mods) {
+    var chance = Math.random();
+    var crit = (move.crit * mods.crit.value) / 100;
+    if(chance <= crit) {
+        return true;
+    }
+    return false;
+}
+
 function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
     var statusMod = {
         atkMon: statusMods(atkMon),
@@ -946,6 +955,7 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
     }
     var lvl = parseInt(atkMon.level);
     var base = parseInt(move.dmg);
+
     if (move.category == 'physical') {
         var a = parseInt(atkMon.stats.atk) * parseFloat(atkMods.atk.value) * statusMod.atkMon.atk;
         var d = parseInt(defMon.stats.def) * parseFloat(defMods.def.value) * statusMod.defMon.def;
@@ -954,6 +964,15 @@ function calculateDamage(move, atkMon, atkMods, defMon, defMods) {
         var d = parseInt(defMon.stats.sDef) * parseFloat(defMods.sDef.value) * statusMod.defMon.sDef;
     }
     var dmgMod = damageMod(move, atkMon, defMon);
+    if(checkCrit(move, atkMods)) {
+        dmgMod *= 2;
+        d /= 2;
+        actionQueue.push({
+            method: "text",
+            txt: "Critical hit!",
+            style: "shake"
+        });
+    }
     var dmg = Math.round(((((((2 * lvl) / 5) + 2) * base * (a / d)) / 50) + 2) * dmgMod);
     if (dmg < 1) {
         dmg = 1;
