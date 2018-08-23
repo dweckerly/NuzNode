@@ -1129,7 +1129,10 @@ function giveXp(winMon, loseMon) {
             method: "text",
             txt: inBattle[i].name + " gained " + xp + " XP!"
         });
-        checkLevelUp(inBattle[i], xp);
+        inBattle[i].exp.current = parseInt(inBattle[i].exp.current) + xp;
+        if (parseInt(inBattle[i].exp.current) >= parseInt(inBattle[i].exp.next)) {
+            levelUpMon(inBattle[i]);
+        }
     }
     if (battleType === 'wild') {
         actionQueue.push({
@@ -1137,13 +1140,6 @@ function giveXp(winMon, loseMon) {
         });
     }
     nextAction();
-}
-
-function checkLevelUp(mon, xp) {
-    mon.exp.current = parseInt(mon.exp.current) + xp;
-    if (parseInt(mon.exp.current) >= parseInt(mon.exp.next)) {
-        levelUpMon(mon);
-    }
 }
 
 function calculateExp(winMon, loseMon) {
