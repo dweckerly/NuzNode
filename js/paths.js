@@ -9,6 +9,7 @@ const journalComp = "components/journal/journal.html";
 const loadComp = "components/load/load.html";
 const locationComp = "components/location/location.html";
 const mapComp = "components/map/map.html";
+const mapTestComp = "components/mapTest/mapTest.html";
 const navComp = "components/nav/nav.html";
 const noteComp = "components/note/note.html";
 const partyComp = "components/party/party.html";

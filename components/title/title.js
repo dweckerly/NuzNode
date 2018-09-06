@@ -17,3 +17,7 @@ $('#battle-test').click(() => {
 $('#anim-test').click(() => {
     changeSection('main', animTestComp);
 });
+
+$('#map-test').click(() => {
+    changeSection('main', mapTestComp);
+});
