@@ -191,7 +191,6 @@ c.addEventListener('mousemove', function(evt) {
         mouseOffset.x = mousePos.x;
         mouseOffset.y = mousePos.y;
     }
-    //draw();
 }, false);
 
 c.addEventListener('click', function(event) {
@@ -212,7 +211,6 @@ sinAnim = setInterval(function() {
     pointerAnimY = (Math.sin(i)) * 20;
     i += 0.1;
 }, 30);
-
 
 
 main = setInterval(function() {
