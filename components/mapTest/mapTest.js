@@ -1,10 +1,73 @@
 var c = document.getElementById('main-canvas');
 var ctx = c.getContext('2d');
+var cOffset = {x: 0, y: 0};
+
+var mouseOffset = { x: 0, y: 0 };
+var mousePos = { x: 0, y: 0 };
+
+var dragging = false;
+var clear = false;
 
 var map = [];
 var sections = {};
 var nodes = [];
 var sectionMax = 5;
+
+function getMousePos(c, evt) {
+    var rect = c.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+$('#back').click(() => {
+    changeSection('main', titleComp);
+});
+
+$('#clear').click(() => {
+    clearCanvas();
+    if(clear) {
+        clear = false;
+        $('#clear').html("Clear");
+    } else {
+        clear = true;
+        $('#clear').html("Draw");
+    }
+});
+
+$('#main-canvas').mousedown(function(evt) {
+    mousePos = getMousePos(c, evt);
+    mouseOffset.x = mousePos.x;
+    mouseOffset.y = mousePos.y;
+    dragging = true;
+});
+
+$('#main-canvas').mouseleave(function() {
+    if (dragging) {
+        dragging = false;
+    }
+});
+
+$('#main-canvas').mouseup(function() {
+    if (dragging) {
+        dragging = false;
+    }
+});
+
+c.addEventListener('mousemove', function(evt) {
+    mousePos = getMousePos(c, evt);
+    if (dragging) {
+        cOffset.x += mousePos.x - mouseOffset.x;
+        cOffset.y += mousePos.y - mouseOffset.y;
+        mouseOffset.x = mousePos.x;
+        mouseOffset.y = mousePos.y;
+    }
+}, false);
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, c.width, c.height);
+}
 
 /*
 function createMap() {
@@ -38,14 +101,6 @@ function createNode() {
     }
 }
 
-$('#back').click(() => {
-    changeSection('main', titleComp);
-});
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, c.width, c.height);
-}
-
 function createMap() {
     for(let i = 0; i < 15; i++) {
         let fx = Math.round(Math.random() * 10) - 20;
@@ -59,7 +114,24 @@ function createMap() {
     console.log(nodes);
 }
 
+//createMap();
+
+function baseNode() {
+    let x = c.width / 2 - 10 + cOffset.x;
+    let y = c.height - 60 + cOffset.y;
+    ctx.rect(x, y, 20, 20);
+    ctx.fill();
+}
+
+function endNode(){
+    let x = c.width / 2 - 10 + cOffset.x;
+    let y = 0 + cOffset.y;
+    ctx.rect(x, y, 20, 20);
+    ctx.fill();
+}
+
 function draw() {
+    clearCanvas();
     baseNode();
     endNode();
     /*
@@ -69,26 +141,12 @@ function draw() {
     }
     */
 }
-
-createMap();
-
-main = setInterval(function() {
-    clearCanvas();
-    draw();
-}, 20);
-
-// create first node at bottom center center
-
-function baseNode() {
-    let x = c.width / 2 - 10;
-    let y = c.height - 60;
-    ctx.rect(x, y, 20, 20);
-    ctx.stroke();
+function main() {
+    var main = setInterval(function() {
+        if(!clear) {
+            draw();
+        }
+    }, 20);
 }
 
-function endNode(){
-    let x = c.width / 2 - 10;
-    let y = 0;
-    ctx.rect(x, y, 20, 20);
-    ctx.stroke();
-}
+main();
