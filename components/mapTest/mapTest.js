@@ -55,6 +55,17 @@ $('#main-canvas').mouseup(function() {
     }
 });
 
+
+c.addEventListener('mousewheel', function(evt) {
+    if (evt.deltaY > 0) {
+        cOffset.y += 10;
+    } else {
+        cOffset.y -= 10;
+    }
+    clearCanvas();
+    draw();
+}, false);
+
 c.addEventListener('mousemove', function(evt) {
     mousePos = getMousePos(c, evt);
     if (dragging) {
