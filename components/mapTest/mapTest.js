@@ -6,12 +6,24 @@ var mouseOffset = { x: 0, y: 0 };
 var mousePos = { x: 0, y: 0 };
 
 var dragging = false;
-var clear = false;
 
 var map = [];
-var sections = {};
+var sections = [];
 var nodes = [];
-var sectionMax = 5;
+
+var sectionMax = 7;
+var sectionWidth = 600;
+var sectionHeight = 200;
+
+var bNode = {
+    x: 0,
+    y: 0
+};
+
+var eNode = {
+    x: 0,
+    y: 0
+};
 
 function getMousePos(c, evt) {
     var rect = c.getBoundingClientRect();
@@ -25,15 +37,14 @@ $('#back').click(() => {
     changeSection('main', titleComp);
 });
 
-$('#clear').click(() => {
+$('#gen').click(() => {
+    resetOffset();
+    createBaseNode();
+    createEndNode();
+    createSections();
+    createNodes();
     clearCanvas();
-    if (clear) {
-        clear = false;
-        $('#clear').html("Clear");
-    } else {
-        clear = true;
-        $('#clear').html("Draw");
-    }
+    draw();
 });
 
 $('#main-canvas').mousedown(function(evt) {
@@ -54,7 +65,6 @@ $('#main-canvas').mouseup(function() {
         dragging = false;
     }
 });
-
 
 c.addEventListener('mousewheel', function(evt) {
     if (evt.deltaY > 0) {
@@ -82,74 +92,88 @@ function clearCanvas() {
     ctx.clearRect(0, 0, c.width, c.height);
 }
 
-/*
-function createMap() {
-    for(let i = 0; i < sectionMax; i++) {
-        map.push(createSection(i + 1));
-    }
-}
-*/
-
-function createSection(num) {
-    if (num >= sectionMax || num == 1) {
-        var nodeCount = 3;
-    } else {
-        var nodeCount = Math.floor(Math.random() * 3) + 3;
-    }
-    var nodes = [];
-    for (let i = 0; i < nodeCount; i++) {
-        nodes.push(createNode());
-    }
-    return section;
+function resetOffset() {
+    cOffset = { x: 0, y: 0 };
+    mouseOffset = { x: 0, y: 0 };
+    mousePos = { x: 0, y: 0 };
 }
 
-function createNode() {
-    if (map.length == 0) {
-        // first section
-    } else if (map.length == sectionMax - 1) {
-        // last section
-    } else {
-        // general section
-
-    }
+function createBaseNode() {
+    bNode.x = c.width / 2 - 10 + cOffset.x;
+    bNode.y = (sectionHeight * sectionMax) + 20 + cOffset.y;
 }
-
-function createMap() {
-    for (let i = 0; i < 15; i++) {
-        let fx = Math.round(Math.random() * 10) - 20;
-        let fy = Math.round(Math.random() * 60) + 20;
-        if (i != 0) {
-            nodes.push({ x: (nodes[i - 1].x + fx), y: (nodes[i - 1].y + fy) });
-        } else {
-            nodes.push({ x: fx + 400, y: fy });
-        }
-    }
-    console.log(nodes);
-}
-
-//createMap();
 
 function baseNode() {
-    let x = c.width / 2 - 10 + cOffset.x;
-    let y = c.height - 60 + cOffset.y;
-    ctx.fillRect(x, y, 20, 20);
+    ctx.fillRect(bNode.x + cOffset.x, bNode.y + cOffset.y, 20, 20);
+}
+
+function createEndNode() {
+    eNode.x = c.width / 2 - 10 + cOffset.x;
+    eNode.y = 0 + cOffset.y;
 }
 
 function endNode() {
-    let x = c.width / 2 - 10 + cOffset.x;
-    let y = 0 + cOffset.y;
-    ctx.fillRect(x, y, 20, 20);
+    ctx.fillRect(eNode.x + cOffset.x, eNode.y + cOffset.y, 20, 20);
+}
+
+function createSections() {
+    sections = [];
+    //let sectionHeight = (bNode.y - eNode.y - 20) / sectionMax;
+    for(let i = 0; i < sectionMax; i++) {
+        sections.push({x: c.width / 2 - sectionWidth / 2 + cOffset.x, y: sectionHeight * i + eNode.y + 20, w: sectionWidth, h: sectionHeight});
+    }
+}
+
+function drawSections() {
+    for(let i = 0; i < sections.length; i++) {
+        ctx.strokeRect(sections[i].x + cOffset.x, sections[i].y + cOffset.y, sections[i].w, sections[i].h);
+    }
+}
+
+function createNodes() {
+    nodes = [];
+    for(let i = 0; i < sections.length; i++) {
+        let r;
+        if(i > 0 && i < sections.length - 1) {
+            r = Math.floor(Math.random() * 3) + 3;
+        } else {
+            r = 3;
+        }
+        let nodeSectionWidth = sections[i].w / r;
+        for(let j = 0; j < r; j++) {
+            let x = sections[i].x + nodeSectionWidth * j; 
+            let w = sections[i].x + nodeSectionWidth * (j+1);
+            let y = sections[i].y;
+            let h = sections[i].h;
+
+            let nodeX = (x + ((w - x) / 2)) - 10; 
+            let nodeY = (y + h / 2) - 10;
+
+            let section = i;
+            nodes.push({
+                x: nodeX,
+                y: nodeY,
+                section: section
+            });
+        }
+    }
+}
+
+function drawNodes() {
+    for(let i = 0; i < nodes.length; i++) {
+        ctx.strokeRect(nodes[i].x + cOffset.x, nodes[i].y + cOffset.y, 20, 20);
+    }
 }
 
 function draw() {
     baseNode();
     endNode();
-    /*
-    for(let i = 0; i < nodes.length; i++) {
-        ctx.rect(nodes[i].x, nodes[i].y, 20, 20);
-        ctx.stroke();
-    }
-    */
+    drawSections();
+    drawNodes();
 }
 
+createBaseNode();
+createEndNode();
+createSections();
+createNodes();
 draw();
