@@ -171,7 +171,7 @@ function getNodesInSection(sec) {
     let getNodes = [];
     for(let i = 0; i < nodes.length; i++) {
         if(nodes[i].section == sec) {
-            getNodes.append({
+            getNodes.push({
                 node: nodes[i],
                 index: i
             });
@@ -187,7 +187,14 @@ function createPaths() {
     for(let i = 0; i < sections.length - 1; i++) {
         let fromNodes = getNodesInSection(i);
         let toNodes = getNodesInSection(i + 1);
-        
+
+        // if they are the same length just draw a line to the above node...
+        if((fromNodes.length - toNodes.length) == 0) {
+            for(let j = 0; j < fromNodes.length; j++) {
+                fromNodes[j].node['paths'] = [j + fromNodes.length];
+                nodes[fromNodes[j].index] = fromNodes[j].node;
+            }
+        }
     }
 }
 
@@ -196,13 +203,16 @@ function createStartAndEndPaths() {
 }
 
 function drawPaths() {
+    console.log(nodes);
     ctx.setLineDash([5, 3]);
     for(let i = 0; i < nodes.length; i++) {
-        for(let j = 0; j < nodes.paths.length; j++) {
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x + (nodeDim / 2), nodes[i].y + (nodeDim / 2));
-            ctx.lineTo(nodes[nodes.paths[j]].x + (nodeDim / 2), nodes[nodes.paths[j]].y + (nodeDim / 2));
-            ctx.stroke();
+        if('paths' in nodes[i]) {
+            for(let j = 0; j < nodes.paths.length; j++) {
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x + (nodeDim / 2), nodes[i].y + (nodeDim / 2));
+                ctx.lineTo(nodes[nodes.paths[j]].x + (nodeDim / 2), nodes[nodes.paths[j]].y + (nodeDim / 2));
+                ctx.stroke();
+            }
         }
     }
 }
@@ -212,10 +222,12 @@ function draw() {
     endNode();
     drawSections();
     drawNodes();
+    drawPaths();
 }
 
 createBaseNode();
 createEndNode();
 createSections();
 createNodes();
+createPaths();
 draw();
