@@ -167,6 +167,46 @@ function drawNodes() {
     }
 }
 
+function getNodesInSection(sec) {
+    let getNodes = [];
+    for(let i = 0; i < nodes.length; i++) {
+        if(nodes[i].section == sec) {
+            getNodes.append({
+                node: nodes[i],
+                index: i
+            });
+        }
+    }
+    return getNodes;
+}
+
+function createPaths() {
+    // get nodes in first section
+    // get nodes in last section
+    // make paths...
+    for(let i = 0; i < sections.length - 1; i++) {
+        let fromNodes = getNodesInSection(i);
+        let toNodes = getNodesInSection(i + 1);
+        
+    }
+}
+
+function createStartAndEndPaths() {
+
+}
+
+function drawPaths() {
+    ctx.setLineDash([5, 3]);
+    for(let i = 0; i < nodes.length; i++) {
+        for(let j = 0; j < nodes.paths.length; j++) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x + (nodeDim / 2), nodes[i].y + (nodeDim / 2));
+            ctx.lineTo(nodes[nodes.paths[j]].x + (nodeDim / 2), nodes[nodes.paths[j]].y + (nodeDim / 2));
+            ctx.stroke();
+        }
+    }
+}
+
 function draw() {
     baseNode();
     endNode();
