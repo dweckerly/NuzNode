@@ -11,7 +11,7 @@ var map = [];
 var sections = [];
 var nodes = [];
 
-var nodeDim = 50;
+var nodeDim = 20;
 
 var sectionMax = 7;
 var sectionWidth = 600;
@@ -100,6 +100,38 @@ function resetOffset() {
     mousePos = { x: 0, y: 0 };
 }
 
+function selectDirection() {
+    let r = Math.floor(Math.random() * 4);
+    switch (r) {
+        case 0:
+            return 'east';
+        case 1:
+            return 'south';
+        case 2:
+            return 'west';
+        case 3:
+            return 'north';
+    }
+}
+
+function createMap() {
+    let direction = 'east';
+    let depth = 7;
+
+    for(let i = 0; i < 3; i++) {
+        for(let j = 0; j < depth; j++) {
+            nodes.push({
+                paths: j + 1
+            });
+        }
+    }
+    
+}
+
+function createGraph() {
+
+}
+
 function createBaseNode() {
     bNode.x = (c.width / 2) - (nodeDim / 2) + cOffset.x;
     bNode.y = (sectionHeight * sectionMax) + nodeDim + cOffset.y;
@@ -181,36 +213,47 @@ function getNodesInSection(sec) {
 }
 
 function createPaths() {
-    // get nodes in first section
-    // get nodes in last section
-    // make paths...
     for(let i = 0; i < sections.length - 1; i++) {
         let fromNodes = getNodesInSection(i);
         let toNodes = getNodesInSection(i + 1);
 
         // if they are the same length just draw a line to the above node...
-        if((fromNodes.length - toNodes.length) == 0) {
+        if(fromNodes.length == toNodes.length) {
+            console.log(fromNodes);
+            console.log(toNodes);
             for(let j = 0; j < fromNodes.length; j++) {
-                fromNodes[j].node['paths'] = [j + fromNodes.length];
+                fromNodes[j].node['paths'] = [fromNodes.length + fromNodes[j].index];
                 nodes[fromNodes[j].index] = fromNodes[j].node;
             }
-        }
+        } 
     }
 }
 
-function createStartAndEndPaths() {
+function drawEndPaths() {
+    for(let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(eNode.x + (nodeDim / 2) + cOffset.x, eNode.y + (nodeDim / 2) + cOffset.y);
+        ctx.lineTo(nodes[i].x + (nodeDim / 2) + cOffset.x, nodes[i].y + (nodeDim / 2) + cOffset.y);
+        ctx.stroke();
+    }
+}
 
+function drawStartPaths() {
+    for(let i = nodes.length - 1; i > nodes.length - 4; i--) {
+        ctx.beginPath();
+        ctx.moveTo(bNode.x + (nodeDim / 2) + cOffset.x, bNode.y + (nodeDim / 2) + cOffset.y);
+        ctx.lineTo(nodes[i].x + (nodeDim / 2) + cOffset.x, nodes[i].y + (nodeDim / 2) + cOffset.y);
+        ctx.stroke();
+    }
 }
 
 function drawPaths() {
-    console.log(nodes);
-    ctx.setLineDash([5, 3]);
     for(let i = 0; i < nodes.length; i++) {
         if('paths' in nodes[i]) {
-            for(let j = 0; j < nodes.paths.length; j++) {
+            for(let j = 0; j < nodes[i].paths.length; j++) {
                 ctx.beginPath();
-                ctx.moveTo(nodes[i].x + (nodeDim / 2), nodes[i].y + (nodeDim / 2));
-                ctx.lineTo(nodes[nodes.paths[j]].x + (nodeDim / 2), nodes[nodes.paths[j]].y + (nodeDim / 2));
+                ctx.moveTo(nodes[i].x + (nodeDim / 2) + cOffset.x, nodes[i].y + (nodeDim / 2) + cOffset.y);
+                ctx.lineTo(nodes[nodes[i].paths[j]].x + (nodeDim / 2) + cOffset.x, nodes[nodes[i].paths[j]].y + (nodeDim / 2) + cOffset.y);
                 ctx.stroke();
             }
         }
@@ -222,6 +265,8 @@ function draw() {
     endNode();
     drawSections();
     drawNodes();
+    drawEndPaths();
+    drawStartPaths();
     drawPaths();
 }
 
@@ -230,4 +275,5 @@ createEndNode();
 createSections();
 createNodes();
 createPaths();
+console.log(nodes);
 draw();
