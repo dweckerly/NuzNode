@@ -12,6 +12,7 @@ var cOffset = { x: 0, y: 0 };
 var mouseOffset = { x: 0, y: 0 };
 var mousePos = { x: 0, y: 0 };
 
+var canDrag = true;
 var dragging = false;
 
 var startingPos = 1;
@@ -122,11 +123,12 @@ function showLocationDetails() {
 }
 
 function moveCenterToLocation(loc) {
+    canDrag = false;
     clearInterval(moveAnim);
     var interval = 30;
     var dest = centerOnLocation(loc);
     var midDist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2)) / 2;
-    if(dest.x < cOffset.x) {
+    if (dest.x < cOffset.x) {
         var slope = (dest.y - cOffset.y) / (dest.x - cOffset.x);
         var xMove = -1;
     } else {
@@ -138,16 +140,17 @@ function moveCenterToLocation(loc) {
     moveAnim = setInterval(function() {
         dist = Math.sqrt((Math.pow((dest.y - cOffset.y), 2)) + Math.pow((dest.x - cOffset.x), 2));
         accelX = (dist / midDist) * 6;
-        if(accelX < 1) {
+        if (accelX < 1) {
             accelX = 1;
         }
         cOffset.x += xMove * accelX;
         cOffset.y = ((slope * cOffset.x) + intercept);
-        if(cOffset.x >= (dest.x - 1) && cOffset.x <= (dest.x + 1)) {
-            if(cOffset.y <= (dest.y + 1) && cOffset.y >= (dest.y - 1)) {
+        if (cOffset.x >= (dest.x - 1) && cOffset.x <= (dest.x + 1)) {
+            if (cOffset.y <= (dest.y + 1) && cOffset.y >= (dest.y - 1)) {
                 cOffset.x = dest.x;
                 cOffset.y = dest.y;
                 clearInterval(moveAnim);
+                canDrag = true;
             }
         }
     }, interval);
@@ -164,10 +167,12 @@ function getMousePos(c, evt) {
 }
 
 $('#main-canvas').mousedown(function(evt) {
-    var mousePos = getMousePos(c, evt);
-    mouseOffset.x = mousePos.x;
-    mouseOffset.y = mousePos.y;
-    dragging = true;
+    if (canDrag) {
+        var mousePos = getMousePos(c, evt);
+        mouseOffset.x = mousePos.x;
+        mouseOffset.y = mousePos.y;
+        dragging = true;
+    }
 });
 
 $('#main-canvas').mouseleave(function() {
